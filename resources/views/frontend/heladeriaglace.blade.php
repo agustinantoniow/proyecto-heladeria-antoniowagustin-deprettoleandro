@@ -35,7 +35,7 @@
           <a class="nav-link" href="recomendados">recomendados</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Quienes Somos">Quienes Somos</a>
+          <a class="nav-link" href="QuienesSomos">Quienes Somos</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="Consultas">Consultas</a>
@@ -66,33 +66,34 @@
   </div>
 
  
-<div id="carouselExampleIndicators" class="carousel slide">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
+
+    
+
+<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active">
+    <div class="carousel-item active" data-bs-interval="3000">
       <img src="imagenes/imagenes-pagina-principal/img1.png" class="d-block w-100" alt="...">
     </div>
-    <div class="carousel-item">
+    <div class="carousel-item" data-bs-interval="3000">
       <img src="imagenes/imagenes-pagina-principal/img2.png" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
       <img src="imagenes/imagenes-pagina-principal/img3.png" class="d-block w-100" alt="...">
     </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-    
+
+
+
+
 <div 
     style="margin-bottom: 50px">
 </div>
@@ -140,7 +141,7 @@
         <h4>Tiramisú</h4>
     </div>
   </section>
-  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+
     </div>
   </div>
   <div class="card">
@@ -162,8 +163,6 @@
         <h4>vainilla y chocolate</h4  >
       </div>
   </section>
-     
-      <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
     </div>
   </div>
 </div>
@@ -172,12 +171,22 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="Terminos y usos">Terminos y Usos</a></li>
+    <li class="breadcrumb-item"><a href="TerminosyUsos">Terminos y Usos</a></li>
     <li class="breadcrumb-item"><a href="Nosotros">Nosotros</a></li>
     <li class="breadcrumb-item"><a href="Contacto">Contacto</a></li>
-    
   </ol>
 </nav>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="social-buttons">
+    <a href="#" class="social-icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
+</div>
+
+<footer>
+    <p>&copy; Copyright2026.Todos los derechos reservados.heladeria glace - Corrientes - Argentina</p>
+</footer>
+
     <!-- Bootstrap JS CDN -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>

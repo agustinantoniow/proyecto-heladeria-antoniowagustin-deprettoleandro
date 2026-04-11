@@ -6,7 +6,7 @@ Route::get('/heladeriaglace', function () {
     return view('frontend.heladeriaglace');
 });
 Route::get('/TerminosyUsos', function () {
-    return view('frontend.terminosyUsos');
+    return view('frontend.TerminosyUsos');
 });
  Route::get('/recomendados', function () {
     return view('frontend.recomendados');
