@@ -32,9 +32,6 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="home">Home</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="recomendados">recomendados</a>
         </li>
         <li class="nav-item">
@@ -59,10 +56,16 @@
   </div>
 </nav>
 
-<section style="margin-bottom: 50px;">
-  <div class="container md- fluid"><h1> Nuestros Productos <h1> 
+
+  <div 
+    class="container md- fluid"><h1> Nuestros Productos <h1> 
   <div>
-  <section>
+ 
+  <div 
+    style="margin-bottom: 30px">
+  </div>
+
+ 
 <div id="carouselExampleIndicators" class="carousel slide">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -89,33 +92,77 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
-
+    
+<div 
+    style="margin-bottom: 50px">
+</div>
 
 <div class="card-group">
   <div class="card">
-    <img src="imagenes/imagenes-tarjetas/img4.png" class="card-img-top" alt="...">
+    <img src="imagenes/imagenes-tarjetas/img4.png" class="card-img-top" alt="..."width="400" height="250">
     <div class="card-body">
-      <h5 class="card-title">Helados de agua</h5>
-      <li><a class="dropdown-item" href="Frutilla">Frutilla</a></li>  
-      <li><a class="dropdown-item" href="naranja">Naranja</a></li>
-      <li><a class="dropdown-item" href="limon">Limon</a></li>  
+      <h3 class="card-title">Helados de agua</h3>
+      <section>
+      <div class="postre-card">
+        <h4>Frutilla</h4>
+      </div>
+  </section>
+      <section>
+      <div class="postre-card">
+        <h4>Naranja</h4>
+      </div>
+  </section>
+      <section>
+      <div class="postre-card">
+        <h4>Limon</h4>
+      </div>
+  </section>
        
-      <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+      
     </div>
   </div>
   <div class="card">
-    <img src="..." class="card-img-top" alt="...">
+    <img src="imagenes/imagenes-tarjetas/img6.png" class="card-img-top" alt="..."width="400" height="250">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-      <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+      <h3 class="card-title">Postres</h3>
+    <section>
+      <div class="postre-card">
+        <h4>Tarta de Frutas</h4>
+      </div>
+  </section>
+    <section>
+    <div class="postre-card">
+        <h4>Copa Helada</h4>
+    </div>
+  </section>
+  <section>
+    <div class="postre-card">
+        <h4>Tiramisú</h4>
+    </div>
+  </section>
+  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
     </div>
   </div>
   <div class="card">
-    <img src="..." class="card-img-top" alt="...">
+    <img src="imagenes/imagenes-tarjetas/img7.png" class="card-img-top" alt="..."width="400" height="250">
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+      <h3 class="card-title">Linea familiar </h3>
+      <section>
+      <div class="postre-card">
+        <h4>Frutos del Bosque</h4>
+      </div>
+  </section>
+  <section>
+      <div class="postre-card">
+        <h4>super Dulce de Leche</h4>
+      </div>
+  </section>
+  <section>
+      <div class="postre-card">
+        <h4>vainilla y chocolate</h4  >
+      </div>
+  </section>
+     
       <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
     </div>
   </div>
