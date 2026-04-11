@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
 
     <!-- Tu CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Style.css') }}">
 </head>
 <body>
 <nav class="navbar bg-body-tertiary">
@@ -58,7 +58,7 @@
 
 
   <div 
-    class="container md- fluid"><h1> Nuestros Productos <h1> 
+    class="container md- fluid"><h1 style="color: blue;">Nuestros Productos</h1> 
   <div>
  
   <div 
@@ -169,6 +169,14 @@
 
 
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="social-buttons">
+    <a href="#" class="social-icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#" class="social-icon whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+</div>
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="TerminosyUsos">Terminos y Usos</a></li>
@@ -176,12 +184,6 @@
     <li class="breadcrumb-item"><a href="Contacto">Contacto</a></li>
   </ol>
 </nav>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<div class="social-buttons">
-    <a href="#" class="social-icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
-    <a href="#" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
-</div>
 
 <footer>
     <p>&copy; Copyright2026.Todos los derechos reservados.heladeria glace - Corrientes - Argentina</p>
