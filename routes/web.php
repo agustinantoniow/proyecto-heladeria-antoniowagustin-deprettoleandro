@@ -23,4 +23,11 @@ Route::get('/Nosotros', function () {
 Route::get('/Contacto', function () {
     return view('frontend.Contacto');
 });
+ Route::get('/Comercializacion', function () {
+    return view('frontend.Comercializacion');
+});
+ Route::get('/Productos', function () {
+    return view('frontend.Productos');
+});
+ 
  

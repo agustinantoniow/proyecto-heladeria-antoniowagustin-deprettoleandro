@@ -24,32 +24,45 @@
            width="100" 
            height="90"
            class="me-4">
-      Inicio
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="recomendados">recomendados</a>
+        <ul class="navbar-nav fs-4">
+          <li class="nav-item">
+          <a class="nav-link" href="heladeriaglace">inicio</a>
+          </li>  
+        </ul>
+      </ul>
+        <ul class="navbar-nav fs-4"> 
+          <li class="nav-item">
+            <a class="nav-link" href="recomendados">recomendados</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="QuienesSomos">Quienes Somos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="Consultas">Consultas</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            catalogo
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="Tortas Heladas">Tortas Heladas</a></li>
-            <li><a class="dropdown-item" href="Helados de Agua">Helados de Agua</a></li>
-            <li><a class="dropdown-item" href="Helados de Crema">Helados de Crema</a></li>
-            <li><a class="dropdown-item" href="Postres">Postres</a></li>
-          </ul>
+      </ul>
+        <ul class="navbar-nav fs-4"> 
+          <li class="nav-item">
+            <a class="nav-link" href="QuienesSomos">Quienes Somos</a>
+          </li>
+        <ul class="navbar-nav fs-4"> 
+            <li class="nav-item">
+              <a class="nav-link" href="Comercializacion">Comercialización</a>
+            </li>
+        <ul class="navbar-nav fs-4"> 
+            <li class="nav-item">
+              <a class="nav-link" href="Consultas">Consultas</a>
+            </li>
+        <ul class="navbar-nav fs-4"> 
+          <li class="nav-item">
+              <a class="nav-link" href="Contacto">Contacto</a>
+          </li>
+        
+          <ul class="navbar-nav fs-4"> 
+            <li class="nav-item">
+              <a class="nav-link" href="Productos">Productos</a>
+            </li>
+          
         </li>
       </ul>
     </div>
@@ -181,7 +194,6 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="TerminosyUsos">Terminos y Usos</a></li>
     <li class="breadcrumb-item"><a href="Nosotros">Nosotros</a></li>
-    <li class="breadcrumb-item"><a href="Contacto">Contacto</a></li>
   </ol>
 </nav>
 
