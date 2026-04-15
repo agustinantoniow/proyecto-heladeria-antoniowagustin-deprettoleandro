@@ -9,6 +9,12 @@
                     height="90"
                     class="me-4">
                 </a>
+                <a> 
+                    <img src="imagenes/logoheladeria.png" alt="logo"
+                    width="100" 
+                    height="90"
+                    class="me-4">
+                </a>
                 </div>
             <ul>
                 <li><a href="inicio#">Inicio</a></li>
