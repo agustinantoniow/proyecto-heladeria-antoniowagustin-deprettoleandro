@@ -2,14 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/heladeriaglace', function () {
+Route::get('/', function () {
     return view('frontend.heladeriaglace');
 });
 Route::get('/TerminosyUsos', function () {
     return view('frontend.TerminosyUsos');
-});
- Route::get('/recomendados', function () {
-    return view('frontend.recomendados');
 });
  Route::get('/QuienesSomos', function () {
     return view('frontend.QuienesSomos');

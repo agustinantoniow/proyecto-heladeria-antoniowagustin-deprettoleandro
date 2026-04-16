@@ -36,11 +36,7 @@
           </li>  
         </ul>
       </ul>
-        <ul class="navbar-nav fs-4"> 
-          <li class="nav-item">
-            <a class="nav-link" href="recomendados">recomendados</a>
-        </li>
-      </ul>
+        
         <ul class="navbar-nav fs-4"> 
           <li class="nav-item">
             <a class="nav-link" href="QuienesSomos">Quienes Somos</a>
@@ -71,7 +67,7 @@
 
 
   <div 
-    class="container md- fluid"><h1 style="color: blue;">Nuestros Productos</h1> 
+    class="container md- fluid">
   <div>
  
   <div 
