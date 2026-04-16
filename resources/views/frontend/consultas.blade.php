@@ -24,17 +24,19 @@
            width="100" 
            height="90"
            class="me-4">
-      Inicio
+      
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
-        <ul class="navbar-nav fs-4"> <li class="nav-item">
-        <a class="nav-link" href="recomendados">recomendados</a>
-    </li>
-      </ul>
+        <ul class="navbar-nav fs-4"> 
+          <li class="nav-item">
+            <a class="nav-link" href="/">inicio</a>
+            </li>
+        </ul>
+        
         <ul class="navbar-nav fs-4"> <li class="nav-item">
           <a class="nav-link" href="QuienesSomos">Quienes Somos</a>
         </li>
