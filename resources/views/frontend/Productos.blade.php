@@ -69,7 +69,7 @@
 </div>
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="TerminosyUsos">Terminos y Usos</a></li>
+    <li class="breadcrumb-item"><a href="terminosYusos">Terminos y Usos</a></li>
     <li class="breadcrumb-item"><a href="Nosotros">Nosotros</a></li>
   </ol>
 </nav>
@@ -78,4 +78,4 @@
     <p>&copy; Copyright2026.Todos los derechos reservados.heladeria glace - Corrientes - Argentina</p>
 </footer>
 
-</section>
+</section>`

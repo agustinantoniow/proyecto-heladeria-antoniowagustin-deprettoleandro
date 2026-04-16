@@ -106,8 +106,8 @@
 </div>
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="TerminosyUsos">Terminos y Usos</a></li>
-    <li class="breadcrumb-item"><a href="Nosotros">Nosotros</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('/terminosYusos') }}">Terminos y Usos</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('/Nosotros') }}">Nosotros</a></li>
   </ol>
 </nav>
 

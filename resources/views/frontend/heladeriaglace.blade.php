@@ -72,7 +72,7 @@
 
   <div 
     class="container md- fluid"><h1 style="color: blue;">Nuestros Productos</h1> 
-  <div>
+  <div> 
  
   <div 
     style="margin-bottom: 30px">
@@ -192,7 +192,7 @@
 </div>
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="TerminosyUsos">Terminos y Usos</a></li>
+    <li class="breadcrumb-item"><a href="terminosYusos">Terminos y Usos</a></li>
     <li class="breadcrumb-item"><a href="Nosotros">Nosotros</a></li>
   </ol>
 </nav>

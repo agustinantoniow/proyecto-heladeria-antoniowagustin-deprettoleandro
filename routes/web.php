@@ -1,16 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ConsultasController;
 
 Route::get('/heladeriaglace', function () {
     return view('frontend.heladeriaglace');
 });
-Route::get('/TerminosyUsos', function () {
-    return view('frontend.TerminosyUsos');
-});
+
+
+Route::get('/terminosYusos', function(){
+    return view('frontend.terminosYusos');
+}); 
+
  Route::get('/recomendados', function () {
     return view('frontend.recomendados');
 });
+
  Route::get('/QuienesSomos', function () {
     return view('frontend.QuienesSomos');
 });
@@ -29,5 +34,6 @@ Route::get('/Contacto', function () {
  Route::get('/Productos', function () {
     return view('frontend.Productos');
 });
- 
+
+
  
