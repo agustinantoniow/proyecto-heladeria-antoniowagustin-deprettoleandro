@@ -1,8 +1,14 @@
 <div class="layout-container">
-    
+    hola amigos
     <header class="main-header">
         <nav>
             <div class="logo">
+                <a> 
+                    <img src="imagenes/logoheladeria.png" alt="logo"
+                    width="100" 
+                    height="90"
+                    class="me-4">
+                </a>
                 <a> 
                     <img src="imagenes/logoheladeria.png" alt="logo"
                     width="100" 
