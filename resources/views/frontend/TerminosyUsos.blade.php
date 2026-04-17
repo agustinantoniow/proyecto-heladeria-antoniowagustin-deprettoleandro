@@ -9,7 +9,7 @@
     <div class="card shadow border-0">
         <div class="card-body p-5">
             
-            <h1 class="card-title text-primary mb-4">Términos y Usos - Heladería Glace</h1>
+            <h1 class="card-title mb-4">Términos y Usos - Heladería Glace</h1>
             <p class="lead text-muted border-bottom pb-3">
                 Reglas y condiciones para el uso de nuestra plataforma web.
             </p>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="mt-5 text-center">
-                <a href="inicio" class="btn btn-primary px-4 shadow-sm">Entendido y Volver</a>
+                <a href="/" class="btn btn-primary px-4 shadow-sm">Entendido y Volver</a>
                 <a href="consultas" class="btn btn-secondary px-4 shadow-sm">Tengo dudas</a>
             </div>
 

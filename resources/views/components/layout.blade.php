@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Heladería Glace')</title>
+    <title> @yield('title', 'Heladería Glace')</title>
 
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     
@@ -25,14 +26,17 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav fs-4">
             <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/recomendados') }}">Recomendados</a></li>
+            
             <li class="nav-item"><a class="nav-link" href="{{ url('/QuienesSomos') }}">Quiénes Somos</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/Comercializacion') }}">Comercialización</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/Consultas') }}">Consultas</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/Contacto') }}">Contacto</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/Productos') }}">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/login') }} "> Iniciar Sesión  </a>  </li> <i class="bi bi-lock"> </i>
           </ul>
         </div>
+        <button class="navbar-toggler" type="button">
+        <li class="nav-item"><a class="nav-link" href="{{ url('/Contacto') }}">Contacto</a></li>
+        </button>
       </div>
     </nav>
     
@@ -42,7 +46,7 @@
 
     <div class="social-buttons text-center mt-4">
         <a href="#" class="social-icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href= "https://www.youtube.com/watch?v=aHTpHcokyX8&list=RDaHTpHcokyX8&start_radio=1" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
         <a href="#" class="social-icon whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
     <nav aria-label="breadcrumb" class="container mt-3">
@@ -53,6 +57,7 @@
     <footer class="text-center bg-light py-3 mt-4">
         <p class="mb-0">&copy; Copyright 2026. Todos los derechos reservados. Heladería Glace - Corrientes - Argentina</p>
     </footer>
+    <i class="bi bi-lock"></i>
 
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 </body>
