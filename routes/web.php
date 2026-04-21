@@ -18,8 +18,8 @@ Route::get('/terminosYusos', function () {
 Route::get('/Nosotros', function () {
     return view('frontend.Nosotros');
 });
-Route::get('/Contacto', function () {
-    return view('frontend.Contacto');
+Route::get('/contacto', function () {
+    return view('frontend.contacto');
 });
  Route::get('/Comercializacion', function () {
     return view('frontend.Comercializacion');

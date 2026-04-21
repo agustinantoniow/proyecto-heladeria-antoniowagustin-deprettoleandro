@@ -41,12 +41,10 @@
 
 
 
-<div 
-    style="margin-bottom: 50px">
-</div>
 
-<div class="card-group">
-  <div class="card">
+<h2 class= "mt-4"> Nuestros Productos </h2>
+<div class="card-group ">
+  <div class="card ">
     <img src="imagenes/imagenes-tarjetas/img4.png" class="card-img-top" alt="..."width="400" height="250">
     <div class="card-body">
       <h3 class="card-title">Helados de agua</h3>
@@ -122,7 +120,11 @@
 
 
 
+<h2> Recomendados</h2>
 
+<h2> Novedades  </h2>
+
+<h2> Ofertas</h2>
 
     <!-- Bootstrap JS CDN -->
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
