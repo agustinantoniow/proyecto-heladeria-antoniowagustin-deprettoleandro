@@ -64,6 +64,9 @@
       <div class="postre-card">
         <h4>Limon</h4>
       </div>
+      <div class="postre-card">
+        <h4>Durazno</h4>
+      </div>
   </section>
        
       
@@ -86,6 +89,9 @@
   <section>
     <div class="postre-card">
         <h4>Tiramisú</h4>
+    </div>
+    <div class="postre-card">
+        <h4>Bombon Helado</h4>
     </div>
   </section>
 

@@ -52,7 +52,6 @@
   <h2>Pagos</h2>
   <p>-Efectivo</p>
   <p>-Debito</p>
-  <p>-Credito</p>
   <p>-Transferencia bancaria</p>
 </div>
 

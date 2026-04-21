@@ -30,13 +30,12 @@
             <li class="nav-item"><a class="nav-link" href="{{ url('/QuienesSomos') }}">Quiénes Somos</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/Comercializacion') }}">Comercialización</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/Consultas') }}">Consultas</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/Contacto') }}">Contacto</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/Productos') }}">Productos</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/login') }} "> Iniciar Sesión  </a>  </li> <i class="bi bi-lock"> </i>
           </ul>
         </div>
-        <button class="navbar-toggler" type="button">
-        <li class="nav-item"><a class="nav-link" href="{{ url('/Contacto') }}">Contacto</a></li>
-        </button>
+        <
       </div>
     </nav>
     

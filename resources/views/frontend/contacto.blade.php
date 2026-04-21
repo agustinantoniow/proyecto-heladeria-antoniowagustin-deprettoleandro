@@ -1,7 +1,8 @@
 
-@extemds('components.layout')
+@extends('components.layout')
 @section('title', 'heladeria - Contacto')
 @section('content')
+<body>  
 <section class="contacto">
     <div class="contenedor-contacto">
         <div class="info-contacto">
@@ -25,3 +26,4 @@
     </div>
 </section>
 @endsection
+</body>
