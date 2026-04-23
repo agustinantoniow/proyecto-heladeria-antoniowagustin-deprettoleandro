@@ -3,18 +3,12 @@
 @section('content')
 <body>
 
-  <div class="container">
-    <h3>  Nuestros Productos </h3>
-  </div>
-
-    <div 
-    style="margin-bottom: 30px">
-   </div>
-
- 
-
-   <h4>  Helados de agua </h4>
-
+  <div class="container mx-auto" >
+    <h3 class = "mb-4 text-center">  Nuestros Productos </h3>
+  
+    
+   <h4 class ="mb-3 text-center bg-info text-white">  Helados de agua </h4>
+   
 <div class="row">
   <div class="col-sm-6 mb-3 mb-sm-0">
 <div class="card mb-3" style="max-width: 600px; overflow: hidden;">
@@ -33,7 +27,7 @@
 </div>
 
 
- <div class="col-sm-6 mb-3 mb-sm-0"> 
+ <div class="col-sm-6 mb-3 mb-sm-0 ">  
 <div class="card mb-3" style="max-width: 600px; overflow: hidden;">
   <div class="row g-0">
     <div class="col-md-6">
@@ -50,8 +44,7 @@
 </div>
 
 
-<div class="row">
-  <div class="col-sm-6 mb-3 mb-sm-0"> 
+ <div class="col-sm-6 mb-3 mb-sm-0 ">  
 <div class="card mb-3" style="max-width: 600px; overflow: hidden;">
   <div class="row g-0">
     <div class="col-md-6">
@@ -84,7 +77,7 @@
 </div>
 </div>
   
-<h4>Postres</h4>
+<h4 class ="mb-3 text-center bg-success text-white">Postres</h4>
 
 <div class="col-sm-6 mb-3 mb-sm-0"> 
 <div class="card mb-3" style="max-width: 600px; overflow: hidden;">
@@ -152,7 +145,7 @@
 </div>
 </div>
 
-  <h4> Linea Familiar</h4>
+  <h4 class ="mb-3 text-center bg-primary text-white"> Linea Familiar</h4>
 
   <div class="col-sm-6 mb-3 mb-sm-0"> 
 <div class="card mb-3" style="max-width: 600px; overflow: hidden;">
@@ -203,6 +196,9 @@
   </div> 
 </div>
 </div>
+</div>
+</div>
+
 
 
 

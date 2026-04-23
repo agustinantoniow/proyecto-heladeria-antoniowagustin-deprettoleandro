@@ -1,43 +1,28 @@
 @extends('components.layout')
 @section('title', 'heladeria - login')
 @section('content')
-<div class="content bg-dark mt-3 p-5 col-4 ms-5">
-<body>
-  <div class="input-group ms-auto">
-  <span class="input-group-text" id="basic-addon1">@</span>
-  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-</div>
+    <div class="content bg-secondary mt-3 p-5 col-4 ms-5">
+              <body>
+                <div class="input-group ms-auto">
+                <input type="text" class="form-control" placeholder="Nombre de Usuario" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mt-4">
+                  <input type="text" class="form-control" placeholder="Contraseña" aria-label="Recipient’s username" aria-describedby="basic-addon2">
+                </div>
+                <div class="input-group mt-4">
+                  <a href="{{ url('/Productos') }}" class="btn btn-info text-white fw-bold px-4">
+                   Iniciar Sesión </a>
+                </div>
 
-<div class="input-group mt-4">
-  <input type="text" class="form-control" placeholder="Recipient’s username" aria-label="Recipient’s username" aria-describedby="basic-addon2">
-  <span class="input-group-text" id="basic-addon2">@example.com</span>
-</div>
 
-<div class="input-group ms-auto">
-  <label for="basic-url" class="form-label">Your vanity URL</label>
-  <div class="input-group ms-auto">
-    <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
-  </div>
-  <div class="form-text ms-auto" id="basic-addon4">Example help text goes outside the input group.</div>
-</div>
+                 <div class="input-group mt-4">
+                   <p>¿No tienes una cuenta? </p>
 
-<div class="input-group ms-auto">
-  <span class="input-group-text">$</span>
-  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-  <span class="input-group-text">.00</span>
-</div>
-
-<div class="input-group mt-4">
-  <input type="text" class="form-control" placeholder="Username" aria-label="Username">
-  <span class="input-group-text">@</span>
-  <input type="text" class="form-control" placeholder="Server" aria-label="Server">
-</div>
-
-<div class="input-group mt-4">
-  <span class="input-group-text">With textarea</span>
-  <textarea class="form-control" aria-label="With textarea"></textarea>
-</div>
-</body>
-</div>
+                </div>
+                <div>
+                  <a href="{{ url('/register') }}" class="btn btn-info text-white fw-bold px-4 ms-2">
+                    Registrate</a>
+                </div>
+              </body>
+    </div>
 @endsection

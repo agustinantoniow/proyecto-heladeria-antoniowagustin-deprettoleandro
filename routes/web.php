@@ -18,8 +18,8 @@ Route::get('/terminosYusos', function () {
 Route::get('/Nosotros', function () {
     return view('frontend.Nosotros');
 });
-Route::get('/Contacto', function () {
-    return view('frontend.Contacto');
+Route::get('/contacto', function () {
+    return view('frontend.contacto');
 });
  Route::get('/Comercializacion', function () {
     return view('frontend.Comercializacion');
@@ -30,5 +30,13 @@ Route::get('/Contacto', function () {
 Route::get('/login', function () {
     return view('frontend.login');
 });
+Route::get('/ver mas...', function () {
+    return view('frontend.pagina-helados-agua');
+});
 
- 
+Route::get('/ver mas....', function () {
+    return view('frontend.pagina-postres');
+});
+ Route::get('/ver mas..', function () {
+    return view('frontend.pagina-lineafamiliar');
+});
