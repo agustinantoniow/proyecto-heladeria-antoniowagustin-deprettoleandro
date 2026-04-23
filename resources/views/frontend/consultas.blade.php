@@ -1,5 +1,6 @@
-  @extends('components.layout')
+@extends('components.layout')
 @section('title', 'heladeria - Consultas')
+
 @section('content')
 <body>
   
@@ -47,4 +48,6 @@
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     
 </body>
+
+
 @endsection
