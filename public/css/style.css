@@ -1,0 +1,86 @@
+/* Este es un comentario en CSS */
+
+.presentacion {
+    background-color: #e8f5e9; /* Un verde menta suave */
+    color: #0d0f0d;            /* Color de letra que combine */
+}
+
+.QuienesSomos p {
+    font-size: 19px ! important; 
+    line-height: 1.7;   
+    color: #2c3e50;      
+    margin-bottom: 15px; 
+}
+
+
+    /* Definimos la animación 'latido-brillo' */
+.efecto-colorido p {
+        0%, 100% {
+            /* Estado normal (sin brillo extra) */
+            text-shadow: 0 0 10px rgba(13, 202, 240, 0); 
+            opacity: 0.8;
+        }
+        50% {
+            /* Estado de máximo brillo (usamos tu color celeste info) */
+            text-shadow: 0 0 15px #0dcaf0, 0 0 30px #0dcaf0, 0 0 45px #0dcaf0; 
+            opacity: 1;
+        }
+    }
+
+    /* Creamos la clase para aplicar la animación al título */
+    .efecto-latido {
+        color: #0dcaf0; /* Usamos tu color celeste base */
+        font-weight: bold;
+        text-transform: uppercase;
+        animation: latido-brillo 2s ease-in-out infinite; /* La animación dura 2s y se repite para siempre */
+    }
+
+
+
+    /* Animación de cambio de color y brillo */
+    @key pulso-colorido {
+        0%, 100% {
+            color: #0dcaf0; /* Celeste inicial */
+            text-shadow: 0 0 10px rgba(13, 202, 240, 0.5);
+        }
+        33% {
+            color: #ffc0cb; /* Cambia a rosa pastel */
+            text-shadow: 0 0 20px #ffc0cb, 0 0 40px #ffc0cb;
+        }
+        66% {
+            color: #fff3cd; /* Cambia a amarillo suave */
+            text-shadow: 0 0 20px #fff3cd, 0 0 40px #fff3cd;
+        }
+    }
+
+    .efecto-colorido {
+        font-weight: bold;
+        text-transform: uppercase;
+        animation: pulso-colorido 4s linear infinite; /* Animación más lenta (4s) para que se aprecie el cambio de color */
+    }
+
+
+    @keyframes brillo-publicidad {
+        0%, 100% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0dcaf0;
+            filter: brightness(100%);
+            transform: scale(1);
+        }
+        50% {
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0dcaf0, 0 0 60px #0dcaf0;
+            filter: brightness(130%);
+            transform: scale(1.05); /* Efecto de que "late" hacia el usuario */
+        }
+    }
+
+    .promo-aside-box {
+        background: linear-gradient(135deg, #0dcaf0 0%, #007bff 100%);
+        border: 3px solid white;
+        box-shadow: 0 0 15px rgba(13, 202, 240, 0.4);
+    }
+
+    .texto-novedades {
+        font-family: 'Arial Black', sans-serif;
+        color: rgb(53, 161, 162);
+        animation: brillo-publicidad 1.5s ease-in-out infinite;
+    }

@@ -9,9 +9,7 @@
     <nav aria-label="breadcrumb" class="container mt-3">
        <ol class="breadcrumb justify-content-center">
         <li class="breadcrumb-item"><a href="/terminosYusos">Términos y Usos</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('/Nosotros') }}">Nosotros</a></li>
-      </ol> </nav>
+      </ol> 
+    </nav>
         <p class="mb-0">&copy; Copyright 2026. Todos los derechos reservados. Heladería Glace - Corrientes - Argentina</p>
-
-
-    </footer>
+</footer>
