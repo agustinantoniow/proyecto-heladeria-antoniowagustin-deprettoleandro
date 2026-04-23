@@ -2,11 +2,6 @@
 @section('title', 'heladeria - Comercialización')
 @section('content')
 <body>
-
-<main>
-    @yield('content') {{-- Aquí se inyectan las vistas como TerminosyUsos --}}
-</main>
-
 <style>
   .mi-recuadro {
     
@@ -33,8 +28,6 @@
   }
 </style>
 
- 
-
 <div class="mi-recuadro">
   <h2>Tipos de Entregas</h2>
   <p>-Retiro en mostrador</p>
@@ -57,5 +50,7 @@
 
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 @endsection
+
+
 </body>
 </html>

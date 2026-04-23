@@ -7,7 +7,7 @@
         <a href="#" class="social-icon whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
     <nav aria-label="breadcrumb" class="container mt-3">
-      <ol class="breadcrumb justify-content-center">
+       <ol class="breadcrumb justify-content-center">
         <li class="breadcrumb-item"><a href="/terminosYusos">Términos y Usos</a></li>
         <li class="breadcrumb-item"><a href="{{ url('/Nosotros') }}">Nosotros</a></li>
       </ol> </nav>
