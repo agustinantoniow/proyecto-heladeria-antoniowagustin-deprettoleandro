@@ -34,8 +34,6 @@
 
 
 
-
-
 <h2 class = "mb-4 text-center">  Nuestros Productos </h2>
 <div class="card-group">
   <div class="card">
@@ -59,7 +57,7 @@
       <div class="postre-card">
         <h4>Durazno</h4>
       </div>
-      <p><a href="pagina-helados-agua">Ver mas...</a></p>
+      <p><a href="/ver mas...">Ver mas...</a></p>
 
   </section>
        
@@ -87,7 +85,7 @@
     <div class="postre-card">
         <h4>Bombon Helado</h4>
     </div>
-    <p><a href="pagina-postres">Ver mas....</a></p>
+    <p><a href="/ver mas....">Ver mas....</a></p>
   </section>
     </div>
   </div>
@@ -117,7 +115,7 @@
       <div class="postre-card">
         <h4>dulce de leche y granizado</h4  >
       </div>
-      <p><a href="pagina-linea-familiar">Ver mas..</a></p>
+      <p><a href="/ver mas..">Ver mas..</a></p>
   </section>
     </div>
   </div>
@@ -128,7 +126,7 @@
 <div class="row">
 <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="200">
+    <div class="carousel-item active" data-bs-interval="2000">
       <img src="imagenes/imagenes-pagina-principal/img4.png" class="d-block w-100" width="400" height="550" alt="...">
     </div>
     <div class="carousel-item" data-bs-interval="3000">
@@ -271,6 +269,14 @@
   </div> 
 </div>
 </div>
+
+
 </div>
+
+
+
+
+
+   
 </body>
 @endsection

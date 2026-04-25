@@ -76,6 +76,38 @@
   </div>
 </div>
 </div>
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img8.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Mango</h5>
+        <h6 class="card-text">Un nuevo sabor paradisiaco y delicioso</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img15.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Anana</h5>
+        <h6 class="card-text">un sabor tropical y refrescante</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
   
 <h4 class ="mb-3 text-center bg-success text-white">Postres</h4>
 
@@ -145,6 +177,38 @@
 </div>
 </div>
 
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img10.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Palito bombon relleno</h5>
+        <h6>una capa gruesa de chocolate relleno con un dulce de leche artesanal</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img16.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Tarta Oreo</h5>
+        <h6>es un postre irresistible que combina la clásica galleta Oreo con la frescura del helado</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
   <h4 class ="mb-3 text-center bg-primary text-white"> Linea Familiar</h4>
 
   <div class="col-sm-6 mb-3 mb-sm-0"> 
@@ -194,6 +258,22 @@
       </div>
     </div>
   </div> 
+</div>
+</div>
+
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img9.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Pote familiar dulce de leche, granizado y chocolate blanco</h5>
+        <h6>para los amantes de lo chocolatoso esta es la opcion ideal</h6>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 </div>

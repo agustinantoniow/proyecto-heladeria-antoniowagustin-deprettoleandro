@@ -31,7 +31,7 @@ Route::get('/login', function () {
     return view('frontend.login');
 });
 Route::get('/ver mas...', function () {
-    return view('frontend.pagina-helados-agua');
+    return view('frontend.paginaHeladosAgua');
 });
 
 Route::get('/ver mas....', function () {
