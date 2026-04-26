@@ -1,86 +1,222 @@
-/* Este es un comentario en CSS */
+/* ==========================================================================
+   1. DEFINICIÓN DE ANIMACIONES (KEYFRAMES)
+   ========================================================================== */
 
+/* Efecto de latido con sombra roja */
+@keyframes latido-brillo {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(13, 202, 240, 0); 
+        opacity: 0.8;
+    }
+    50% {
+        text-shadow: 0 0 15px #f0150d, 0 0 30px #f00d0d, 0 0 45px #f00d0d; 
+        opacity: 1;
+    }
+}
+
+/* Brillo publicitario celeste (Efecto Neón) */
+@keyframes brillo-publicidad-celeste {
+    0%, 100% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0dcaf0;
+        filter: brightness(100%);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0dcaf0, 0 0 60px #0dcaf0;
+        filter: brightness(130%);
+        transform: scale(1.05);
+    }
+}
+
+/* Brillo publicitario rojo (Efecto Neón para Ofertas) */
+@keyframes brillo-publicidad-rojo {
+    0%, 100% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0000;
+        filter: brightness(100%);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #ff0000, 0 0 60px #ff0000;
+        filter: brightness(130%);
+        transform: scale(1.05);
+    }
+}
+
+
+/* ==========================================================================
+   2. TIPOGRAFÍAS Y TEXTOS (CLASES MAESTRAS)
+   Usa estas clases para mantener la misma letra en toda la web.
+   ========================================================================== */
+
+/* --- CLASES DE TEXTO GENERAL (USADAS EN TODA LA WEB) --- */
+
+/* La letra estándar para párrafos y descripciones largas */
+.texto-nosotros, .card-text-glace {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: #444;
+}
+
+/* Título de sección con estilo bocha de helado (Fredoka) */
+.titulo-seccion-glace, .card-title-home {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Títulos de productos con borde celeste distintivo */
+.subtitulo-producto-glace {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    color: #2c3e50;
+    text-transform: uppercase;
+    border-left: 5px solid #0dcaf0;
+    padding-left: 12px;
+}
+
+/* --- CLASES DE TEXTO CON ANIMACIÓN --- */
+
+.efecto-latido {
+    color: #f30909 !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    animation: latido-brillo 2s ease-in-out infinite;
+}
+
+.texto-novedades {
+    font-family: 'Arial Black', sans-serif !important;
+    color: rgb(53, 161, 162) !important;
+    display: inline-block;
+    animation: brillo-publicidad-celeste 1.5s ease-in-out infinite;
+}
+
+.texto-novedades-rojo {
+    font-family: 'Arial Black', sans-serif !important;
+    color: #ff0000 !important;
+    display: inline-block;
+    animation: brillo-publicidad-rojo 1.5s ease-in-out infinite;
+}
+
+/* --- TÍTULOS ESPECÍFICOS --- */
+
+.titulo-novedades-v2 {
+    font-family: 'Arial Black', sans-serif;
+    color: #fff !important;
+    background-color: #0dcaf0;
+    padding: 5px 20px;
+    border-radius: 50px;
+    box-shadow: 0 0 15px #0dcaf0;
+    display: inline-block;
+}
+
+.titulo-productos {
+    font-family: 'Verdana', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-bottom: 5px solid #0dcaf0;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.titulo-ofertas-sticker {
+    background-color: #ff0000;
+    color: white !important;
+    padding: 10px 25px;
+    font-weight: 900;
+    text-transform: uppercase;
+    transform: rotate(-3deg);
+    box-shadow: 5px 5px 0px #800000;
+    display: inline-block;
+    border: 2px dashed white;
+}
+
+.titulo-recomendados {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    border-bottom: 3px double #0dcaf0;
+    display: inline-block;
+}
+
+/* --- LINKS Y BOTONES --- */
+
+.nav-link-glace {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.item-sabor-home {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    border-bottom: 1px dashed #ddd;
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-ver-mas {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    color: #0dcaf0;
+    transition: transform 0.2s;
+}
+
+
+/* ==========================================================================
+   3. CONTENEDORES Y COLORES (FONDOS Y BLOQUES)
+   Usa estas clases para las cajas y fondos de las secciones.
+   ========================================================================== */
+
+/* Fondo Maestro: Verde Menta Suave (Usado en Login y Recuadros) */
 .presentacion {
-    background-color: #e8f5e9; /* Un verde menta suave */
-    color: #0d0f0d;            /* Color de letra que combine */
+    background-color: #e8f5e9; 
+    color: #0d0f0d;
 }
 
-.QuienesSomos p {
-    font-size: 19px ! important; 
-    line-height: 1.7;   
-    color: #2c3e50;      
-    margin-bottom: 15px; 
+/* Fondo de Alerta/Aviso Rojo */
+.fondo-rojo {
+    background-color: #eba5a5;
+    color: #0d0f0d;
 }
 
+.fondo-amarillo {
+    background-color: #f2f2a1;
+    color: #0d0f0d;
+}
+.fondo-verde {
+    background-color: #a1f2a2;
+    color: #0d0f0d;
+}
+.fondo-azul {
+    background-color: #2f9dec;
+    color: #0d0f0d;
+}
 
-    /* Definimos la animación 'latido-brillo' */
-.efecto-colorido p {
-        0%, 100% {
-            /* Estado normal (sin brillo extra) */
-            text-shadow: 0 0 10px rgba(13, 202, 240, 0); 
-            opacity: 0.8;
-        }
-        50% {
-            /* Estado de máximo brillo (usamos tu color celeste info) */
-            text-shadow: 0 0 15px #0dcaf0, 0 0 30px #0dcaf0, 0 0 45px #0dcaf0; 
-            opacity: 1;
-        }
-    }
+/* Caja de promoción con degradado azul */
+.promo-aside-box {
+    background: linear-gradient(135deg, #0dcaf0 0%, #007bff 100%);
+    border: 3px solid white;
+    box-shadow: 0 0 15px rgba(13, 202, 240, 0.4);
+}
 
-    /* Creamos la clase para aplicar la animación al título */
-    .efecto-latido {
-        color: #0dcaf0; /* Usamos tu color celeste base */
-        font-weight: bold;
-        text-transform: uppercase;
-        animation: latido-brillo 2s ease-in-out infinite; /* La animación dura 2s y se repite para siempre */
-    }
+/* Footer: Estilo Celeste Glacial */
+.footer-glace-light {
+    background-color: #f0f9ff;
+    border-top: 5px solid #0dcaf0;
+    padding-top: 50px;
+    font-family: 'Montserrat', sans-serif;
+}
 
+.barrita-final {
+    background-color: #0dcaf0;
+    color: white;
+}
 
-
-    /* Animación de cambio de color y brillo */
-    @key pulso-colorido {
-        0%, 100% {
-            color: #0dcaf0; /* Celeste inicial */
-            text-shadow: 0 0 10px rgba(13, 202, 240, 0.5);
-        }
-        33% {
-            color: #ffc0cb; /* Cambia a rosa pastel */
-            text-shadow: 0 0 20px #ffc0cb, 0 0 40px #ffc0cb;
-        }
-        66% {
-            color: #fff3cd; /* Cambia a amarillo suave */
-            text-shadow: 0 0 20px #fff3cd, 0 0 40px #fff3cd;
-        }
-    }
-
-    .efecto-colorido {
-        font-weight: bold;
-        text-transform: uppercase;
-        animation: pulso-colorido 4s linear infinite; /* Animación más lenta (4s) para que se aprecie el cambio de color */
-    }
-
-
-    @keyframes brillo-publicidad {
-        0%, 100% {
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0dcaf0;
-            filter: brightness(100%);
-            transform: scale(1);
-        }
-        50% {
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0dcaf0, 0 0 60px #0dcaf0;
-            filter: brightness(130%);
-            transform: scale(1.05); /* Efecto de que "late" hacia el usuario */
-        }
-    }
-
-    .promo-aside-box {
-        background: linear-gradient(135deg, #0dcaf0 0%, #007bff 100%);
-        border: 3px solid white;
-        box-shadow: 0 0 15px rgba(13, 202, 240, 0.4);
-    }
-
-    .texto-novedades {
-        font-family: 'Arial Black', sans-serif;
-        color: rgb(53, 161, 162);
-        animation: brillo-publicidad 1.5s ease-in-out infinite;
-    }
+.icon-social-fresco {
+    color: #0dcaf0;
+    transition: all 0.3s ease;
+}

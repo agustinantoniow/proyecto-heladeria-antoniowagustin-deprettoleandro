@@ -1,15 +1,41 @@
+<footer class="footer-glace-light mt-5">
+    <div class="container">
+        <div class="row text-center text-md-start">
+            
+            <div class="col-md-4 mb-4">
+                <h5 class="display-6">Glace</h5>
+                <p class="text-muted">
+                    Haciendo los días más dulces en <strong>Corrientes</strong>. 
+                    Calidad artesanal por cinco amigos.
+                </p>
+            </div>
 
-    <footer class="text-center bg-light py-3 mt-4">
+            <div class="col-md-4 mb-4 text-center">
+                <h5>Links Útiles</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/" class="link-fresco">Nuestros Sabores</a></li>
+                    <li><a href="/terminosYusos" class="link-fresco">Términos y Usos</a></li>
+                    <li><a href="#" class="link-fresco">Ubicación</a></li>
+                </ul>
+            </div>
 
-        <div class="social-buttons text-center mt-4">
-        <a href="#" class="social-icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href= "https://www.youtube.com/watch?v=aHTpHcokyX8&list=RDaHTpHcokyX8&start_radio=1" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" class="social-icon whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+            <div class="col-md-4 mb-4 text-center text-md-end">
+                <h5>Seguinos</h5>
+                <div class="d-flex justify-content-center justify-content-md-end">
+                    <a href="#" class="icon-social-fresco"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="icon-social-fresco"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="icon-social-fresco"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <nav aria-label="breadcrumb" class="container mt-3">
-       <ol class="breadcrumb justify-content-center">
-        <li class="breadcrumb-item"><a href="/terminosYusos">Términos y Usos</a></li>
-      </ol> 
-    </nav>
-        <p class="mb-0">&copy; Copyright 2026. Todos los derechos reservados. Heladería Glace - Corrientes - Argentina</p>
+
+    <div class="barrita-final py-3 mt-4 text-center">
+        <div class="container">
+            <p class="mb-0 fw-bold">
+                © 2026 Heladería Glace - Hecho con ❤️ en Corrientes
+            </p>
+        </div>
+    </div>
 </footer>

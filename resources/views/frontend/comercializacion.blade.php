@@ -29,62 +29,58 @@
   }
 </style>
 
-<div class="container">
-  <div class="row align-items-start"> 
-    
-    <div class="col-md-5 mt-2">
-      <div class="mi-recuadro">
-        <h2>Tipos de Entregas</h2>
-        <p>-Retiro en mostrador</p>
-        <p>-Envio a domicilio</p>
-      </div>
+<div class="container mt-5">
+    <div class="row align-items-center"> 
+        
+        <div class="col-md-5">
+            <div class="presentacion p-4 mb-4 rounded-4 shadow-sm">
+                <h2 class="subtitulo-producto-glace">Tipos de Entregas</h2>
+                <p class="card-text-glace mb-1">- Retiro en mostrador</p>
+                <p class="card-text-glace mb-0">- Envío a domicilio</p>
+            </div>
 
-      <div class="mi-recuadro">
-        <h2>Formas de envio</h2>
-        <p>-Moto mandado</p>
-        <p>-Delivery</p>
-        <p>-Take away</p>
-      </div>
+            <div class="presentacion p-4 mb-4 rounded-4 shadow-sm">
+                <h2 class="subtitulo-producto-glace">Formas de envío</h2>
+                <p class="card-text-glace mb-1">- Moto mandado</p>
+                <p class="card-text-glace mb-1">- Delivery propio</p>
+                <p class="card-text-glace mb-0">- Take away</p>
+            </div>
 
-      <div class="mi-recuadro">
-        <h2>Pagos</h2>
-        <p>-Efectivo</p>
-        <p>-Debito</p>
-        <p>-Transferencia bancaria</p>
-      </div>
-    </div>
-
-    <div class="col-md-7 mt-2">
-      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="imagenes/carrusel-comercializacion/img1.png" class="d-block w-100 rounded" alt="Imagen 1">
-          </div>
-          <div class="carousel-item">
-            <img src="imagenes/carrusel-comercializacion/img2.png" class="d-block w-100 rounded" alt="Imagen 2">
-          </div>
-          <div class="carousel-item">
-            <img src="imagenes/carrusel-comercializacion/img3.png" class="d-block w-100 rounded" alt="Imagen 2">
-          </div>
+            <div class="presentacion p-4 mb-4 rounded-4 shadow-sm">
+                <h2 class="subtitulo-producto-glace">Pagos</h2>
+                <p class="card-text-glace mb-1">- Efectivo</p>
+                <p class="card-text-glace mb-1">- Débito / Crédito</p>
+                <p class="card-text-glace mb-0">- Transferencia bancaria</p>
+            </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </div>
 
-  </div> 
+        <div class="col-md-7">
+            <div id="carouselExampleComercial" class="carousel slide shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{{ asset('imagenes/carrusel-comercializacion/img1.png') }}" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Logística Glace">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{ asset('imagenes/carrusel-comercializacion/img2.png') }}" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Pagos">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{{ asset('imagenes/carrusel-comercializacion/img3.png') }}" class="d-block w-100" style="height: 500px; object-fit: cover;" alt="Delivery">
+                    </div>
+                </div>
+                
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleComercial" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleComercial" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+
+    </div> 
 </div>
-
-
-
-
-  </div>
 
 @endsection
 
