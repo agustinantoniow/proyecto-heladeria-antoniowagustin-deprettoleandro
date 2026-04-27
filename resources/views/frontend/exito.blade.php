@@ -18,6 +18,7 @@
             <p class="lead">
              Gracias, hemos recibido tu mensaje y te responderemos al correo.       
             </p>
+                <a href="/" class="btn btn-primary px-4 shadow-sm">Entendido y Volver</a>
 
         </div>
     </div>
