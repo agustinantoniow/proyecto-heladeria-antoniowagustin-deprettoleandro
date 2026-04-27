@@ -39,7 +39,7 @@
 
             <div class="mt-5 text-center">
                 <a href="/" class="btn btn-primary px-4 shadow-sm">Entendido y Volver</a>
-                <a href="consultas" class="btn btn-secondary px-4 shadow-sm">Tengo dudas</a>
+                <a href="/contacto" class="btn btn-secondary px-4 shadow-sm">Tengo dudas</a>
             </div>
 
         </div>
