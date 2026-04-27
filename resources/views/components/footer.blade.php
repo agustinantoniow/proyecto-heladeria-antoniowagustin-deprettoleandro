@@ -22,8 +22,8 @@
             <div class="col-md-4 mb-4 text-center text-md-end">
                 <h5>Seguinos</h5>
                 <div class="d-flex justify-content-center justify-content-md-end">
-                    <a href="#" class="icon-social-fresco"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="icon-social-fresco"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/heladeriapiacepiu/" class="icon-social-fresco"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/heladeriapiacepiu/" class="icon-social-fresco"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" class="icon-social-fresco"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
             </div>
