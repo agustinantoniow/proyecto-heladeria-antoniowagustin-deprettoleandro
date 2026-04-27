@@ -65,7 +65,7 @@
     <div class="col-md-6">
       <div class="card-body">
         <h5 class="card-title">Pote familiar dulce de leche, granizado y chocolate blanco</h5>
-        <h6>para los amantes de lo chocolatoso esta es la opcion ideal</h6>
+        <h6>Para los amantes de lo chocolatoso esta es la opcion ideal</h6>
       </div>
     </div>
   </div>

@@ -60,16 +60,15 @@
                     <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
                 </div>
 
-                <div class="text-center">
-                    <button type="submit" class="btn btn-dark">Enviar</button>
-                    
-                </div>
+            <div class="text-center">
+                <a href="/exito" class="btn btn-dark">Enviar</a>
+            </div>
             </form>
         </div>
     </div>
 
-    <!-- Bootstrap JS CDN -->
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+   
+    
 </div>
 @endsection
 </body>

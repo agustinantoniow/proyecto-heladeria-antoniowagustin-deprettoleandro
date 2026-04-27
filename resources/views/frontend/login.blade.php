@@ -25,7 +25,7 @@
 
         <div class="text-center mt-4">
             <p class="mb-2" style="font-family: 'Montserrat', sans-serif;">¿No tienes una cuenta?</p> 
-            <a href="{{ url('/register') }}" class="btn btn-outline-info fw-bold px-4" style="font-family: 'Fredoka', sans-serif;">
+            <a href="{{ url('/registrarse') }}" class="btn btn-outline-info fw-bold px-4" style="font-family: 'Fredoka', sans-serif;">
                 Registrate
             </a>
         </div>          

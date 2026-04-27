@@ -45,7 +45,7 @@
                         <span class="item-sabor-home">Durazno</span>
                     </div>
                     <div class="text-center">
-                        <a href="/productos" class="btn-ver-mas">Ver catálogo completo →</a>
+                        <a href="/ver mas..." class="btn-ver-mas">Ver catálogo completo →</a>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                         <span class="item-sabor-home">Bombón Helado</span>
                     </div>
                     <div class="text-center">
-                        <a href="/productos" class="btn-ver-mas">Ver catálogo completo →</a>
+                        <a href="/ver mas...." class="btn-ver-mas">Ver catálogo completo →</a>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                         <span class="item-sabor-home">Dulce de Leche y Granizado</span>
                     </div>
                     <div class="text-center">
-                        <a href="/productos" class="btn-ver-mas">Ver catálogo completo →</a>
+                        <a href="/ver mas.." class="btn-ver-mas">Ver catálogo completo →</a>
                     </div>
                 </div>
             </div>

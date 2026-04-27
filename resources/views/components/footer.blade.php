@@ -15,7 +15,7 @@
                 <ul class="list-unstyled">
                     <li><a href="/" class="link-fresco">Nuestros Sabores</a></li>
                     <li><a href="/terminosYusos" class="link-fresco">Términos y Usos</a></li>
-                    <li><a href="#" class="link-fresco">Ubicación</a></li>
+                    <li><a href="/contacto" class="link-fresco">Ubicación</a></li>
                 </ul>
             </div>
 

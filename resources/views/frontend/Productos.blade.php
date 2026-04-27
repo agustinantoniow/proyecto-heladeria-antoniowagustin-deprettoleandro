@@ -117,62 +117,176 @@
     Postres Artesanales
 </h4>
 
-<div class="row">
-    <div class="col-sm-6 mb-4">
-        <div class="card h-100 shadow-sm" style="max-width: 600px; overflow: hidden;">
-            <div class="row g-0">
-                <div class="col-md-6">
-                    <img src="{{ asset('imagenes/imagenes-productos/img13.png') }}" class="img-fluid rounded-start h-100" style="object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <div class="card-body">
-                        <h5 class="card-title subtitulo-producto-glace">Tarta de Frutas</h5>
-                        <p class="card-text card-text-glace">Delicada combinación de crema artesanal y frutos rojos sobre base crocante.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="row">   
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-productos/img13.png" class="img-fluid rounded-start">
     </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Tarta de Frutas</h5>
+        <h6 class="card-text"> Delicada combinación de crema artesanal y semifrío de frutos rojos sobre una base crocante de galletas.</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
-    <div class="col-sm-6 mb-4">
-        <div class="card h-100 shadow-sm" style="max-width: 600px; overflow: hidden;">
-            <div class="row g-0">
-                <div class="col-md-6">
-                    <img src="{{ asset('imagenes/imagenes-productos/img19.png') }}" class="img-fluid rounded-start h-100" style="object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <div class="card-body">
-                        <h5 class="card-title subtitulo-producto-glace">Bombón Helado</h5>
-                        <p class="card-text card-text-glace">Intensidad de chocolate con un interior suave. El brillo artesanal de Glace.</p>
-                    </div>
-                </div>
-            </div>
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-productos/img14.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Copa Helada</h5>
+        <h6 class="card-text"> Tres bochas de chocolate artesanal, bañadas en fudge de cacao y decoradas con rulos de chocolate belga. </h6>
+       
         </div>
     </div>
+  </div>
+</div>
+</div>
+
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-productos/img15.png" class="img-fluid rounded-start">
     </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Tiramisu</h5>
+        <h6 class="card-text"> Un clásico postre italiano, con capas de bizcocho, crema de mascarpone y cacao en polvo.</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-productos/img19.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Bombon Helado</h5>
+        <h6 class="card-text"> combina la intensidad del mejor chocolate con un interior irresistiblemente suave. Textura, brillo y el sabor artesanal que nos distingue en cada bocado.</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img10.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Palito bombon relleno</h5>
+        <h6>una capa gruesa de chocolate relleno con un dulce de leche artesanal</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+  <div class="col-sm-6 mb-3 mb-sm-0">
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img11.png" class="img-fluid rounded-star">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Malteada de chocolate</h5>
+        <h6 class="card-text"> Es una opción nueva y refrescante, encontrala ya en nuestro menu.</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
 <h4 class="text-center bg-primary text-white titulo-seccion-glace">
     Línea Familiar
 </h4>
 
-<div class="row">
-    <div class="col-sm-6 mb-4">
-        <div class="card h-100 shadow-sm border-info" style="max-width: 600px; overflow: hidden;">
-            <div class="row g-0">
-                <div class="col-md-6">
-                    <img src="{{ asset('imagenes/imagenes-productos/img16.png') }}" class="img-fluid rounded-start h-100" style="object-fit: cover;">
-                </div>
-                <div class="col-md-6">
-                    <div class="card-body">
-                        <h5 class="card-title subtitulo-producto-glace">Súper Dulce de Leche</h5>
-                        <p class="card-text card-text-glace">Nuestro sabor más premiado. ¡La tentación en un solo pote!</p>
-                        <span class="badge bg-warning text-dark">Sabor más Recomendado</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+   <div class = "row" >
+  <div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-productos/img16.png" class="img-fluid rounded-start">
     </div>
-</div> 
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Super Dulce de Leche</h5>
+        <h6 class="card-text"> Nuestro sabor más premiado.¡La tentación en un solo pote!</h6>
+       
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+  <div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-productos/img17.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Frutos del Bosque</h5>
+        <h6 class="card-text"> Nuestra base cremosacon abundante mermelada de frutos del bosque y trozos de frutas silvestres. Frescura y cremosidad en un solo pote.</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+  <div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-productos/img18.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Vainilla y Chocolate</h5>
+        <h6 class="card-text"> Remolinos de crema de vainilla y chocolate fundido, el equilibrio ideal entre suavidad y textura.</h6>
+       
+      </div>
+    </div>
+  </div> 
+</div>
+</div>
+
+<div class="col-sm-6 mb-3 mb-sm-0"> 
+<div class="card mb-3" style="max-width: 600px; overflow: hidden;">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <img src="imagenes/imagenes-tarjetas/img9.png" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+      <div class="card-body">
+        <h5 class="card-title">Pote familiar dulce de leche, granizado y chocolate blanco</h5>
+        <h6>Para los amantes de lo chocolatoso esta es la opcion ideal</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
     
   
 

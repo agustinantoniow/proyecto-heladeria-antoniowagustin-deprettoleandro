@@ -40,3 +40,9 @@ Route::get('/ver mas....', function () {
  Route::get('/ver mas..', function () {
     return view('frontend.pagina-lineafamiliar');
 });
+ Route::get('/registrarse', function () {
+    return view('frontend.registrarse');
+});
+ Route::get('/exito', function () {
+    return view('frontend.exito');
+});
