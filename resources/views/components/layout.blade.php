@@ -14,6 +14,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 </head>
+
  <body>
     @include('components.navbar')
 
@@ -21,7 +22,7 @@
         @yield('content')
     </div>
 
-    @include('components.footer')
+ @include('components.footer')
     
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> 
  </body>

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultasController;
-
+use App\Http\Controllers\LoginController;
 Route::get('/', function () {
     return view('frontend.heladeriaglace');
 });
@@ -46,3 +46,12 @@ Route::get('/ver mas....', function () {
  Route::get('/exito', function () {
     return view('frontend.exito');
 });
+
+
+
+// 1. Ruta para VER el formulario (La que ya tenés)
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+
+// 2. Ruta para PROCESAR el formulario (La que te falta)
+// ¡Esta tiene que ser POST!
+Route::post('/login', [LoginController::class, 'store']);
