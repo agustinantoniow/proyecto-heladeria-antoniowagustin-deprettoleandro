@@ -24,9 +24,11 @@ Route::get('/contacto', function () {
  Route::get('/Comercializacion', function () {
     return view('frontend.Comercializacion');
 });
- Route::get('/Productos', function () {
-    return view('frontend.Productos');
-});
+
+// Route::get('/Productos', function () {
+  //  return view('frontend.Productos');
+//});
+
 Route::get('/login', function () {
     return view('frontend.login');
 });
@@ -55,3 +57,9 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 // 2. Ruta para PROCESAR el formulario (La que te falta)
 // ¡Esta tiene que ser POST!
 Route::post('/login', [LoginController::class, 'store']);
+
+use App\Http\Controllers\ProductoController;
+
+// La ruta de tipo resource que maneja las 7 funciones del CRUD automáticamente
+
+Route::resource('productos', ProductoController::class);

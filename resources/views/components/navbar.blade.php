@@ -21,7 +21,7 @@
             <a class="nav-link nav-link-glace {{ request()->is('Comercializacion') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Comercializacion') }}">Comercialización</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('Productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Productos') }}">Productos</a>
+            <a class="nav-link nav-link-glace {{ request()->is('productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/productos') }}">Productos</a>
         </li>
         <li class="nav-item">
             <a class="nav-link nav-link-glace {{ request()->is('login') ? 'active fw-bold text-info' : '' }}" href="{{ url('/login') }}">
