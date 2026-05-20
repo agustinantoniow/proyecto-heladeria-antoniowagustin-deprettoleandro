@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 Route::get('/', function () {
     return view('frontend.heladeriaglace');
 });
@@ -57,9 +59,16 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 // 2. Ruta para PROCESAR el formulario (La que te falta)
 // ¡Esta tiene que ser POST!
 Route::post('/login', [LoginController::class, 'store']);
+<<<<<<< HEAD
 
 use App\Http\Controllers\ProductoController;
 
 // La ruta de tipo resource que maneja las 7 funciones del CRUD automáticamente
 
 Route::resource('productos', ProductoController::class);
+=======
+Route::get('/login', [AuthController::class, 'formularioLogin']);
+Route::middleware(['auth','role:admin'])->group(function () {
+    Route::get('/admin',[AdminController::class,'dashboard']); 
+});
+>>>>>>> bc2483854b38680d731d03e84f671f683e59de0f
