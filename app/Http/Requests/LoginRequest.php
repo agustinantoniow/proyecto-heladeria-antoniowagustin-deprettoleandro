@@ -25,7 +25,7 @@ class LoginRequest extends FormRequest
         return [
             'usuario.required'  => 'Tenés que poner tu nombre de usuario.',
             'usuario.min'       => 'El usuario debe tener al menos 4 letras.',
-            'usuario.max'       => 'eyy crack El usuario no debe tener más de 20 letras.',
+            'usuario.max'       => 'El usuario no debe tener más de 20 letras.',
             'password.required' => 'La contraseña es obligatoria.',
             'password.min'      => 'La clave debe tener al menos 6 caracteres.',
         ];

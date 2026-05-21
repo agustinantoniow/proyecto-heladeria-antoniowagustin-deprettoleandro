@@ -26,9 +26,11 @@ Route::get('/contacto', function () {
  Route::get('/Comercializacion', function () {
     return view('frontend.Comercializacion');
 });
- Route::get('/Productos', function () {
-    return view('frontend.Productos');
-});
+
+// Route::get('/Productos', function () {
+  //  return view('frontend.Productos');
+//});
+
 Route::get('/login', function () {
     return view('frontend.login');
 });
@@ -57,7 +59,22 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 // 2. Ruta para PROCESAR el formulario (La que te falta)
 // ¡Esta tiene que ser POST!
 Route::post('/login', [LoginController::class, 'store']);
+
+use App\Http\Controllers\ProductoController;
+// Seguramente acá también tengas los 'use' del AuthController y AdminController de los chicos
+
+// ---------------------------------------------------------
+// RUTAS DE JOACO (Cambio actual)
+// ---------------------------------------------------------
+// La ruta de tipo resource que maneja las 7 funciones del CRUD automáticamente
+Route::resource('productos', ProductoController::class);
+
+
+// ---------------------------------------------------------
+// RUTAS DE TUS COMPAÑEROS (Cambio entrante)
+// ---------------------------------------------------------
 Route::get('/login', [AuthController::class, 'formularioLogin']);
-Route::middleware(['auth','role:admin'])->group(function () {
-    Route::get('/admin',[AdminController::class,'dashboard']); 
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'dashboard']);
 });
