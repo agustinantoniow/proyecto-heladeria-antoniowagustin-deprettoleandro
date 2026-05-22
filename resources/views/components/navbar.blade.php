@@ -24,7 +24,7 @@
             <a class="nav-link nav-link-glace {{ request()->is('productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/productos') }}">Productos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('login') ? 'active fw-bold text-info' : '' }}" href="{{ url('/login') }}">
+            <a class="nav-link nav-link-glace {{ request()->is('loginNavbar') ? 'active fw-bold text-info' : '' }}" href="{{ url('/loginNavbar') }}">
                 Ingresar <i class="fa-solid fa-right-to-bracket ms-1"></i>
             </a>
         </li> 

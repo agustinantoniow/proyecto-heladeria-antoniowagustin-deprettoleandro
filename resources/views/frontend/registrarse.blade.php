@@ -1,76 +1,67 @@
 @extends('components.layout')
-@section('title', 'heladeria - Registrarse')
+@section('title', 'Heladería Glace - Registrarse')
 @section('content')
 
-<form class="row g-3 needs-validation" novalidate>
-  <div class="col-md-4">
-    <label for="validationCustom01" class="form-label">Nombre</label>
-    <input type="text" class="form-control" id="validationCustom01" value="Mark" required>
-    <div class="valid-feedback">
-      Looks good!
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-circle-check me-2"></i> 
+        <strong>{{ session('success') }}</strong>
+        <hr>
+        <p class="mb-0">¿Ya querés probar tu cuenta? <a href="{{ url('/loginNavbar') }}" class="alert-link fw-bold">Clic aquí para ingresar</a></p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-  </div>
+@endif
+
+<form action="{{ route('registro.store') }}" method="POST" class="row g-3 needs-validation mt-4" novalidate>
+  @csrf
+
   <div class="col-md-4">
-    <label for="validationCustom02" class="form-label">Apellido</label>
-    <input type="text" class="form-control" id="validationCustom02" value="Otto" required>
-    <div class="valid-feedback">
-      Looks good!
-    </div>
+    <label for="nombre" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="nombre" name="nombre" required>
   </div>
+
   <div class="col-md-4">
-    <label for="validationCustomUsername" class="form-label">Nombre de Correo Electronico</label>
+    <label for="apellido" class="form-label">Apellido</label>
+    <input type="text" class="form-control" id="apellido" name="apellido" required>
+  </div>
+
+  <div class="col-md-4">
+    <label for="usuario" class="form-label">Nombre de Usuario</label>
     <div class="input-group has-validation">
-      <span class="input-group-text" id="inputGroupPrepend"></span>
-      <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
-      <div class="invalid-feedback">
-        Please choose a username.
-      </div>
+      <span class="input-group-text" id="inputGroupPrepend"><i class="fa-solid fa-user"></i></span>
+      <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ej: joaco123" required>
     </div>
   </div>
+
   <div class="col-md-4">
-    <label for="validationCustomUsername" class="form-label">Contraseña</label>
+    <label for="email" class="form-label">Correo Electrónico</label>
     <div class="input-group has-validation">
-      <span class="input-group-text" id="inputGroupPrepend"></span>
-      <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
-      <div class="invalid-feedback">
-        Please choose a password.
-      </div>
+      <span class="input-group-text" id="inputGroupPrepend">@</span>
+      <input type="email" class="form-control" id="email" name="email" required>
     </div>
   </div>
+
   <div class="col-md-4">
-    <label for="validationCustom03" class="form-label">Ciudad</label>
-    <input type="text" class="form-control" id="validationCustom03" required>
-    <div class="invalid-feedback">
-      Please provide a valid city.
+    <label for="password" class="form-label">Contraseña</label>
+    <div class="input-group has-validation">
+      <span class="input-group-text" id="inputGroupPrepend">***</span>
+      <input type="password" class="form-control" id="password" name="password" required>
     </div>
   </div>
- 
-  <div class="col-md-4">
-    <label for="validationCustom05" class="form-label">Codigo Postal</label>
-    <input type="text" class="form-control" id="validationCustom05" required>
-    <div class="invalid-feedback">
-      Please provide a valid zip.
-    </div>
-  </div>
-  <div class="col-12">
+
+  <div class="col-12 mt-3">
     <div class="form-check">
       <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
       <label class="form-check-label" for="invalidCheck">
-        Acepta los terminos y condiciones
+        Acepto los términos y condiciones
       </label>
-      <div class="invalid-feedback">
-        You must agree before submitting.
-      </div>
     </div>
   </div>
-  <div class="col-12">
-    <a class="btn btn-primary" href="/exito" type="submit">Enviar Formulario</a>
+
+  <div class="col-12 mt-4">
+    <button type="submit" class="btn btn-primary fw-bold">Registrarme en Glace</button>
   </div>
    
 </form>
-
-
-
-
 
 @endsection

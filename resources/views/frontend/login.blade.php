@@ -1,5 +1,5 @@
 @extends('components.layout')
-@section('title', 'heladeria - login')
+@section('title', 'heladeria - logi')
 @section('content')
 <body>
   <div class="container row mx-auto mt-5 align-items-center justify-content-between">
@@ -7,7 +7,7 @@
    <div class="presentacion p-5 col-md-4 rounded-4 shadow-sm">
     <h3 class="subtitulo-producto-glace mb-4">Ingresá a tu cuenta</h3>
     
-    <form action="{{ url('/login') }}" method="POST">
+    <form action="{{ url('verificarUsuario') }}" method="POST">
         @csrf <div class="input-group mb-1">
             <span class="input-group-text bg-white border-0"><i class="fa-solid fa-user text-info"></i></span>
             <input type="text" name="usuario" value="{{ old('usuario') }}" 
@@ -27,8 +27,7 @@
         @error('password')
             <small class="text-danger ms-2 card-text-glace">{{ $message }}</small>
         @enderror
-
-        <div class="d-grid gap-2 mt-4">
+           <div class="d-grid gap-2 mt-4">
             <button type="submit" class="btn btn-info text-white fw-bold px-4 py-2" style="font-family: 'Fredoka', sans-serif;">
                 Iniciar Sesión 
             </button>

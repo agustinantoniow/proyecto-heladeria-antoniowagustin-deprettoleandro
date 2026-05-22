@@ -50,7 +50,7 @@
 
         @if($rol_usuario == 'admin')
             <div class="text-center mb-5 mt-2">
-                <a href="#" class="btn btn-success px-4 py-2 shadow-sm bg-info">+ Añadir nuevo sabor a Paletas de Agua</a>
+                <a href="{{ route('productos.create') }}" class="btn btn-success px-4 py-2 shadow-sm">+ Añadir nuevo sabor...</a>
             </div>
         @endif
 
@@ -94,7 +94,7 @@
 
         @if($rol_usuario == 'admin')
             <div class="text-center mb-5 mt-2">
-                <a href="#" class="btn btn-success px-4 py-2 shadow-sm">+ Añadir nuevo sabor a Postres Potentes</a>
+                <a href="{{ route('productos.create') }}" class="btn btn-success px-4 py-2 shadow-sm">+ Añadir nuevo sabor a Postres Potentes</a>
             </div>
         @endif
 

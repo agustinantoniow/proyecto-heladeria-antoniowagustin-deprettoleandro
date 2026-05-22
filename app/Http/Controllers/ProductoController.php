@@ -27,7 +27,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+      return view('frontend.create'); 
     }
 
     /**
@@ -35,7 +35,17 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'categoria' => 'required|string|max:50',
+            'descripcion' => 'nullable|string',
+            'precio' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+        ]);
+
+        Producto::create($request->only(['nombre', 'categoria', 'descripcion', 'precio', 'stock']));
+
+        return redirect()->route('productos.index')->with('exito', 'Producto creado.');
     }
 
     /**

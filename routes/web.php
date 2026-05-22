@@ -1,10 +1,14 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultasController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\UsuarioController;
+
+
 Route::get('/', function () {
     return view('frontend.heladeriaglace');
 });
@@ -27,11 +31,7 @@ Route::get('/contacto', function () {
     return view('frontend.Comercializacion');
 });
 
-// Route::get('/Productos', function () {
-  //  return view('frontend.Productos');
-//});
-
-Route::get('/login', function () {
+Route::get('/loginNavbar', function () {
     return view('frontend.login');
 });
 Route::get('/ver mas...', function () {
@@ -53,28 +53,17 @@ Route::get('/ver mas....', function () {
 
 
 
-// 1. Ruta para VER el formulario (La que ya tenés)
-Route::get('/login', [LoginController::class, 'index'])->name('login');
+// Esta es para mostrar el formulario
+Route::get('/registro', [UsuarioController::class, 'create'])->name('registro');
 
-// 2. Ruta para PROCESAR el formulario (La que te falta)
-// ¡Esta tiene que ser POST!
-Route::post('/login', [LoginController::class, 'store']);
+// ¡ESTA ES LA QUE CAUSA EL ERROR! Asegurate de que tenga el ->name('registro.store')
+Route::post('/registro', [UsuarioController::class, 'store'])->name('registro.store');
 
-use App\Http\Controllers\ProductoController;
-// Seguramente acá también tengas los 'use' del AuthController y AdminController de los chicos
-
-// ---------------------------------------------------------
-// RUTAS DE JOACO (Cambio actual)
-// ---------------------------------------------------------
-// La ruta de tipo resource que maneja las 7 funciones del CRUD automáticamente
-Route::resource('productos', ProductoController::class);
-
-
-// ---------------------------------------------------------
-// RUTAS DE TUS COMPAÑEROS (Cambio entrante)
-// ---------------------------------------------------------
-Route::get('/login', [AuthController::class, 'formularioLogin']);
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'dashboard']);
-});
+// 1. Mostrar la vista del formulario (GET)
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
+// 2. Procesar el intento de inicio de sesión (POST)
+Route::post('/verificarUsuario', [LoginController::class, 'login'])->name('login.post');
+// 3. Cerrar sesión (POST)
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// 4. Procesar el formulario de creación de cuenta (POST)
+Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name('formregister');
