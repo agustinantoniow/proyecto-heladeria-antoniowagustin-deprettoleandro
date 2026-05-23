@@ -16,39 +16,58 @@
   @csrf
 
   <div class="col-md-4">
-    <label for="nombre" class="form-label">Nombre</label>
-    <input type="text" class="form-control" id="nombre" name="nombre" required>
-  </div>
+    <label for="Nombre_registro" class="form-label">Nombre</label>
+    <input type="text" class="form-control @error('Nombre_registro') is-invalid @enderror"
+           id="Nombre_registro" name="Nombre_registro" value="{{ old('Nombre_registro') }}">
+    @error('Nombre_registro')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
+</div>
 
-  <div class="col-md-4">
-    <label for="apellido" class="form-label">Apellido</label>
-    <input type="text" class="form-control" id="apellido" name="apellido" required>
-  </div>
+<div class="col-md-4">
+    <label for="Apellido_registro" class="form-label">Apellido</label>
+    <input type="text" class="form-control @error('Apellido_registro') is-invalid @enderror"
+           id="Apellido_registro" name="Apellido_registro" value="{{ old('Apellido_registro') }}">
+    @error('Apellido_registro')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
+</div>
 
-  <div class="col-md-4">
+<div class="col-md-4">
     <label for="usuario" class="form-label">Nombre de Usuario</label>
     <div class="input-group has-validation">
-      <span class="input-group-text" id="inputGroupPrepend"><i class="fa-solid fa-user"></i></span>
-      <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ej: joaco123" required>
+        <span class="input-group-text" id="inputGroupPrepend"><i class="fa-solid fa-user"></i></span>
+        <input type="text" class="form-control @error('usuario') is-invalid @enderror"
+               id="usuario" name="usuario" placeholder="Ej: joaco123" value="{{ old('usuario') }}">
+        @error('usuario')
+            <span class="invalid-feedback">{{ $message }}</span>
+        @enderror
     </div>
-  </div>
+</div>
 
-  <div class="col-md-4">
-    <label for="email" class="form-label">Correo Electrónico</label>
+<div class="col-md-4">
+    <label for="email_registro" class="form-label">Correo Electrónico</label>
     <div class="input-group has-validation">
-      <span class="input-group-text" id="inputGroupPrepend">@</span>
-      <input type="email" class="form-control" id="email" name="email" required>
+        <span class="input-group-text" id="inputGroupPrepend">@</span>
+        <input type="email" class="form-control @error('email_registro') is-invalid @enderror"
+               id="email_registro" name="email_registro" value="{{ old('email_registro') }}">
+        @error('email_registro')
+            <span class="invalid-feedback">{{ $message }}</span>
+        @enderror
     </div>
-  </div>
+</div>
 
-  <div class="col-md-4">
-    <label for="password" class="form-label">Contraseña</label>
+<div class="col-md-4">
+    <label for="password_registro" class="form-label">Contraseña</label>
     <div class="input-group has-validation">
-      <span class="input-group-text" id="inputGroupPrepend">***</span>
-      <input type="password" class="form-control" id="password" name="password" required>
+        <span class="input-group-text" id="inputGroupPrepend">***</span>
+        <input type="password" class="form-control @error('password_registro') is-invalid @enderror"
+               id="password_registro" name="password_registro">
+        @error('password_registro')
+            <span class="invalid-feedback">{{ $message }}</span>
+        @enderror
     </div>
-  </div>
-
+</div>
   <div class="col-12 mt-3">
     <div class="form-check">
       <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>

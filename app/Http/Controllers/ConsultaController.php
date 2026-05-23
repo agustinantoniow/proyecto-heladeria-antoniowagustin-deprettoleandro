@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ConsultaController extends Controller
@@ -13,9 +13,9 @@ class ConsultaController extends Controller
     {
         // 1. Validamos los datos (muy importante para la seguridad)
         $request->validate([
-            'nombre'  => 'required|string|max:255',
-            'email'   => 'required|email',
-            'asunto'  => 'required',
+            'nombreConsulta'  => 'required|string|max:255',
+            'emailConsulta'   => 'required|email',
+            'Numero_Telefono'  => 'required',
             'mensaje' => 'required|min:5',
         ]);
 

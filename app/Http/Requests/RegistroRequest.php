@@ -15,10 +15,10 @@ class RegistroRequest extends FormRequest
     public function rules()
     {
         return [
-            'Nombre'  => 'required|min:4|max:20',
-            'Apellido' => 'required|min:4|max:20',
-            'email' => 'required|email|min:6',
-            'password' => 'required|min:6|confirmed', // busca campo password_confirmation
+            'Nombre_registro'  => 'required|min:4|max:20',
+            'Apellido_registro' => 'required|min:4|max:20',
+            'email_registro' => 'required|email|min:6',
+            'password_registro' => 'required|min:6|confirmed', // busca campo password_confirmation
             'ciudad' => 'required|min:2|max:50',
             'codigo_postal' => 'required|digits:4',
         ];
@@ -27,18 +27,18 @@ class RegistroRequest extends FormRequest
     public function messages()
     {
         return [
-            'Nombre.required'  => 'Tenés que poner tu nombre.',
-            'Nombre.min'       => 'El nombre debe tener al menos 4 letras.',
-            'Nombre.max'       => 'El nombre no debe tener más de 20 letras.',
-            'Apellido.required' => 'Tenés que poner tu apellido.',
-            'Apellido.min' => 'El apellido debe tener al menos 4 letras.',
-            'Apellido.max' => 'El apellido no debe tener más de 20 letras.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email'    => 'El correo electrónico no es válido.',
-            'email.min'      => 'El correo electrónico debe tener al menos 6 caracteres.',
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'Nombre_registro.required'  => 'Tenés que poner tu nombre.',
+            'Nombre_registro.min'       => 'El nombre debe tener al menos 4 letras.',
+            'Nombre_registro.max'       => 'El nombre no debe tener más de 20 letras.',
+            'Apellido_registro.required' => 'Tenés que poner tu apellido.',
+            'Apellido_registro.min' => 'El apellido debe tener al menos 4 letras.',
+            'Apellido_registro.max' => 'El apellido no debe tener más de 20 letras.',
+            'email_registro.required' => 'El correo electrónico es obligatorio.',
+            'email_registro.email'    => 'El correo electrónico no es válido.',
+            'email_registro.min'      => 'El correo electrónico debe tener al menos 6 caracteres.',
+            'password_registro.required' => 'La contraseña es obligatoria.',
+            'password_registro.min' => 'La contraseña debe tener al menos 6 caracteres.',
+            'password_registro.confirmed' => 'Las contraseñas no coinciden.',
             'ciudad.required' => 'La ciudad es obligatoria.',
             'ciudad.min' => 'La ciudad debe tener al menos 2 caracteres.',
             'ciudad.max' => 'La ciudad no debe tener más de 50 caracteres.',

@@ -35,19 +35,31 @@
             <form action="{{ url('/Consultas') }}" method="POST">
                 @csrf
 
+               <div class="mb-3">
+    <label for="nombreConsulta" class="form-label">Nombre</label>
+    <input type="text" class="form-control @error('nombreConsulta') is-invalid @enderror" 
+           id="nombreConsulta" name="nombreConsulta" value="{{ old('nombreConsulta') }}">
+    @error('nombreConsulta')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
+</div>
+
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    <label for="emailConsulta" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control @error('emailConsulta') is-invalid @enderror" 
+                           id="emailConsulta" name="emailConsulta" value="{{ old('emailConsulta') }}">
+                    @error('emailConsulta')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="num" class="form-label">Número de teléfono</label>
-                    <input type="text" class="form-control" id="num" name="num" required>
+                    <label for="Numero_Telefono" class="form-label">Número de teléfono</label>
+                    <input type="text" class="form-control @error('Numero_Telefono') is-invalid @enderror" 
+                           id="Numero_Telefono" name="Numero_Telefono" value="{{ old('Numero_Telefono') }}">
+                    @error('Numero_Telefono')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
         <select class="form-select form-select-lg mb-3" aria-label="Large select example">
             <option selected>Seleccione una opcion</option>
@@ -57,11 +69,14 @@
         </select>
                 <div class="mb-3">
                     <label for="mensaje" class="form-label">Mensaje</label>
-                    <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+                    <textarea class="form-control @error('mensaje') is-invalid @enderror" id="mensaje" name="mensaje" rows="4" required>{{ old('mensaje') }}</textarea>
+                    @error('mensaje')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
             <div class="text-center">
-                <a href="/exito" class="btn btn-dark">Enviar</a>
+              <button type="submit" #href=\exito class="btn btn-dark">Enviar</button>
             </div>
             </form>
         </div>

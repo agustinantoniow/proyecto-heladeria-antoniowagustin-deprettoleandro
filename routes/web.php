@@ -2,7 +2,7 @@
 
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ConsultasController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductoController;
@@ -67,3 +67,6 @@ Route::post('/verificarUsuario', [LoginController::class, 'login'])->name('login
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // 4. Procesar el formulario de creación de cuenta (POST)
 Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name('formregister');
+
+Route::get('/Consultas', [ConsultaController::class, 'index']);   // muestra el form
+Route::post('/Consultas', [ConsultaController::class, 'store']);  // procesa el form   
