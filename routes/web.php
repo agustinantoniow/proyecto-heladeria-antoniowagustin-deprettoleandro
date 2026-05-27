@@ -21,9 +21,16 @@ Route::get('/terminosYusos', function () {
  Route::get('/Consultas', function () {
     return view('frontend.Consultas');
 });
+
+ Route::get('/Productos', function () {
+    return view('frontend.Productos');
+});
+
 Route::get('/Nosotros', function () {
     return view('frontend.Nosotros');
 });
+
+
 Route::get('/contacto', function () {
     return view('frontend.contacto');
 });
@@ -31,7 +38,7 @@ Route::get('/contacto', function () {
     return view('frontend.Comercializacion');
 });
 
-Route::get('/loginNavbar', function () {
+Route::get('/Ingreso', function () {
     return view('frontend.login');
 });
 Route::get('/ver mas...', function () {
@@ -62,8 +69,10 @@ Route::post('/registro', [UsuarioController::class, 'store'])->name('registro.st
 // 1. Mostrar la vista del formulario (GET)
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 // 2. Procesar el intento de inicio de sesión (POST)
-Route::post('/verificarUsuario', [LoginController::class, 'login'])->name('login.post');
+
+Route::post('/verificarUsuario', [LoginController::class, 'login'])->name('login.autenticar');
 // 3. Cerrar sesión (POST)
+
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // 4. Procesar el formulario de creación de cuenta (POST)
 Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name('formregister');

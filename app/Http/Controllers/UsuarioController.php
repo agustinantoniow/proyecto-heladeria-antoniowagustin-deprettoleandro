@@ -16,33 +16,28 @@ class UsuarioController extends Controller
     }
 
     // 2. ESTA ES LA FUNCIÓN QUE FALTABA: Recibe los datos y los guarda
-    public function store(Request $request)
-    {
-        // Validamos que el formulario venga completo
-        $request->validate([
-            'nombre'   => 'required|string|max:100',
-            'apellido' => 'required|string|max:100',
-            'email'    => 'required|email|unique:usuarios,email',
-            'usuario'   => 'nullable|string|max:50|unique:usuarios,usuario', // Validamos el campo 'usuario' como opcional y único
-            'password' => 'required|min:6',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'Nombre'   => 'required',
+        'Apellido' => 'required',
+        'email'    => 'required',
+        'password' => 'required',
+    ]);
 
-        // Creamos el nuevo usuario
-        $usuario = new Usuario();
-        $usuario->nombre   = $request->nombre;
-        $usuario->apellido = $request->apellido;
-        $usuario->email    = $request->email;
-        $usuario->usuario  = $request->usuario; // Guardamos el campo 'usuario' si fue proporcionado
-        $usuario->password = Hash::make($request->password); // La contraseña se guarda encriptada
-        
-        $usuario->perfil_id = 2; // Le asignamos el ID 2 por defecto (Cliente)
-        $usuario->estado    = true;
-        
-        $usuario->save(); // Se guarda en MariaDB
+    // Usamos el método estático create que es mucho más seguro para verificar errores
+    Usuario::create([
+        'nombre'    => $request->Nombre,
+        'apellido'  => $request->Apellido,
+        'email'     => $request->email,
+        'usuario'   => $request->usuario,
+        'password'  => $request->password, // El modelo lo encripta solo
+        'perfil_id' => 2,
+        'estado'    => true,
+    ]);
 
-        // Redirigimos al login con un mensaje de éxito
-       return back()->with('success', '¡Registro exitoso! Ya podés iniciar sesión.');
-    }
+    return back()->with('success', '¡Registro exitoso!');
+}
     // ==========================================
     // FUNCIONES DEL LOGIN
     // ==========================================
