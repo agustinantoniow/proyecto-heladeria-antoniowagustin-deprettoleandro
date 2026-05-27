@@ -15,16 +15,16 @@
             <a class="nav-link nav-link-glace {{ request()->is('/') ? 'active fw-bold text-info' : '' }}" href="{{ url('') }}">Ver consultas</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('QuienesSomos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/QuienesSomos') }}">Listar Productos</a>
+            <a class="nav-link nav-link-glace {{ request()->is('ListarProductos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ListarProductos') }}">Listar Productos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('QuienesSomos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/QuienesSomos') }}">Agregar un producto</a>
+            <a class="nav-link nav-link-glace {{ request()->is('AgregarProducto') ? 'active fw-bold text-info' : '' }}" href="{{ url('/AgregarProducto') }}">Agregar un producto</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('Comercializacion') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Comercializacion') }}">Eliminar un producto</a>
+            <a class="nav-link nav-link-glace {{ request()->is('EliminarProducto') ? 'active fw-bold text-info' : '' }}" href="{{ url('/EliminarProducto') }}">Eliminar un producto</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/productos') }}">Ver detalle de producto</a>
+            <a class="nav-link nav-link-glace {{ request()->is('DetalleProducto1') ? 'active fw-bold text-info' : '' }}" href="{{ url('/DetalleProducto') }}">Ver detalle de producto</a>
         </li>
         <li class="nav-item">
             <a class="nav-link nav-link-glace {{ request()->is('login') ? 'active fw-bold text-info' : '' }}" href="{{ url('/login') }}">

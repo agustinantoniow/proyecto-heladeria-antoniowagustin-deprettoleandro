@@ -50,6 +50,9 @@ Route::get('/ver mas....', function () {
  Route::get('/exito', function () {
     return view('frontend.exito');
 });
+Route::get('/MiCarrito', function () {
+    return view('frontend.Carrito');
+});
 
 
 

@@ -28,6 +28,12 @@
                 Ingresar <i class="fa-solid fa-right-to-bracket ms-1"></i>
             </a>
         </li> 
+          <li class="nav-item">
+              <a class="nav-link nav-link-glace {{ request()->is('MiCarrito') ? 'active fw-bold text-info' : '' }}" href="{{ url('/MiCarrito') }}">
+                  Mi Carrito <i class="fa-solid fa-cart-shopping ms-1"></i>
+              </a>
+        
+        <nav class="navbar">
       </ul>
       
       <ul class="navbar-nav ms-lg-auto"> 
