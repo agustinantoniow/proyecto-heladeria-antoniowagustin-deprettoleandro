@@ -35,7 +35,9 @@
                                         </div>
                                     @else
                                         <div class="mt-3">
-                                            <a href="#" class="btn btn-sm btn-primary w-100">🛒 Agregar al carrito</a>
+                                            <button class="btn btn-primary" onclick="agregarAlCarrito('Kilo de Helado', 8500, 'Dulce de Leche, Tramontana, Frutilla')">
+                                                    Añadir al Carrito 🍦
+                                            </button>
                                         </div>
                                     @endif
                                 </div>

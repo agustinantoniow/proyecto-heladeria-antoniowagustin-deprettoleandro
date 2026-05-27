@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Rol extends Model
 {
     use HasFactory, SoftDeletes;  
- protected $table = 'roles'; // sobreescribe la pluralización en inglés ('rols')
+ protected $table = 'rols'; // sobreescribe la pluralización en inglés ('rols')
  protected $fillable = [ // columnas permitidas para asignación masiva
  'nombre', 'descripcion',
  ];

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario; // Importamos el modelo para hablar con la base de datos
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // Importamos la herramienta para encriptar contraseñas
+use Illuminate\Support\Facades\Route; //  ESTO ES LO CORRECTO
 
 class UsuarioController extends Controller
 {
@@ -30,13 +31,14 @@ class UsuarioController extends Controller
         'nombre'    => $request->Nombre,
         'apellido'  => $request->Apellido,
         'email'     => $request->email,
-        'usuario'   => $request->usuario,
-        'password'  => $request->password, // El modelo lo encripta solo
-        'perfil_id' => 2,
-        'estado'    => true,
+        'usuario'   => $request->usuario ?? explode('@', $request->email)[0],
+        'password'  => Hash::make($request->password),
+        'perfil_id' => 2, // Tu clave foránea en la tabla usuarios es perfil_id
+        'estado'    => true
     ]);
+    Auth::login(Usuario::where('email', $request->email)->first()); // Inicia sesión automáticamente después de registrarse
 
-    return back()->with('success', '¡Registro exitoso!');
+ return redirect('/');
 }
     // ==========================================
     // FUNCIONES DEL LOGIN
@@ -54,7 +56,8 @@ class UsuarioController extends Controller
     {
         // Validamos que hayan escrito algo
         $credenciales = $request->validate([
-            'email' => 'required|email',
+        'nombre'    => 'required'|'string'| 'max 25',   
+        'email' => 'required|email', 
             'password' => 'required'
         ]);
 
@@ -64,7 +67,7 @@ class UsuarioController extends Controller
             $request->session()->regenerate();
 
             // Lo mandamos a la vista principal de la heladería (o a los productos)
-            return redirect()->intended('/productos')->with('success', '¡Bienvenido a Glace!'); 
+            return redirect('/')->intended()->with('success', '¡Bienvenido a Glace!'); 
         }
 
         // Si la contraseña o el email están mal, lo devolvemos al login con un error

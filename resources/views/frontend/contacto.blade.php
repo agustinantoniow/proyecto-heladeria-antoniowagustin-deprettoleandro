@@ -53,14 +53,14 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label for="Numero_Telefono" class="form-label">Número de teléfono</label>
-                    <input type="text" class="form-control @error('Numero_Telefono') is-invalid @enderror" 
-                           id="Numero_Telefono" name="Numero_Telefono" value="{{ old('Numero_Telefono') }}">
-                    @error('Numero_Telefono')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+               <div class="mb-3">
+    <label for="Numero_Telefono" class="form-label">Número de teléfono</label>
+    <input type="text" class="form-control @error('numero_telefono') is-invalid @enderror" 
+           id="Numero_Telefono" name="numero_telefono" value="{{ old('numero_telefono') }}">
+    @error('numero_telefono')
+        <span class="text-danger">{{ $message }}</span>
+    @enderror
+</div>
         <select class="form-select form-select-lg mb-3" aria-label="Large select example">
             <option selected>Seleccione una opcion</option>
             <option value="1">Problemas al realizar un pedido</option>

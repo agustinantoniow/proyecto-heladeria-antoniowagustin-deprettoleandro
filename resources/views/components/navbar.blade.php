@@ -23,11 +23,33 @@
         <li class="nav-item">
             <a class="nav-link nav-link-glace {{ request()->is('Productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Productos') }}">Productos</a>
         </li>
+       
+        <ul class="navbar-nav ms-auto">
+    @auth
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Bienvenido, {{ auth()->user()->nombre }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+      
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form action="{{ url('/logout') }}" method="POST" class="d-inline">
+                      @csrf <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                    </form>
+                </li>
+            </ul>
+        </li>
+    @endauth
+
+    @guest
         <li class="nav-item">
             <a class="nav-link nav-link-glace {{ request()->is('Ingreso') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Ingreso') }}">
                 Ingresar <i class="fa-solid fa-right-to-bracket ms-1"></i>
             </a>
         </li> 
+    @endguest
+</ul>
           <li class="nav-item">
               <a class="nav-link nav-link-glace {{ request()->is('MiCarrito') ? 'active fw-bold text-info' : '' }}" href="{{ url('/MiCarrito') }}">
                   Mi Carrito <i class="fa-solid fa-cart-shopping ms-1"></i>
