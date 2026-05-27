@@ -7,7 +7,7 @@
         <i class="fa-solid fa-circle-check me-2"></i> 
         <strong>{{ session('success') }}</strong>
         <hr>
-        <p class="mb-0">¿Ya querés probar tu cuenta? <a href="{{ url('/loginNavbar') }}" class="alert-link fw-bold">Clic aquí para ingresar</a></p>
+        <p class="mb-0">¿Ya querés probar tu cuenta? <a href="{{ url('/Ingreso') }}" class="alert-link fw-bold">Clic aquí para ingresar</a></p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
@@ -16,21 +16,35 @@
   @csrf
 
   <div class="col-md-4">
-    <label for="Nombre_registro" class="form-label">Nombre</label>
-    <input type="text" class="form-control @error('Nombre_registro') is-invalid @enderror"
-           id="Nombre_registro" name="Nombre_registro" value="{{ old('Nombre_registro') }}">
-    @error('Nombre_registro')
+    <label for="Nombre" class="form-label">Nombre</label>
+    <input type="text" class="form-control @error('Nombre') is-invalid @enderror"
+           id="Nombre" name="Nombre" value="{{ old('Nombre') }}">
+    @error('Nombre')
         <span class="text-danger">{{ $message }}</span>
     @enderror
 </div>
 
 <div class="col-md-4">
-    <label for="Apellido_registro" class="form-label">Apellido</label>
-    <input type="text" class="form-control @error('Apellido_registro') is-invalid @enderror"
-           id="Apellido_registro" name="Apellido_registro" value="{{ old('Apellido_registro') }}">
-    @error('Apellido_registro')
+    <label for="Apellido" class="form-label">Apellido</label>
+    <input type="text" class="form-control @error('Apellido') is-invalid @enderror"
+           id="Apellido" name="Apellido" value="{{ old('Apellido') }}">
+    @error('Apellido')
         <span class="text-danger">{{ $message }}</span>
     @enderror
+</div>
+
+
+
+<div class="col-md-4">
+    <label for="emaiL" class="form-label">Correo Electrónico</label>
+    <div class="input-group has-validation">
+        <span class="input-group-text" id="inputGroupPrepend">@</span>
+        <input type="email" class="form-control @error('email') is-invalid @enderror"
+               id="email" name="email" value="{{ old('email') }}">
+        @error('email')
+            <span class="invalid-feedback">{{ $message }}</span>
+        @enderror
+    </div>
 </div>
 
 <div class="col-md-4">
@@ -46,24 +60,12 @@
 </div>
 
 <div class="col-md-4">
-    <label for="email_registro" class="form-label">Correo Electrónico</label>
-    <div class="input-group has-validation">
-        <span class="input-group-text" id="inputGroupPrepend">@</span>
-        <input type="email" class="form-control @error('email_registro') is-invalid @enderror"
-               id="email_registro" name="email_registro" value="{{ old('email_registro') }}">
-        @error('email_registro')
-            <span class="invalid-feedback">{{ $message }}</span>
-        @enderror
-    </div>
-</div>
-
-<div class="col-md-4">
-    <label for="password_registro" class="form-label">Contraseña</label>
+    <label for="password" class="form-label">Contraseña</label>
     <div class="input-group has-validation">
         <span class="input-group-text" id="inputGroupPrepend">***</span>
-        <input type="password" class="form-control @error('password_registro') is-invalid @enderror"
-               id="password_registro" name="password_registro">
-        @error('password_registro')
+        <input type="password" class="form-control @error('password') is-invalid @enderror"
+               id="password" name="password">
+        @error('password')
             <span class="invalid-feedback">{{ $message }}</span>
         @enderror
     </div>

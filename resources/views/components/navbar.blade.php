@@ -21,10 +21,10 @@
             <a class="nav-link nav-link-glace {{ request()->is('Comercializacion') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Comercializacion') }}">Comercialización</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/productos') }}">Productos</a>
+            <a class="nav-link nav-link-glace {{ request()->is('Productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Productos') }}">Productos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('loginNavbar') ? 'active fw-bold text-info' : '' }}" href="{{ url('/loginNavbar') }}">
+            <a class="nav-link nav-link-glace {{ request()->is('Ingreso') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Ingreso') }}">
                 Ingresar <i class="fa-solid fa-right-to-bracket ms-1"></i>
             </a>
         </li> 

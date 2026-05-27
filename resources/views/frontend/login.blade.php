@@ -7,7 +7,7 @@
    <div class="presentacion p-5 col-md-4 rounded-4 shadow-sm">
     <h3 class="subtitulo-producto-glace mb-4">Ingresá a tu cuenta</h3>
     
-    <form action="{{ url('verificarUsuario') }}" method="POST">
+    <form action="{{ url('/verificarUsuario') }}" method="POST">
         @csrf <div class="input-group mb-1">
             <span class="input-group-text bg-white border-0"><i class="fa-solid fa-user text-info"></i></span>
             <input type="text" name="usuario" value="{{ old('usuario') }}" 

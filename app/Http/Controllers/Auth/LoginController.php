@@ -29,7 +29,7 @@ class LoginController extends Controller
 
         // 2. Hacemos el "puente": tomamos 'usuario' del request y lo buscamos en la columna 'nombre'
         $credenciales = [
-            'nombre'   => $request->usuario,
+            'usuario'   => $request->usuario,
             'password' => $request->password
         ];
 
