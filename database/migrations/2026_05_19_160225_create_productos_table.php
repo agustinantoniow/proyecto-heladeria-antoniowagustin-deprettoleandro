@@ -11,10 +11,9 @@ return new class extends Migration
     Schema::create('productos', function (Blueprint $table) {
         $table->id();
         $table->string('nombre');          // Ej: "Dulce de Leche Granizado" o "Cucurucho"
-        $table->string('categoria');       // Ej: "Helados", "Postres", "Bebidas"
-        $table->text('descripcion')->nullable(); // Por si querés aclarar los ingredientes
+        $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');        $table->text('descripcion')->nullable(); // Por si querés aclarar los ingredientes
         $table->decimal('precio', 8, 2);   // Para el precio por kilo o por unidad
-        $table->integer('stock')->default(0); // Cantidad disponible (en kg o unidades)
+        $table->integer('stock'); // Cantidad disponible (en kg o unidades)
         $table->boolean('activo')->default(true); // Para ocultar un producto si se queda sin stock
         $table->timestamps();              // Crea las columnas created_at y updated_at automáticamente
     });

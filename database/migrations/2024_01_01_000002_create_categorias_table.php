@@ -12,9 +12,11 @@ return new class extends Migration
        
         // Por esto:
         Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre_rol');
-            $table->timestamps();
+        $table->id(); // Este es el ID al que apuntaremos
+        $table->string('nombre');
+        $table->string('descripcion')->nullable();
+        $table->string('slug');
+        $table->timestamps();
         });
 
         Schema::create('categorias', function (Blueprint $table) {

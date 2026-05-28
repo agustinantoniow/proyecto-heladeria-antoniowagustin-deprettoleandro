@@ -5,7 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use Database\Seeders\RolesSeeder;
+use Database\Seeders\UsuarioSeeder;
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -16,12 +17,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password')
+        $this->call([
+            RolesSeeder::class 
         ]);
-        $this->call([ RolesSeeder::class ]);
+     User::factory()->create([
+    'nombre' => 'Test',
+    'apellido' => 'User',
+    'usuario' => 'testuser',
+    'email' => 'test@example.com',
+    'password' => bcrypt('password'),
+    'perfil_id' => 2, // 👈 Cambiá 'role_id' por 'perfil_id' que es tu columna física real en usuarios
+    'estado' => true
+]);
     }
 }

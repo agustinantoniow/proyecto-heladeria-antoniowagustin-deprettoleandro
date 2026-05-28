@@ -5,7 +5,7 @@ use App\Models\Rol;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+// 
 class RolesSeeder extends Seeder
 {
     /**
@@ -14,12 +14,12 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
         $roles = [
- ['nombre' => 'admin', 'descripcion' => 'Administrador del sistema'],
- ['nombre' => 'cliente', 'descripcion' => 'Cliente del ecommerce'],
+        ['id' => 1, 'nombre' => 'admin', 'slug' => 'admin', 'descripcion' => 'Administrador del sistema'],
+        ['id' => 2, 'nombre' => 'cliente', 'slug' => 'cliente', 'descripcion' => 'Cliente del ecommerce'],
  ];
  foreach ($roles as $rol) {
  // firstOrCreate evita duplicados si se ejecuta más de una vez
- Rol::firstOrCreate(['nombre' => $rol['nombre']], $rol);
+ Rol::firstOrCreate(['id' => $rol['id']], $rol);
  }
 
     }

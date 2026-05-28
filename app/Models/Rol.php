@@ -4,18 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Rol extends Model
 {
-    use HasFactory, SoftDeletes;  
- protected $table = 'rols'; // sobreescribe la pluralización en inglés ('rols')
+    use HasFactory;
+ protected $table = 'roles'; // sobreescribe la pluralización en inglés ('rols')
  protected $fillable = [ // columnas permitidas para asignación masiva
- 'nombre', 'descripcion',
+ 'id', 'nombre', 'slug', 'descripcion',
  ];
  // Relación: un Rol tiene muchos Usuarios → se usa como $rol->usuarios
  public function usuarios() {
- return $this->hasMany(Usuario::class, 'rol_id');
+ return $this->hasMany(Usuario::class, 'perfil_id'); // 'perfil_id' es la FK en usuarios que apunta a rols
  }
 
 }

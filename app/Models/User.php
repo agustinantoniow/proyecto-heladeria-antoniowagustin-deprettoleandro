@@ -17,15 +17,18 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
     
    protected $table = 'usuarios';
- protected $fillable = ['name', 'email', 'password', 'role_id'];
+ protected $fillable = ['nombre', 'apellido', 'usuario', 'email', 'password', 'perfil_id', 'estado'];
  protected $hidden = ['password', 'remember_token']; // nunca expuestos en JSON
  protected function casts(): array {
  return [
  'password' => 'hashed', // hashea automáticamente al asignar
  ];
  }
- // Relación: un Usuario pertenece a un Rol → se usa como $usuario->rol
  public function rol() {
- return $this->belongsTo(Rol::class, 'rol_id');
+ return $this->belongsTo(Rol::class, 'perfil_id');
  }
-}
+ }
+ 
+
+ //
+

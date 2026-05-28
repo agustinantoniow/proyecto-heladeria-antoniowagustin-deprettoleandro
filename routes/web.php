@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UsuarioController;
-
+use App\Http\Controllers\CarritoController;
 
 Route::get('/', function () {
     return view('frontend.heladeriaglace');
@@ -82,3 +82,31 @@ Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name
 
 Route::get('/Consultas', [ConsultaController::class, 'index']);   // muestra el form
 Route::post('/Consultas', [ConsultaController::class, 'store']);  // procesa el form   
+
+Route::middleware(['auth', 'rol:cliente'])->group(function () {
+    
+    // Mostrar el carrito
+    Route::get('/carrito', [CarritoController::class, 'index'])
+        ->name('cliente.carrito');
+
+    // Agregar un producto
+    Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])
+        ->name('carrito.agregar');
+
+    // Eliminar un producto
+    Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminar'])
+        ->name('carrito.eliminar');
+
+    // Confirmar la compra
+    Route::post('/carrito/confirmar', [CarritoController::class, 'confirmar'])
+        ->name('carrito.confirmar');
+
+    // Vista de compra confirmada (protegida: redirige si no hay sesión)
+    Route::get('/compra-confirmada', function () {
+        if (!session('total')) {
+            return redirect()->route('cliente.dashboard');
+        }
+        return view('frontend.compra-confirmada');
+    })->name('compra.confirmada');
+
+});
