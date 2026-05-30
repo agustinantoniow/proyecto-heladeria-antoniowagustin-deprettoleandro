@@ -16,7 +16,7 @@ class ProductoController extends Controller
     $productos = Producto::all();
     
     // 2. Simulamos el rol a mano: poné 'admin' o poné 'user' para probar
-    $rol_usuario = 'admin'; 
+    $rol_usuario = 'cliente'; 
 
     // 3. Mandamos las dos cosas a tu plantilla anterior
     return view('frontend.Productos', compact('productos', 'rol_usuario'));

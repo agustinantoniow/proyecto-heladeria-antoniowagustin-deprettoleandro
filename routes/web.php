@@ -22,12 +22,9 @@ Route::get('/terminosYusos', function () {
     return view('frontend.Consultas');
 });
 
- Route::get('/Productos', function () {
-    return view('frontend.Productos');
-});
-
-Route::get('/Nosotros', function () {
-    return view('frontend.Nosotros');
+Route::get('/Productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/', function () {
+    return view('frontend.heladeriaglace');
 });
 
 
@@ -59,6 +56,9 @@ Route::get('/ver mas....', function () {
 });
 Route::get('/MiCarrito', function () {
     return view('frontend.Carrito');
+});
+Route::get('/dashboard  ', function () {
+    return view('backend.admin.dashboard');
 });
 
 
@@ -109,4 +109,7 @@ Route::middleware(['auth', 'rol:cliente'])->group(function () {
         return view('frontend.compra-confirmada');
     })->name('compra.confirmada');
 
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
 });

@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de Compras</title>
+    <title>Heladería Glace - Carrito de Compras</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* ==========================================================================
-           VARIABLES Y CONFIGURACIÓN GENERAL
+           VARIABLES Y CONFIGURACIÓN GENERAL (Mantenemos tus estilos limpios)
            ========================================================================== */
         :root {
-            --bg-color: #f8fafc;
+            --bg-color: #f9f6f0;        /* Un tono crema sutil para la heladería */
             --card-bg: #ffffff;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
-            --accent-color: #4f46e5; /* Índigo para los botones principales */
-            --accent-hover: #4338ca;
+            --accent-color: #7bc4c4;    /* Turquesa pastel distintivo de Glace */
+            --accent-hover: #69b3b3;
             --border-color: #e2e8f0;
             --danger-color: #ef4444;
             --success-color: #10b981;
@@ -47,7 +47,7 @@
             margin-bottom: 30px;
         }
 
-        /* Layout de Rejilla (Responsivo) */
+        /* Layout de Rejilla */
         .cart-layout {
             display: grid;
             grid-template-columns: 1fr;
@@ -89,12 +89,16 @@
             }
         }
 
-        .item-img img {
+        .item-img .product-avatar {
             width: 90px;
             height: 90px;
-            object-fit: cover;
             border-radius: 8px;
-            background-color: #f1f5f9;
+            background-color: #fbc6a4; /* Tono durazno pastel */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
         }
 
         .item-details {
@@ -117,7 +121,7 @@
             display: inline-block;
             margin-top: 8px;
             font-weight: 600;
-            color: var(--accent-color);
+            color: var(--text-primary);
         }
 
         @media (min-width: 576px) {
@@ -127,10 +131,8 @@
         }
 
         /* ==========================================================================
-           CONTROLES Y BOTONES (ESTILOS)
+           CONTROLES Y BOTONES
            ========================================================================== */
-        
-        /* Contenedor de cantidad */
         .item-quantity {
             display: flex;
             align-items: center;
@@ -139,9 +141,9 @@
             width: fit-content;
             height: 38px;
             overflow: hidden;
+            background: white;
         }
 
-        /* Botones + y - */
         .qty-btn {
             background: none;
             border: none;
@@ -162,10 +164,6 @@
             color: var(--accent-color);
         }
 
-        .qty-btn:active {
-            background-color: #cbd5e1;
-        }
-
         .qty-input {
             width: 45px;
             height: 100%;
@@ -176,17 +174,15 @@
             font-size: 0.95rem;
             font-weight: 600;
             outline: none;
-            -moz-appearance: textfield;
+            background-color: #fafafa;
         }
 
-        /* Ocultar flechas nativas del input numérico */
         .qty-input::-webkit-outer-spin-button,
         .qty-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        /* Precios en Desktop */
         .item-price {
             display: none;
             font-size: 1.15rem;
@@ -201,7 +197,6 @@
             }
         }
 
-        /* Botón de eliminación (Tacho) */
         .item-remove {
             position: absolute;
             top: 15px;
@@ -232,6 +227,18 @@
             color: var(--danger-color);
             background-color: #fef2f2;
         }
+
+        /* Alerts informativos de Laravel */
+        .alert-session {
+            padding: 14px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: none;
+        }
+        .alert-success { background-color: #ecfdf5; color: #065f46; }
+        .alert-danger { background-color: #fef2f2; color: #991b1b; }
 
         /* ==========================================================================
            SECCIÓN DE RESUMEN DE LA COMPRA
@@ -278,42 +285,6 @@
             margin-bottom: 25px;
         }
 
-        /* Cuadro de Cupón */
-        .coupon-container {
-            display: flex;
-            gap: 8px;
-            margin-top: 20px;
-        }
-
-        .coupon-input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .coupon-input:focus {
-            border-color: var(--accent-color);
-        }
-
-        .coupon-btn {
-            padding: 0 16px;
-            background-color: #f1f5f9;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .coupon-btn:hover {
-            background-color: #e2e8f0;
-        }
-
-        /* Botón Principal Checkout */
         .checkout-btn {
             width: 100%;
             background-color: var(--accent-color);
@@ -328,17 +299,18 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(123, 196, 196, 0.2);
+            transition: background-color 0.2s ease, transform 0.1s ease;
         }
 
         .checkout-btn:hover {
             background-color: var(--accent-hover);
-            box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.3);
         }
 
-        .checkout-btn:active {
-            transform: scale(0.98);
+        .checkout-btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
         .continue-shopping {
@@ -355,184 +327,127 @@
             color: var(--accent-color);
             text-decoration: underline;
         }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        .empty-state i { font-size: 3.5rem; color: #cbd5e1; margin-bottom: 15px; display: block; }
     </style>
 </head>
 <body>
 
     <main class="cart-container">
         <h1 class="cart-title">Tu Carrito de Compras</h1>
+
+        @if(session('success'))
+            <div class="alert-session alert-success">✓ {{ session('success') }}</div>
+        @endif
+        @if(session('error'))
+            <div class="alert-session alert-danger">⚠ {{ session('error') }}</div>
+        @endif
         
-        <div class="cart-layout">
-            
-            <section class="cart-items">
+        @if(isset($items) && count($items) > 0)
+            <div class="cart-layout">
                 
-                <div class="cart-item">
-                    <div class="item-img">
-                        <img src="https://via.placeholder.com/100" alt="Producto">
+                <section class="cart-items">
+                    @foreach($items as $item)
+                        <div class="cart-item" data-id="{{ $item->id }}">
+                            <div class="item-img">
+                                <div class="product-avatar">
+                                    <i class="fa-solid fa-ice-cream"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="item-details">
+                                <h3 class="item-name">{{ $item->producto->nombre }}</h3>
+                                <p class="item-category">Glace Premium</p>
+                                <span class="item-price-mobile">${{ number_format($item->subtotal, 2, ',', '.') }}</span>
+                            </div>
+
+                            <div class="item-quantity">
+                                <form action="{{ route('carrito.agregar') }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="producto_id" value="{{ $item->producto_id }}">
+                                    <input type="hidden" name="cantidad" value="-1">
+                                    <button class="qty-btn" type="submit" {{ $item->cantidad <= 1 ? 'disabled' : '' }}>-</button>
+                                </form>
+
+                                <input class="qty-input" type="text" value="{{ $item->cantidad }}" readonly>
+
+                                <form action="{{ route('carrito.agregar') }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="producto_id" value="{{ $item->producto_id }}">
+                                    <input type="hidden" name="cantidad" value="1">
+                                    <button class="qty-btn" type="submit">+</button>
+                                </form>
+                            </div>
+
+                            <div class="item-price">
+                                <p>${{ number_format($item->subtotal, 2, ',', '.') }}</p>
+                            </div>
+
+                            <div class="item-remove">
+                                <form action="{{ route('carrito.eliminar', $item->id) }}" method="POST" onsubmit="return confirmarEliminar()">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="remove-btn" title="Eliminar producto">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </section>
+
+                <aside class="cart-summary">
+                    <h2>Resumen del pedido</h2>
+                    <hr class="summary-divider">
+                    
+                    <div class="summary-row">
+                        <span>Subtotal ({{ $items->sum('cantidad') }} productos)</span>
+                        <span>${{ number_format($carrito->total, 2, ',', '.') }}</span>
                     </div>
-                    <div class="item-details">
-                        <h3 class="item-name">Remera Oversize Negra</h3>
-                        <p class="item-category">Indumentaria / Hombre</p>
-                        <span class="item-price-mobile">$15500</span>
+                    <div class="summary-row">
+                        <span>Costo de envío</span>
+                        <span class="free-shipping">Gratis</span>
                     </div>
-                    <div class="item-quantity">
-                        <button class="qty-btn btn-minus" type="button">-</button>
-                        <input class="qty-input" type="number" value="1" min="1">
-                        <button class="qty-btn btn-plus" type="button">+</button>
+
+                    <hr class="summary-divider">
+                    
+                    <div class="summary-row total-row">
+                        <span>Total</span>
+                        <span>${{ number_format($carrito->total, 2, ',', '.') }}</span>
                     </div>
-                    <div class="item-price">
-                        <p>$15500</p>
-                    </div>
-                    <div class="item-remove">
-                        <button class="remove-btn" title="Eliminar producto">
-                            <i class="fa-regular fa-trash-can"></i>
+
+                    <form action="{{ route('carrito.confirmar') }}" method="POST">
+                        @csrf
+                        <button class="checkout-btn" type="submit">
+                            Proceder al pago <i class="fa-solid fa-arrow-right"></i>
                         </button>
-                    </div>
-                </div>
-
-                <div class="cart-item">
-                    <div class="item-img">
-                        <img src="https://via.placeholder.com/100" alt="Producto">
-                    </div>
-                    <div class="item-details">
-                        <h3 class="item-name">Zapatillas Urbanas Classic</h3>
-                        <p class="item-category">Calzado / Unisex</p>
-                        <span class="item-price-mobile">$48000</span>
-                    </div>
-                    <div class="item-quantity">
-                        <button class="qty-btn btn-minus" type="button">-</button>
-                        <input class="qty-input" type="number" value="2" min="1">
-                        <button class="qty-btn btn-plus" type="button">+</button>
-                    </div>
-                    <div class="item-price">
-                        <p>$96000</p>
-                    </div>
-                    <div class="item-remove">
-                        <button class="remove-btn" title="Eliminar producto">
-                            <i class="fa-regular fa-trash-can"></i>
-                        </button>
-                    </div>
-                </div>
-
-            </section>
-
-            <aside class="cart-summary">
-                <h2>Resumen del pedido</h2>
-                <hr class="summary-divider">
-                
-                <div class="summary-row">
-                    <span>Subtotal (<span id="total-items-count">3</span> productos)</span>
-                    <span id="subtotal-amount">$111500</span>
-                </div>
-                <div class="summary-row">
-                    <span>Costo de envío</span>
-                    <span class="free-shipping">Gratis</span>
-                </div>
-                
-                <div class="coupon-container">
-                    <input type="text" placeholder="Código de descuento" class="coupon-input">
-                    <button type="button" class="coupon-btn">Aplicar</button>
-                </div>
-
-                <hr class="summary-divider">
-                
-                <div class="summary-row total-row">
-                    <span>Total</span>
-                    <span id="total-amount">$111500</span>
-                </div>
-
-                <button class="checkout-btn" type="button">
-                    Proceder al pago <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                
-                <a href="/" class="continue-shopping">Seguir comprando</a>
-            </aside>
-        </div>
+                    </form>
+                    
+                    <a href="{{ url('/') }}" class="continue-shopping">Seguir comprando</a>
+                </aside>
+            </div>
+        @else
+            <div class="empty-state">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <h2>Tu carrito de helados está vacío</h2>
+                <p style="color: var(--text-secondary); margin-top: 5px;">¡Pasate por nuestro catálogo para elegir tus gustos!</p>
+                <a href="{{ url('/') }}" class="continue-shopping" style="font-weight: 600; text-decoration: underline;">Volver a la tienda</a>
+            </div>
+        @endif
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Manejadores para sumar o restar cantidades mediante los botones
-            document.querySelectorAll('.cart-item').forEach(item => {
-                const input = item.querySelector('.qty-input');
-                const btnMinus = item.querySelector('.btn-minus');
-                const btnPlus = item.querySelector('.btn-plus');
-                const btnRemove = item.querySelector('.remove-btn');
-
-                // Evento Sumar Cantidad
-                btnPlus.addEventListener('click', () => {
-                    input.value = parseInt(input.value) + 1;
-                    actualizarPreciosYResumen();
-                });
-
-                // Evento Restar Cantidad
-                btnMinus.addEventListener('click', () => {
-                    if (parseInt(input.value) > 1) {
-                        input.value = parseInt(input.value) - 1;
-                        actualizarPreciosYResumen();
-                    }
-                });
-
-                // Evitar valores menores a 1 si se tipea manualmente
-                input.addEventListener('change', () => {
-                    if (parseInt(input.value) < 1 || isNaN(parseInt(input.value))) {
-                        input.value = 1;
-                    }
-                    actualizarPreciosYResumen();
-                });
-
-                // Simular eliminación visual de producto
-                btnRemove.addEventListener('click', () => {
-                    item.style.opacity = '0';
-                    item.style.transform = 'scale(0.95)';
-                    item.style.transition = 'all 0.3s ease';
-                    setTimeout(() => {
-                        item.remove();
-                        actualizarPreciosYResumen();
-                    }, 300);
-                });
-            });
-
-            // Función encargada de recalcular cantidades y totales en pantalla
-            function actualizarPreciosYResumen() {
-                let totalProductos = 0;
-                let subtotalGeneral = 0;
-
-                // Datos duros simulados para calcular según cada producto (reemplazable por backend)
-                const preciosUnitarios = {
-                    "Remera Oversize Negra": 15500,
-                    "Zapatillas Urbanas Classic": 48000
-                };
-
-                document.querySelectorAll('.cart-item').forEach(item => {
-                    const name = item.querySelector('.item-name').innerText;
-                    const cantidad = parseInt(item.querySelector('.qty-input').value) || 0;
-                    const precioUnitario = preciosUnitarios[name] || 0;
-                    
-                    const subtotalItem = precioUnitario * cantidad;
-                    totalProductos += cantidad;
-                    subtotalGeneral += subtotalItem;
-
-                    // Actualizar el precio de este ítem en Desktop
-                    const priceContainer = item.querySelector('.item-price p');
-                    if(priceContainer) {
-                        priceContainer.innerText = `$${subtotalItem}`;
-                    }
-                });
-
-                // Actualizar bloques del panel de resumen de compras
-                document.getElementById('total-items-count').innerText = totalProductos;
-                document.getElementById('subtotal-amount').innerText = `$${subtotalGeneral}`;
-                document.getElementById('total-amount').innerText = `$${subtotalGeneral}`;
-
-                // Deshabilitar botón de confirmación si el carrito quedó vacío
-                const checkoutBtn = document.querySelector('.checkout-btn');
-                if (totalProductos === 0) {
-                    checkoutBtn.disabled = true;
-                    checkoutBtn.innerText = "Carrito Vacío";
-                }
-            }
-        });
+        // JS nativo para alertar antes de purgar un registro
+        function confirmarEliminar() {
+            return confirm("¿De verdad querés quitar este producto del carrito?");
+        }
     </script>
 </body>
 </html>

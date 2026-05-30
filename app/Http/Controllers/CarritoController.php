@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Producto;      // ⚠️ Requerido para agregar()
 use App\Models\VentaCabecera; // ⚠️ Requerido para recalcularTotal()
 use App\Models\VentaDetalle;   // ⚠️ Requerido para index() y confirmar()
-
+use Illuminate\Support\Facades\Auth;
 
 class CarritoController extends Controller
 {
