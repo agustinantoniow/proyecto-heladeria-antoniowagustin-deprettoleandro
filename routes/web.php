@@ -34,12 +34,15 @@ Route::get('/QuienesSomosCliente', function () {
     return view('frontend.ConsultasCliente');
 });
 
-Route::get('/Productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/ProductosCliente', [ProductoController::class, 'index'])->name('productosCliente.index');
 Route::get('/', function () {
     return view('frontend.heladeriaglaceVisitante');
 });
 
-    
+    Route::get('/Productos', function () {
+    return view('frontend.Productos');
+});
+
 Route::get('/contacto', function () {
     return view('frontend.contacto');
 });
@@ -66,13 +69,13 @@ Route::get('/ver mas...Cliente', function () {
 Route::get('/ver mas....', function () {
     return view('frontend.pagina-postres');
 });
-Route::get('/ver mas....', function () {
+Route::get('/ver mas....Cliente', function () {
     return view('frontend.pagina-postresCliente');
 });
  Route::get('/ver mas..', function () {
     return view('frontend.pagina-lineafamiliar');
 });
-Route::get('/ver mas..', function () {
+Route::get('/ver mas..Cliente', function () {
     return view('frontend.pagina-lineaFamiliarCliente');
 });
  Route::get('/registrarse', function () {
