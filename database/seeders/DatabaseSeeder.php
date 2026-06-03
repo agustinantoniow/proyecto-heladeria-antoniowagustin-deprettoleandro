@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
     'usuario' => 'testuser',
     'email' => 'test@example.com',
     'password' => bcrypt('password'),
-    'perfil_id' => 1, // 👈 Cambiá 'role_id' por 'perfil_id' que es tu columna física real en usuarios
+    'perfil_id' => 1, 
     'estado' => true
 ]);
     }

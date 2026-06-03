@@ -1,4 +1,4 @@
-@extends('components.layoutVisitante')
+@extends('components.layoutCliente')
 @section('title', 'heladeria - Contacto')
 @section('content')
 <body> 
@@ -76,7 +76,7 @@
                 </div>
 
             <div class="text-center">
-              <button type="submit" #href=\exito class="btn btn-dark">Enviar</button>
+              <button type="submit" #href=\exitoCliente class="btn btn-dark">Enviar</button>
             </div>
             </form>
         </div>

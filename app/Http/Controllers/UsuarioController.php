@@ -38,7 +38,7 @@ class UsuarioController extends Controller
     ]);
     Auth::login(Usuario::where('email', $request->email)->first()); // Inicia sesión automáticamente después de registrarse
 
- return redirect('/');
+ return redirect('/Cliente');
 }
     // ==========================================
     // FUNCIONES DEL LOGIN
@@ -55,11 +55,13 @@ class UsuarioController extends Controller
     public function login(Request $request)
     {
         // Validamos que hayan escrito algo
-        $credenciales = $request->validate([
-        'nombre'    => 'required'|'string'| 'max 25',   
-        'email' => 'required|email', 
-            'password' => 'required'
-        ]);
+       $credenciales = $request->validate([
+        'usuario'  => 'required|string',
+        'password' => 'required|string',
+    ], [
+        'usuario.required'  => 'Por favor, ingresá tu nombre de usuario.',
+        'password.required' => 'Por favor, ingresá tu contraseña.',
+    ]);
 
         // Auth::attempt busca el email en la BD y compara la contraseña encriptada
         if (Auth::attempt($credenciales)) {
@@ -67,12 +69,29 @@ class UsuarioController extends Controller
             $request->session()->regenerate();
 
             // Lo mandamos a la vista principal de la heladería (o a los productos)
-            return redirect('/')->intended()->with('success', '¡Bienvenido a Glace!'); 
+           return redirect('/Cliente')->with('success', '¡Bienvenido a Glace!');
         }
 
         // Si la contraseña o el email están mal, lo devolvemos al login con un error
-        return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('email'); // Mantiene el email escrito para que no tenga que tipearlo de nuevo
-    }
+     return back()->withErrors([
+        'usuario' => 'El usuario o la contraseña no coinciden con nuestros registros.',
+    ])->withInput($request->only('usuario')); 
+}
+// ==========================================
+// FUNCIÓN PARA CERRAR SESIÓN
+// ==========================================
+public function logout(Request $request)
+{
+    // 1. Desautentica al usuario (borra el estado de logueado)
+    Auth::logout();
+
+    // 2. Invalida la sesión actual del navegador
+    $request->session()->invalidate();
+
+    // 3. Regenera el token CSRF por seguridad
+    $request->session()->regenerateToken();
+
+    // 4. Redirecciona limpio a la página principal (ahora lo verá como visitante)
+    return redirect('/')->with('success', '¡Cerraste sesión correctamente!');
+}
 }

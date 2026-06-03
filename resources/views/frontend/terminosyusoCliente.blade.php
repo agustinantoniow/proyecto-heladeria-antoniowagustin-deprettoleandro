@@ -1,4 +1,4 @@
-@extends ('components.layoutVisitante')
+@extends ('components.layoutCliente')
 
 @section('title', 'heladeria - Terminos y Usos')
 
@@ -50,10 +50,10 @@
         </div>
 
         <div class="mt-5 text-center">
-            <a href="{{ url('/') }}" class="btn btn-info text-white fw-bold px-5 py-2 shadow-sm" style="font-family: 'Fredoka', sans-serif;">
-                Entendido y Volver
+            <a href="{{ url('/Cliente') }}" class="btn btn-info text-white fw-bold px-5 py-2 shadow-sm" style="font-family: Fredoka, sans-serif;">
+                        Entendido y Volver
             </a>
-            <a href="{{ url('/contacto') }}" class="btn btn-outline-info fw-bold px-5 py-2 ms-2 shadow-sm" style="font-family: 'Fredoka', sans-serif;">
+            <a href="{{ url('/contactoCliente') }}" class="btn btn-outline-info fw-bold px-5 py-2 ms-2 shadow-sm" style="font-family: 'Fredoka', sans-serif;">
                 Tengo dudas
             </a>
         </div>

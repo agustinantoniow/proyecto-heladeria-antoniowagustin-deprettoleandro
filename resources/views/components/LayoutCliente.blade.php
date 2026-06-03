@@ -16,13 +16,13 @@
 </head>
 
  <body>
-    @include('components.navbar')
+    @include('components.navbarCliente')
 
     <div class="container mt-4">
         @yield('content')
     </div>
 
- @include('components.footer')
+ @include('components.footerCliente')
     
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> 
  </body>

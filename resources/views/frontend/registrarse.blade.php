@@ -1,4 +1,4 @@
-@extends('components.layout')
+@extends('components.layoutVisitante')
 @section('title', 'Heladería Glace - Registrarse')
 @section('content')
 

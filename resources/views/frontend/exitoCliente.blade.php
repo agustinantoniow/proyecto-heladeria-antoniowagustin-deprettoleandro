@@ -1,4 +1,4 @@
-@extends('components.layoutVisitante')
+@extends('components.layoutCliente')
 @section('title', 'heladeria - login')
 @section('content')
 <head>
@@ -18,7 +18,7 @@
             <p class="lead">
              Gracias, hemos recibido tu mensaje y te responderemos al correo.       
             </p>
-                <a href="/" class="btn btn-primary px-4 shadow-sm">Entendido y Volver</a>
+                <a href="/Cliente" class="btn btn-primary px-4 shadow-sm">Entendido y Volver</a>
 
         </div>
     </div>

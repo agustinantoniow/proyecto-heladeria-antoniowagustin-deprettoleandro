@@ -1,4 +1,4 @@
-@extends('components.layoutVisitante')
+@extends('components.layoutCliente')
 @section('title', 'heladeria - Inicio')
 @section('content')
 <body class="bg-terciary">

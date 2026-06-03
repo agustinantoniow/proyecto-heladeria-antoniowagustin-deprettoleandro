@@ -430,7 +430,7 @@
                         </button>
                     </form>
                     
-                    <a href="{{ url('/') }}" class="continue-shopping">Seguir comprando</a>
+                    <a href="{{ url('/Cliente') }}" class="continue-shopping">Seguir comprando</a>
                 </aside>
             </div>
         @else
@@ -438,7 +438,7 @@
                 <i class="fa-solid fa-basket-shopping"></i>
                 <h2>Tu carrito de helados está vacío</h2>
                 <p style="color: var(--text-secondary); margin-top: 5px;">¡Pasate por nuestro catálogo para elegir tus gustos!</p>
-                <a href="{{ url('/') }}" class="continue-shopping" style="font-weight: 600; text-decoration: underline;">Volver a la tienda</a>
+                <a href="{{ url('/Cliente') }}" class="continue-shopping" style="font-weight: 600; text-decoration: underline;">Volver a la tienda</a>
             </div>
         @endif
     </main>

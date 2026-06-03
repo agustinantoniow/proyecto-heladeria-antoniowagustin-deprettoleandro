@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg bg-white sticky-top py-2 shadow-sm border-bottom">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+    <a class="navbar-brand d-flex align-items-center" href="{{ url('/Cliente') }}">
       <img src="{{ asset('imagenes/logoheladeria.png') }}" alt="Logo Heladería Glace" width="110" height="85" class="me-2">
       <span style="font-family: 'Fredoka', sans-serif; font-weight: 700; color: #055160; font-size: 1.5rem;">GLACE</span>
     </a> 
@@ -12,16 +12,16 @@
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav mx-auto fs-5"> <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('/') ? 'active fw-bold text-info' : '' }}" href="{{ url('/') }}">Inicio</a>
+            <a class="nav-link nav-link-glace {{ request()->is('/Cliente') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Cliente') }}">Inicio</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('QuienesSomos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/QuienesSomos') }}">Nosotros</a>
+            <a class="nav-link nav-link-glace {{ request()->is('QuienesSomosCliente') ? 'active fw-bold text-info' : '' }}" href="{{ url('/QuienesSomosCliente') }}">Nosotros</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('Comercializacion') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Comercializacion') }}">Comercialización</a>
+            <a class="nav-link nav-link-glace {{ request()->is('ComercializacionCliente') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ComercializacionCliente') }}">Comercialización</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('Productos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Productos') }}">Productos</a>
+            <a class="nav-link nav-link-glace {{ request()->is('ProductosCliente') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ProductosCliente') }}">Productos</a>
         </li>
        
         <ul class="navbar-nav ms-auto">
@@ -60,7 +60,7 @@
       
       <ul class="navbar-nav ms-lg-auto"> 
         <li class="nav-item">
-            <a href="{{ url('/contacto') }}" class="btn btn-info text-white fw-bold px-4 rounded-pill shadow-sm" style="font-family: 'Fredoka', sans-serif;">
+            <a href="{{ url('/contactoCliente') }}" class="btn btn-info text-white fw-bold px-4 rounded-pill shadow-sm" style="font-family: 'Fredoka', sans-serif;">
                 Contactanos
             </a>
         </li>

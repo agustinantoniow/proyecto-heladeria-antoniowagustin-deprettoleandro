@@ -1,4 +1,4 @@
-@extends('components.layout')
+@extends('components.layoutVisitante')
 @section('title', 'heladeria - logi')
 @section('content')
 <body>
