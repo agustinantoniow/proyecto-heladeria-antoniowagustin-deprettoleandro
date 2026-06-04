@@ -6,19 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-
-       
-        // Por esto:
-        Schema::create('roles', function (Blueprint $table) {
-        $table->id(); // Este es el ID al que apuntaremos
-        $table->string('nombre');
-        $table->string('descripcion')->nullable();
-        $table->string('slug');
-        $table->timestamps();
-        });
-
+        // ESTA ES LA PARTE DONDE VA EL CÓDIGO QUE PREGUNTAS
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100);
@@ -28,5 +21,12 @@ return new class extends Migration
             $table->softDeletes();
         });
     }
-};
 
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('categorias');
+    }
+};

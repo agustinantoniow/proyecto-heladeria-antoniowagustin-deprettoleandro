@@ -4,10 +4,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
     return view('frontend.heladeriaglaceVisitante');
@@ -145,3 +145,31 @@ Route::middleware(['auth', 'rol:cliente'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
 });
+
+Route::post('/Consultas', [ConsultaController::class, 'store'])->name('consultas.store');
+
+Route::get('/admin/consultas', [App\Http\Controllers\ConsultaController::class, 'index'])->name('admin.consultas');
+
+// Ruta protegida para el Admin
+
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
+    
+    // El inicio del panel
+    Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
+    
+    // La vista de la tabla
+    Route::get('/admin/consultas', [\App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.consultas');
+    
+    // --- ¡AGREGÁ ESTAS DOS RUTAS NUEVAS ACÁ! ---
+    
+    // Ruta para marcar como leída (usa el método PATCH)
+    Route::patch('/admin/consultas/{id}/leido', [\App\Http\Controllers\Admin\AdminController::class, 'marcarLeido'])->name('consultas.marcarLeido');
+    
+    // Ruta para eliminar el mensaje (usa el método DELETE)
+    Route::delete('/admin/consultas/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'destroy'])->name('consultas.destroy');
+    
+});
+
+// Esta es la ruta que procesa el formulario cuando hacés clic en el botón
+Route::post('/login', [LoginController::class, 'login']);
+    

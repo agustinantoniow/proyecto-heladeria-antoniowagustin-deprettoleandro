@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('consultas', function (Blueprint $table) {
             $table->id();
-                $table->string('Nombre', 100);
+                $table->string('nombre', 100);
                 $table->string('email', 100);
-                $table->string('Numero_telefono', 20);
-                $table->text('Mensaje');
+                $table->string('numero_telefono', 20);
+                $table->text('mensaje');
                 $table->timestamps();
                 $table->softDeletes();
         });

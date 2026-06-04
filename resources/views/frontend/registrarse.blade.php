@@ -26,19 +26,19 @@
   @csrf
 
   <div class="col-md-4">
-    <label for="Nombre" class="form-label">Nombre</label>
-    <input type="text" class="form-control @error('Nombre') is-invalid @enderror"
-           id="Nombre" name="Nombre" value="{{ old('Nombre') }}">
-    @error('Nombre')
+    <label for="nombre" class="form-label">Nombre</label>
+    <input type="text" class="form-control @error('nombre') is-invalid @enderror"
+           id="nombre" name="nombre" value="{{ old('nombre') }}">
+    @error('nombre')
         <span class="text-danger">{{ $message }}</span>
     @enderror
 </div>
 
 <div class="col-md-4">
-    <label for="Apellido" class="form-label">Apellido</label>
-    <input type="text" class="form-control @error('Apellido') is-invalid @enderror"
-           id="Apellido" name="Apellido" value="{{ old('Apellido') }}">
-    @error('Apellido')
+    <label for="apellido" class="form-label">Apellido</label>
+    <input type="text" class="form-control @error('apellido') is-invalid @enderror"
+           id="apellido" name="apellido" value="{{ old('apellido') }}">
+    @error('apellido')
         <span class="text-danger">{{ $message }}</span>
     @enderror
 </div>

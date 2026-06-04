@@ -20,16 +20,16 @@ class UsuarioController extends Controller
    public function store(Request $request)
 {
     $request->validate([
-        'Nombre'   => 'required',
-        'Apellido' => 'required',
+        'nombre'   => 'required',
+        'apellido' => 'required',
         'email'    => 'required',
         'password' => 'required',
     ]);
 
     // Usamos el método estático create que es mucho más seguro para verificar errores
     Usuario::create([
-        'nombre'    => $request->Nombre,
-        'apellido'  => $request->Apellido,
+        'nombre'    => $request->nombre,
+        'apellido'  => $request->apellido,
         'email'     => $request->email,
         'usuario'   => $request->usuario ?? explode('@', $request->email)[0],
         'password'  => Hash::make($request->password),

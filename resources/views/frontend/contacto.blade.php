@@ -28,58 +28,12 @@
     </div>
    </div>
 
-   <div class="col-md-6">
-        <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
-            <h1 class="text-center mb-4">Formulario de Consultas</h1>
-
-            <form action="{{ url('/Consultas') }}" method="POST">
-                @csrf
-
-               <div class="mb-3">
-    <label for="nombreConsulta" class="form-label">Nombre</label>
-    <input type="text" class="form-control @error('nombreConsulta') is-invalid @enderror" 
-           id="nombreConsulta" name="nombreConsulta" value="{{ old('nombreConsulta') }}">
-    @error('nombreConsulta')
-        <span class="text-danger">{{ $message }}</span>
-    @enderror
+  <div class="col-md-6">
+    
+    @include('frontend.formulario-consultas')
+            
 </div>
-
-                <div class="mb-3">
-                    <label for="emailConsulta" class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control @error('emailConsulta') is-invalid @enderror" 
-                           id="emailConsulta" name="emailConsulta" value="{{ old('emailConsulta') }}">
-                    @error('emailConsulta')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-
-               <div class="mb-3">
-    <label for="Numero_Telefono" class="form-label">Número de teléfono</label>
-    <input type="text" class="form-control @error('numero_telefono') is-invalid @enderror" 
-           id="Numero_Telefono" name="numero_telefono" value="{{ old('numero_telefono') }}">
-    @error('numero_telefono')
-        <span class="text-danger">{{ $message }}</span>
-    @enderror
-</div>
-        <select class="form-select form-select-lg mb-3" aria-label="Large select example">
-            <option selected>Seleccione una opcion</option>
-            <option value="1">Problemas al realizar un pedido</option>
-            <option value="2">Consultas sobre stock de un producto</option>
-            <option value="3">Sugerencias</option>
-        </select>
-                <div class="mb-3">
-                    <label for="mensaje" class="form-label">Mensaje</label>
-                    <textarea class="form-control @error('mensaje') is-invalid @enderror" id="mensaje" name="mensaje" rows="4" required>{{ old('mensaje') }}</textarea>
-                    @error('mensaje')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-
-            <div class="text-center">
-              <button type="submit" #href=\exito class="btn btn-dark">Enviar</button>
-            </div>
-            </form>
-        </div>
+      
     </div>
 
    

@@ -3,34 +3,47 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; // Agregamos este import para no poner \DB siempre
 
 class ConsultaController extends Controller
 {
-    /**
-     * Maneja el envío del formulario de consultas.
-     */
-   public function store(Request $request)
+    // Muestra la lista de consultas al admin
+    public function index()
+    {
+        $consultas = DB::table('consultas')->orderBy('created_at', 'desc')->get();
+        return view('admin.consultas', compact('consultas'));
+    }
+
+
+    // Procesa el envío del formulario
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nombreConsulta'  => 'required|string|max:255|min:7',
+            'emailConsulta'   => 'required|email',
+            'numero_telefono' => 'required|digits:10',
+            'opcion_consulta' => 'required', // Validamos el nuevo campo
+            'mensaje'         => 'required|min:5',
+        ]);
+
+        DB::table('consultas')->insert([
+            'nombre'          => $request->nombreConsulta,
+            'email'           => $request->emailConsulta,
+            'numero_telefono' => $request->numero_telefono,
+            'tipo'            => $request->opcion_consulta, // Guardamos la categoría seleccionada
+            'mensaje'         => $request->mensaje,
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ]);
+
+        return redirect('/exito');
+    }
+    public function marcarLeido($id)
 {
-    // 1. Validamos usando los nombres exactos que vendrán del formulario
-    $request->validate([
-        'nombreConsulta'  => 'required|string|max:255|min:7',
-        'emailConsulta'   => 'required|email',
-        'numero_telefono' => 'required|digits:10',
-        'mensaje'         => 'required|min:5',
-    ]);
+    $consulta = \App\Models\Consulta::findOrFail($id);
+    $consulta->leido = true;
+    $consulta->save();
 
-    // 2. IMPORTANTE: Guardamos los datos reales en la tabla 'consultas' usando Query Builder
-    // Usamos DB porque coincide directo con tu estructura de dBeaver
-    \DB::table('consultas')->insert([
-        'Nombre'          => $request->nombreConsulta, // <-- PASAMOS EL NOMBRE A SU COLUMNA PROPIA
-        'email'           => $request->emailConsulta,
-        'numero_telefono' => $request->numero_telefono,
-        'mensaje'         => 'Nombre: ' . $request->nombreConsulta . ' - Mensaje: ' . $request->mensaje,
-        'created_at'      => now(),
-        'updated_at'      => now(),
-    ]);
-
-    // 3. Redirección con mensaje de éxito (corregido el error de $request->asunto que no existía)
-    return redirect('/exito');
+    return back()->with('success', 'Consulta marcada como leída.');
 }
 }

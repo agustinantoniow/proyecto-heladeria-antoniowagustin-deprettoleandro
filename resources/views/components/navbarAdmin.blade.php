@@ -23,23 +23,18 @@
         <li class="nav-item">
             <a class="nav-link nav-link-glace {{ request()->is('EliminarProducto') ? 'active fw-bold text-info' : '' }}" href="{{ url('/EliminarProducto') }}">Eliminar un producto</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('DetalleProducto1') ? 'active fw-bold text-info' : '' }}" href="{{ url('/DetalleProducto') }}">Ver detalle de producto</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('login') ? 'active fw-bold text-info' : '' }}" href="{{ url('/login') }}">
-                Ingresar <i class="fa-solid fa-right-to-bracket ms-1"></i>
-            </a>
-        </li> 
+       <li class="nav-item">
+    <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </a>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+</li>
+        
       </ul>
       
-      <ul class="navbar-nav ms-lg-auto"> 
-        <li class="nav-item">
-            <a href="{{ url('/contacto') }}" class="btn btn-info text-white fw-bold px-4 rounded-pill shadow-sm" style="font-family: 'Fredoka', sans-serif;">
-                Contactanos
-            </a>
-        </li>
-      </ul>
     </div> 
   </div> 
 </nav>

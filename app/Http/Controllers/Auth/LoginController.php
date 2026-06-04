@@ -35,18 +35,17 @@ class LoginController extends Controller
 
         // 3. Intentamos la autenticación segura con Laravel
         if (Auth::attempt($credenciales)) {
-            
+
             // Regeneramos la sesión por seguridad contra ataques de fijación
             $request->session()->regenerate();
-            
             // 4. Redirección inteligente según el rol (perfil_id)
             if (Auth::user() && Auth::user()->perfil_id == 1) {
                 // Si es Administrador, va al panel de control
-                return redirect()->intended('/admin/dashboard');
+                return redirect('/admin/dashboard');;
             }
             
             // Si es Cliente (perfil_id 2 o cualquier otro), va a la tienda
-            return redirect()->intended('/productos');
+            return redirect('/productos');
         }
 
         // 5. Si la verificación falla, mandamos el error etiquetado como 'usuario'
