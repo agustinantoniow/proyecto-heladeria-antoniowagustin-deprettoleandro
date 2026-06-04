@@ -18,14 +18,16 @@ class ConsultaController extends Controller
     // Procesa el envío del formulario
     public function store(Request $request)
     {
-        $request->validate([
-            'nombreConsulta'  => 'required|string|max:255|min:7',
+       $request->validate([
+            // Bajamos a 3 letras para aceptar nombres como "Ana" o "Luz"
+            'nombreConsulta'  => 'required|string|max:255|min:3', 
             'emailConsulta'   => 'required|email',
-            'numero_telefono' => 'required|digits:10',
-            'opcion_consulta' => 'required', // Validamos el nuevo campo
-            'mensaje'         => 'required|min:5',
+            // Cambiamos digits por min/max para que permita espacios o guiones si es necesario
+            'numero_telefono' => 'required|string|min:8|max:15', 
+            'opcion_consulta' => 'required',
+            'mensaje'         => 'required|string|min:5',
         ]);
-
+        
         DB::table('consultas')->insert([
             'nombre'          => $request->nombreConsulta,
             'email'           => $request->emailConsulta,
