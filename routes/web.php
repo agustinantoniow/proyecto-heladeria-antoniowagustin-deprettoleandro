@@ -4,11 +4,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\Admin\AdminController;
-
+use App\Http\Controllers\ClienteController;
 Route::get('/', function () {
     return view('frontend.heladeriaglaceVisitante');
 });
@@ -34,7 +34,7 @@ Route::get('/QuienesSomosCliente', function () {
     return view('frontend.ConsultasCliente');
 });
 
-Route::get('/ProductosCliente', [ProductoController::class, 'index'])->name('productosCliente.index');
+Route::get('/Productos', [ProductoController::class, 'index'])->name('productos.index');
 Route::get('/', function () {
     return view('frontend.heladeriaglaceVisitante');
 });
@@ -152,24 +152,38 @@ Route::get('/admin/consultas', [App\Http\Controllers\ConsultaController::class, 
 
 // Ruta protegida para el Admin
 
+// Ruta protegida para el Admin
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     
     // El inicio del panel
     Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
     
-    // La vista de la tabla
+    // La vista de la tabla de consultas
     Route::get('/admin/consultas', [\App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.consultas');
-    
-    // --- ¡AGREGÁ ESTAS DOS RUTAS NUEVAS ACÁ! ---
     
     // Ruta para marcar como leída (usa el método PATCH)
     Route::patch('/admin/consultas/{id}/leido', [\App\Http\Controllers\Admin\AdminController::class, 'marcarLeido'])->name('consultas.marcarLeido');
     
     // Ruta para eliminar el mensaje (usa el método DELETE)
     Route::delete('/admin/consultas/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'destroy'])->name('consultas.destroy');
+
+    // Ruta provisoria para que no rompa el dashboard
+// Ruta provisoria para que no rompa el dashboard
+   // 👑 Gestión de Usuarios Administrador
+Route::get('/admin/usuarios', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'index'])->name('admin.usuarios.index');
+Route::post('/admin/usuarios', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'store'])->name('admin.usuarios.store');
+    Route::put('/admin/usuarios/{id}', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'update'])->name('admin.usuarios.update');
+    Route::patch('/admin/usuarios/{id}/toggle', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'toggleStatus'])->name('admin.usuarios.toggle');
     
+   
+// 🍦 --- GESTIÓN DE PRODUCTOS GLACE (Orden correcto) ---
+    Route::get('/admin/Productos/create', [App\Http\Controllers\Admin\ProductoController::class, 'create'])->name('admin.productos.create');
+    Route::get('/admin/Productos', [App\Http\Controllers\Admin\ProductoController::class, 'index'])->name('admin.productos.index');
+    Route::post('/admin/Productos', [App\Http\Controllers\Admin\ProductoController::class, 'store'])->name('admin.productos.store');
 });
 
-// Esta es la ruta que procesa el formulario cuando hacés clic en el botón
-Route::post('/login', [LoginController::class, 'login']);
-    
+// Esta es la ruta que procesa el formulario usando tu UsuarioController modificado
+Route::post('/login', [\App\Http\Controllers\UsuarioController::class, 'login']);
+
+// Esta es la ruta que muestra la interfaz del cliente al loguearse con éxito
+Route::get('/Cliente', [\App\Http\Controllers\ClienteController::class, 'index'])->middleware('auth');

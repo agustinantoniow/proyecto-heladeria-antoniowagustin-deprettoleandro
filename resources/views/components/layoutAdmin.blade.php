@@ -22,7 +22,7 @@
         @yield('content')
     </div>
 
- @include('components.footer')
+ @include('components.footerAdmin')
     
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script> 
  </body>

@@ -46,7 +46,7 @@
                             <i class="fas fa-ice-cream fa-2x text-gray-300"></i>
                         </div>
                     </div>
-                    <a href="#" class="stretched-link"></a>
+                    <a href="{{ route('admin.productos.index') }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
                             <i class="fas fa-users fa-2x text-gray-300"></i>
                         </div>
                     </div>
-                    <a href="#" class="stretched-link"></a>
+                    <a href="{{ route('admin.usuarios.index') }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>

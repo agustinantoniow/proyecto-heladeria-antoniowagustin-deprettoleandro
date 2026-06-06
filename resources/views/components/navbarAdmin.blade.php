@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-expand-lg bg-white sticky-top py-2 shadow-sm border-bottom">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+    <a class="navbar-brand d-flex align-items-center" href="{{ url('/admin/dashboard') }}">
       <img src="{{ asset('imagenes/logoheladeria.png') }}" alt="Logo Heladería Glace" width="110" height="85" class="me-2">
       <span style="font-family: 'Fredoka', sans-serif; font-weight: 700; color: #055160; font-size: 1.5rem;">GLACE</span>
     </a> 
@@ -12,13 +12,13 @@
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav mx-auto fs-5"> <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('/') ? 'active fw-bold text-info' : '' }}" href="{{ url('') }}">Ver consultas</a>
+            <a class="nav-link nav-link-glace {{ request()->is('/') ? 'active fw-bold text-info' : '' }}" href="{{ route('admin.consultas') }}">Ver consultas</a>
         </li>
         <li class="nav-item">
             <a class="nav-link nav-link-glace {{ request()->is('ListarProductos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ListarProductos') }}">Listar Productos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('AgregarProducto') ? 'active fw-bold text-info' : '' }}" href="{{ url('/AgregarProducto') }}">Agregar un producto</a>
+            <a class="nav-link" href="{{ route('admin.productos.create') }}">Agregar un producto</a>
         </li>
         <li class="nav-item">
             <a class="nav-link nav-link-glace {{ request()->is('EliminarProducto') ? 'active fw-bold text-info' : '' }}" href="{{ url('/EliminarProducto') }}">Eliminar un producto</a>

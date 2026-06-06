@@ -17,6 +17,9 @@ class AdminMiddleware
         }
 
         // 2. Si no es admin, lo rebotamos a la tienda
-        return redirect('/productos');
-    }
+   // 2. Si no es admin, lo rebotamos a la tienda
+    // Usamos redirect() directo con la URL entre comillas, sin ->route()
+    return redirect('/login'); 
 }
+}
+    

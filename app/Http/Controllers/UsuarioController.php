@@ -52,10 +52,10 @@ class UsuarioController extends Controller
     }
 
     // 2. Recibe los datos y verifica si el usuario existe y la contraseña es correcta
-    public function login(Request $request)
-    {
-        // Validamos que hayan escrito algo
-       $credenciales = $request->validate([
+   public function login(Request $request)
+{
+    // 1. Validamos que el usuario haya escrito ambos campos
+    $request->validate([
         'usuario'  => 'required|string',
         'password' => 'required|string',
     ], [
@@ -63,17 +63,30 @@ class UsuarioController extends Controller
         'password.required' => 'Por favor, ingresá tu contraseña.',
     ]);
 
-        // Auth::attempt busca el email en la BD y compara la contraseña encriptada
-        if (Auth::attempt($credenciales)) {
-            // Si todo está bien, crea la sesión de seguridad
-            $request->session()->regenerate();
+    // 2. Buscamos al usuario en la tabla usando tu modelo Usuario
+    $user = Usuario::where('usuario', $request->usuario)->first();
 
-            // Lo mandamos a la vista principal de la heladería (o a los productos)
-           return redirect('/Cliente')->with('success', '¡Bienvenido a Glace!');
+    // 3. Verificamos si el usuario existe y si la contraseña coincide con el Hash encriptado
+    if ($user && Hash::check($request->password, $user->password)) {
+        
+        // 4. Lo logueamos manualmente en el sistema de Laravel
+        Auth::login($user);
+
+        // 5. Regeneramos la sesión de forma segura (Esto previene el error 419)
+        $request->session()->regenerate();
+
+        // 👑 6. Evaluamos el perfil_id para saber a dónde mandarlo
+        if ($user->perfil_id == 1) {
+            // Si es Administrador, va a su panel
+            return redirect('/admin/dashboard')->with('success', 'Modo Administrador iniciado.');
         }
 
-        // Si la contraseña o el email están mal, lo devolvemos al login con un error
-     return back()->withErrors([
+        // 🍦 Si es Cliente (perfil_id == 2 u otro), va a la vista de clientes
+        return redirect('/Cliente')->with('success', '¡Bienvenido a Glace!');
+    }
+
+    // 7. Si los datos no coinciden, volvemos atrás con el mensaje de error
+    return back()->withErrors([
         'usuario' => 'El usuario o la contraseña no coinciden con nuestros registros.',
     ])->withInput($request->only('usuario')); 
 }
