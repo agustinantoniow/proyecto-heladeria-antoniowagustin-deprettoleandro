@@ -1,4 +1,4 @@
-@extends('components.layoutVisitante')
+@extends('components.layoutAdmin')
 @section('content')
 <div class="container mt-5" style="max-width: 600px;">
     <div class="mb-3">
@@ -12,8 +12,10 @@
             <h4 class="card-title mb-0 text-center" style="font-family: 'Fredoka', sans-serif;">Registrar Nuevo Producto</h4>
         </div>
         <div class="card-body p-4">
-            <form action="{{ route('admin.productos.store') }}" method="POST">
+            
+            <form action="{{ route('admin.productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Nombre del Gusto</label>
                     <input type="text" name="nombre" class="form-control rounded-3" placeholder="Ej: Americana" required>
@@ -27,6 +29,9 @@
                             <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
                         @endforeach
                     </select>
+                    @error('categoria_id')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="row g-3 mb-3">
@@ -40,9 +45,17 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-3">
                     <label class="form-label fw-semibold">Descripción</label>
                     <textarea name="descripcion" class="form-control rounded-3" rows="3" placeholder="Opcional..."></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Imagen del Gusto (Foto)</label>
+                    <input type="file" name="imagen" class="form-control rounded-3" accept="image/*">
+                    @error('imagen')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn btn-success text-white fw-bold w-100 py-2 rounded-3 shadow-sm">

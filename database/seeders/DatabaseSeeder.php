@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RolesSeeder;
 use Database\models\Usuario;
+use App\Models\Categoria;
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -30,5 +31,9 @@ class DatabaseSeeder extends Seeder
     'perfil_id' => 1, 
     'estado' => true
 ]);
+
+\App\Models\Categoria::firstOrCreate(['nombre' => 'Helados de agua']);
+        \App\Models\Categoria::firstOrCreate(['nombre' => 'Postres']);
+        \App\Models\Categoria::firstOrCreate(['nombre' => 'Línea familiar (pote)']);
     }
 }

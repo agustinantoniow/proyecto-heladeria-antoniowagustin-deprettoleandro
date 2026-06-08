@@ -48,7 +48,7 @@ class UsuarioController extends Controller
     public function showLoginForm()
     {
         // Cambiá 'auth.login' por el nombre y carpeta donde guardaste tu vista de login
-        return view('login'); 
+        return view('frontend.login'); 
     }
 
     // 2. Recibe los datos y verifica si el usuario existe y la contraseña es correcta

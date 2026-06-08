@@ -15,13 +15,13 @@
             <a class="nav-link nav-link-glace {{ request()->is('/') ? 'active fw-bold text-info' : '' }}" href="{{ route('admin.consultas') }}">Ver consultas</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('ListarProductos') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ListarProductos') }}">Listar Productos</a>
+            <a class="nav-link nav-link-glace {{ request()->is('ListarProductos') ? 'active fw-bold text-info' : '' }}" href="{{ route('admin.productos.index') }}">Listar Productos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.productos.create') }}">Agregar un producto</a>
+            <a class="nav-link" href="{{ route('admin.productos.create') }}">Agregar producto</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('EliminarProducto') ? 'active fw-bold text-info' : '' }}" href="{{ url('/EliminarProducto') }}">Eliminar un producto</a>
+            <a class="nav-link nav-link-glace {{ request()->is('EliminarProducto') ? 'active fw-bold text-info' : '' }}" href="{{ route('admin.productos.index') }}">Eliminar producto</a>
         </li>
        <li class="nav-item">
     <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

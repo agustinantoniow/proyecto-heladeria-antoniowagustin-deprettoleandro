@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->text('descripcion')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug')->nullable(); // Así no te vuelve a chillar la base de datos si va vacío
             $table->timestamps();
             $table->softDeletes();
         });

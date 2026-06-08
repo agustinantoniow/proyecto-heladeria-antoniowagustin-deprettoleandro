@@ -21,7 +21,7 @@
             <a class="nav-link nav-link-glace {{ request()->is('ComercializacionCliente') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ComercializacionCliente') }}">Comercialización</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('ProductosCliente') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ProductosCliente') }}">Productos</a>
+            <a class="nav-link nav-link-glace {{ request()->is('ProductosCliente') ? 'active fw-bold text-info' : '' }}" href="{{ route('productos.catalogo') }}">Productos</a>
         </li>
        
         <ul class="navbar-nav ms-auto">

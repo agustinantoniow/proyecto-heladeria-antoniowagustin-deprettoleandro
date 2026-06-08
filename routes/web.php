@@ -1,189 +1,128 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultaController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\ProductoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CarritoController;
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ClienteController;
-Route::get('/', function () {
-    return view('frontend.heladeriaglaceVisitante');
-});
-Route::get('/Cliente', function () {
-    return view('frontend.heladeriaglaceCliente');
-});
-Route::get('/terminosYusos', function () {
-    return view('frontend.terminosYusos');
-});
-Route::get('/terminosyusoCliente', function () {
-    return view('frontend.terminosyusoCliente');
-});
- Route::get('/QuienesSomos', function () {
-    return view('frontend.QuienesSomos');
-});
-Route::get('/QuienesSomosCliente', function () {
-    return view('frontend.QuienesSomosCliente');
-});
- Route::get('/Consultas', function () {
-    return view('frontend.Consultas');
-});
- Route::get('/ConsultasCliente', function () {
-    return view('frontend.ConsultasCliente');
-});
 
-Route::get('/Productos', [ProductoController::class, 'index'])->name('productos.index');
-Route::get('/', function () {
-    return view('frontend.heladeriaglaceVisitante');
-});
+// Usamos alias bien claros para no confundir el controlador público del administrador
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminUsuarioController;
+use App\Http\Controllers\Admin\ProductoController as AdminProductoController;
+use App\Http\Controllers\Admin\CategoriaController as AdminCategoriaController;
+use App\Http\Controllers\ProductoController as PublicoProductoController;
 
-    Route::get('/Productos', function () {
-    return view('frontend.Productos');
-});
+/*
+|--------------------------------------------------------------------------
+| 1. VISTAS PÚBLICAS Y FRONTIER (Visitantes / Clientes sin loguear)
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/contacto', function () {
-    return view('frontend.contacto');
-});
-Route::get('/contactoCliente', function () {
-    return view('frontend.contactoCliente');
-});
- Route::get('/Comercializacion', function () {
-    return view('frontend.Comercializacion');
-});
-Route::get('/ComercializacionCliente', function () {
-    return view('frontend.ComercializacionCliente   ');
-});
-Route::get('/Ingreso', function () {
-    return view('frontend.login');
-});
-Route::get('/ver mas...', function () {
-    return view('frontend.paginaHeladosAgua');
-});
+// Home e Institucionales
+Route::get('/', function () { return view('frontend.heladeriaglaceVisitante'); })->name('home');
+Route::get('/QuienesSomos', function () { return view('frontend.QuienesSomos'); })->name('quienes_somos');
+Route::get('/Comercializacion', function () { return view('frontend.Comercializacion'); });
+Route::get('/terminosYusos', function () { return view('frontend.terminosYusos'); });
 
-Route::get('/ver mas...Cliente', function () {
-    return view('frontend.paginaHeladosAguaCliente');
-});
+// Contacto y Consultas Públicas
+Route::get('/Consultas', function () { return view('frontend.Consultas'); });
+Route::post('/Consultas', [ConsultaController::class, 'store'])->name('consultas.store');
+Route::get('/contacto', function () { return view('frontend.contacto'); });
 
-Route::get('/ver mas....', function () {
-    return view('frontend.pagina-postres');
-});
-Route::get('/ver mas....Cliente', function () {
-    return view('frontend.pagina-postresCliente');
-});
- Route::get('/ver mas..', function () {
-    return view('frontend.pagina-lineafamiliar');
-});
-Route::get('/ver mas..Cliente', function () {
-    return view('frontend.pagina-lineaFamiliarCliente');
-});
- Route::get('/registrarse', function () {
-    return view('frontend.registrarse');
-});
- Route::get('/exito', function () {
-    return view('frontend.exito');
-});
- Route::get('/exitoCliente', function () {
-    return view('frontend.exitoCliente');
-});
-Route::get('/MiCarrito', function () {
-    return view('frontend.Carrito');
-});
-Route::get('/dashboard  ', function () {
-    return view('backend.admin.dashboard');
-});
+// Secciones "Ver Más..." de Categorías Públicas
+Route::get('/ver mas...', function () { return view('frontend.paginaHeladosAgua'); });
+Route::get('/ver mas....', function () { return view('frontend.pagina-postres'); });
+Route::get('/ver mas..', function () { return view('frontend.pagina-lineafamiliar'); });
+Route::get('/Productos', function () { return view('frontend.Productos'); });
+// --- EL CATÁLOGO PÚBLICO DE PRODUCTOS ---
 
 
 
-// Esta es para mostrar el formulario
-Route::get('/registro', [UsuarioController::class, 'create'])->name('registro');
-
-// ¡ESTA ES LA QUE CAUSA EL ERROR! Asegurate de que tenga el ->name('registro.store')
-Route::post('/registro', [UsuarioController::class, 'store'])->name('registro.store');
-
+/*
+|--------------------------------------------------------------------------
+| 2. AUTENTICACIÓN Y REGISTRO (Login, Logout y Registro)
+|--------------------------------------------------------------------------
+*/
+Route::get('/Ingreso', function () { return view('frontend.login'); });
 Route::get('/login', [UsuarioController::class, 'showLoginForm'])->name('login');
-// 2. Procesar el intento de inicio de sesión (POST)
-
-Route::post('/verificarUsuario', [UsuarioController::class, 'login'])->name('login.autenticar');
-// 3. Cerrar sesión (POST)
-
+Route::post('/login', [UsuarioController::class, 'login'])->name('login.autenticar');
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
-// 4. Procesar el formulario de creación de cuenta (POST)
+
+Route::get('/registrarse', function () { return view('frontend.registrarse'); });
+Route::get('/registro', [UsuarioController::class, 'create'])->name('registro');
+Route::post('/registro', [UsuarioController::class, 'store'])->name('registro.store');
 Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name('formregister');
 
-Route::get('/Consultas', [ConsultaController::class, 'index']);   // muestra el form
-Route::post('/Consultas', [ConsultaController::class, 'store']);  // procesa el form   
+Route::get('/exito', function () { return view('frontend.exito'); });
 
-Route::middleware(['auth', 'rol:cliente'])->group(function () {
+
+/*
+|--------------------------------------------------------------------------
+| 3. CAPA CLIENTE LOGUEADO (Middleware Auth / Rol Cliente)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->group(function () {
     
-    // Mostrar el carrito
-    Route::get('/carrito', [CarritoController::class, 'index'])
-        ->name('cliente.carrito');
+    // Vistas exclusivas del Cliente con sesión activa
+    Route::get('/Cliente', [ClienteController::class, 'index'])->name('cliente.index');
+    Route::get('/terminosyusoCliente', function () { return view('frontend.terminosyusoCliente'); });
+    Route::get('/QuienesSomosCliente', function () { return view('frontend.QuienesSomosCliente'); });
+    Route::get('/ConsultasCliente', function () { return view('frontend.ConsultasCliente'); });
+    Route::get('/contactoCliente', function () { return view('frontend.contactoCliente'); });
+    Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
+    Route::get('/exitoCliente', function () { return view('frontend.exitoCliente'); });
+    
+    // Ver más categorías versión Cliente
+    Route::get('/ver mas...Cliente', function () { return view('frontend.paginaHeladosAguaCliente'); });
+    Route::get('/ver mas....Cliente', function () { return view('frontend.pagina-postresCliente'); });
+    Route::get('/ver mas..Cliente', function () { return view('frontend.pagina-lineaFamiliarCliente'); });
 
-    // Agregar un producto
-    Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])
-        ->name('carrito.agregar');
-
-    // Eliminar un producto
-    Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminar'])
-        ->name('carrito.eliminar');
-
-    // Confirmar la compra
-    Route::post('/carrito/confirmar', [CarritoController::class, 'confirmar'])
-        ->name('carrito.confirmar');
-
-    // Vista de compra confirmada (protegida: redirige si no hay sesión)
+    // Gestión de Carrito de Compras
+    Route::get('/MiCarrito', function () { return view('frontend.Carrito'); });
+    Route::get('/carrito', [CarritoController::class, 'index'])->name('cliente.carrito');
+    Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
+    Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
+    Route::post('/carrito/confirmar', [CarritoController::class, 'confirmar'])->name('carrito.confirmar');
     Route::get('/compra-confirmada', function () {
-        if (!session('total')) {
-            return redirect()->route('cliente.dashboard');
-        }
+        if (!session('total')) return redirect('/Cliente');
         return view('frontend.compra-confirmada');
     })->name('compra.confirmada');
-
-});
-Route::middleware(['auth'])->group(function () {
-    Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
 });
 
-Route::post('/Consultas', [ConsultaController::class, 'store'])->name('consultas.store');
 
-Route::get('/admin/consultas', [App\Http\Controllers\ConsultaController::class, 'index'])->name('admin.consultas');
-
-// Ruta protegida para el Admin
-
-// Ruta protegida para el Admin
+/*
+|--------------------------------------------------------------------------
+| 4. CAPA ADMINISTRADOR (Middleware Auth + AdminMiddleware)
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
     
-    // El inicio del panel
-    Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // Dashboard Inicial
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     
-    // La vista de la tabla de consultas
-    Route::get('/admin/consultas', [\App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.consultas');
-    
-    // Ruta para marcar como leída (usa el método PATCH)
-    Route::patch('/admin/consultas/{id}/leido', [\App\Http\Controllers\Admin\AdminController::class, 'marcarLeido'])->name('consultas.marcarLeido');
-    
-    // Ruta para eliminar el mensaje (usa el método DELETE)
-    Route::delete('/admin/consultas/{id}', [\App\Http\Controllers\Admin\AdminController::class, 'destroy'])->name('consultas.destroy');
+    // Gestión de Consultas del Admin
+    Route::get('/admin/consultas', [AdminController::class, 'index'])->name('admin.consultas');
+    Route::patch('/admin/consultas/{id}/leido', [AdminController::class, 'marcarLeido'])->name('consultas.marcarLeido');
+    Route::delete('/admin/consultas/{id}', [AdminController::class, 'destroy'])->name('consultas.destroy');
 
-    // Ruta provisoria para que no rompa el dashboard
-// Ruta provisoria para que no rompa el dashboard
-   // 👑 Gestión de Usuarios Administrador
-Route::get('/admin/usuarios', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'index'])->name('admin.usuarios.index');
-Route::post('/admin/usuarios', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'store'])->name('admin.usuarios.store');
-    Route::put('/admin/usuarios/{id}', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'update'])->name('admin.usuarios.update');
-    Route::patch('/admin/usuarios/{id}/toggle', [\App\Http\Controllers\Admin\AdminUsuarioController::class, 'toggleStatus'])->name('admin.usuarios.toggle');
-    
+    // Gestión de Usuarios Admin
+    Route::get('/admin/usuarios', [AdminUsuarioController::class, 'index'])->name('admin.usuarios.index');
+    Route::post('/admin/usuarios', [AdminUsuarioController::class, 'store'])->name('admin.usuarios.store');
+    Route::put('/admin/usuarios/{id}', [AdminUsuarioController::class, 'update'])->name('admin.usuarios.update');
+    Route::patch('/admin/usuarios/{id}/toggle', [AdminUsuarioController::class, 'toggleStatus'])->name('admin.usuarios.toggle');
    
-// 🍦 --- GESTIÓN DE PRODUCTOS GLACE (Orden correcto) ---
-    Route::get('/admin/Productos/create', [App\Http\Controllers\Admin\ProductoController::class, 'create'])->name('admin.productos.create');
-    Route::get('/admin/Productos', [App\Http\Controllers\Admin\ProductoController::class, 'index'])->name('admin.productos.index');
-    Route::post('/admin/Productos', [App\Http\Controllers\Admin\ProductoController::class, 'store'])->name('admin.productos.store');
+    // 🍦 INVENTARIO DE PRODUCTOS (ADMIN) - Con la "P" Mayúscula para respetar tu URL
+    Route::get('/admin/Productos', [AdminProductoController::class, 'index'])->name('admin.productos.index');
+    Route::get('/admin/Productos/create', [AdminProductoController::class, 'create'])->name('admin.productos.create');
+    Route::post('/admin/Productos', [AdminProductoController::class, 'store'])->name('admin.productos.store');
+    Route::patch('/admin/productos/{producto}/toggle-status', [AdminProductoController::class, 'toggleStatus'])->name('admin.productos.toggleStatus');
+    
+    Route::patch('/admin/productos/{id}/update-fast', [AdminProductoController::class, 'updateFast'])->name('admin.productos.updateFast');
+    Route::delete('/admin/productos/{id}', [App\Http\Controllers\Admin\ProductoController::class, 'destroy'])->name('admin.productos.destroy');
+   
+    // Gestión de Categorías Admin
+    Route::get('/admin/categorias', [AdminCategoriaController::class, 'index'])->name('admin.categorias.index');
+    Route::get('/admin/categorias/create', [AdminCategoriaController::class, 'create'])->name('admin.categorias.create');
+    Route::post('/admin/categorias', [AdminCategoriaController::class, 'store'])->name('admin.categorias.store');
 });
-
-// Esta es la ruta que procesa el formulario usando tu UsuarioController modificado
-Route::post('/login', [\App\Http\Controllers\UsuarioController::class, 'login']);
-
-// Esta es la ruta que muestra la interfaz del cliente al loguearse con éxito
-Route::get('/Cliente', [\App\Http\Controllers\ClienteController::class, 'index'])->middleware('auth');
