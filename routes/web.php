@@ -5,7 +5,8 @@ use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ClienteController;
-
+use App\Http\Controllers\ProductosClienteController;
+use App\Http\Controllers\Admin\ProductoController; // O ProductosController si es en plural
 // Usamos alias bien claros para no confundir el controlador público del administrador
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUsuarioController;
@@ -31,10 +32,11 @@ Route::post('/Consultas', [ConsultaController::class, 'store'])->name('consultas
 Route::get('/contacto', function () { return view('frontend.contacto'); });
 
 // Secciones "Ver Más..." de Categorías Públicas
+Route::get('/Productos', function () { return view('frontend.Productos'); });
 Route::get('/ver mas...', function () { return view('frontend.paginaHeladosAgua'); });
 Route::get('/ver mas....', function () { return view('frontend.pagina-postres'); });
 Route::get('/ver mas..', function () { return view('frontend.pagina-lineafamiliar'); });
-Route::get('/Productos', function () { return view('frontend.Productos'); });
+Route::view('/productos', 'productos')->name('ProductosCliente');
 // --- EL CATÁLOGO PÚBLICO DE PRODUCTOS ---
 
 
@@ -65,19 +67,23 @@ Route::get('/exito', function () { return view('frontend.exito'); });
 Route::middleware(['auth'])->group(function () {
     
     // Vistas exclusivas del Cliente con sesión activa
-    Route::get('/Cliente', [ClienteController::class, 'index'])->name('cliente.index');
+    Route::get('/Cliente', [ClienteController::class, 'index'])->name('frontend.heladeriaGlaceCliente');
     Route::get('/terminosyusoCliente', function () { return view('frontend.terminosyusoCliente'); });
     Route::get('/QuienesSomosCliente', function () { return view('frontend.QuienesSomosCliente'); });
     Route::get('/ConsultasCliente', function () { return view('frontend.ConsultasCliente'); });
     Route::get('/contactoCliente', function () { return view('frontend.contactoCliente'); });
     Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
+      Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
+   // Cambia 'ProductoController' por el nombre exacto de tu controlador si se llama distinto
+   Route::get('/productos', [\App\Http\Controllers\Admin\ProductoController::class, 'catalogoCliente'])->name('ProductosCliente');
+   
     Route::get('/exitoCliente', function () { return view('frontend.exitoCliente'); });
     
     // Ver más categorías versión Cliente
     Route::get('/ver mas...Cliente', function () { return view('frontend.paginaHeladosAguaCliente'); });
     Route::get('/ver mas....Cliente', function () { return view('frontend.pagina-postresCliente'); });
     Route::get('/ver mas..Cliente', function () { return view('frontend.pagina-lineaFamiliarCliente'); });
-
+     
     // Gestión de Carrito de Compras
     Route::get('/MiCarrito', function () { return view('frontend.Carrito'); });
     Route::get('/carrito', [CarritoController::class, 'index'])->name('cliente.carrito');

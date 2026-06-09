@@ -16,6 +16,7 @@ class ProductoController extends Controller
         $categorias = Categoria::all();
         
         return view('backend.admin.productos.index', compact('productos', 'categorias'));
+          
     }
 
     // 2. Muestra la vista con el formulario para agregar un producto
@@ -111,5 +112,13 @@ public function destroy($id)
 
     // Redireccionamos de vuelta con el mensaje de éxito
     return redirect()->route('admin.productos.index')->with('success', 'El producto ha sido eliminado permanentemente del catálogo.');
+}
+public function catalogoCliente()
+{
+    // Trae todos los productos de la base de datos (con su categoría relacionada)
+    $productos = Producto::with('categoria')->get();
+
+    // Entra a la carpeta 'frontend' y busca el archivo 'productosClientes'
+    return view('frontend.productosClientes', compact('productos')); 
 }
 }

@@ -1,4 +1,3 @@
-
 @extends('components.layoutCliente')
 @section('title', 'Nuestros Productos - Heladería Glace')
 @section('content')
@@ -8,6 +7,13 @@
         <h1 class="display-4 fw-bold text-info" style="font-family: 'Fredoka', sans-serif;">Nuestros Sabores</h1>
         <p class="text-muted" style="font-family: 'Montserrat', sans-serif;">Disfrutá del verdadero helado artesanal</p>
     </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm mb-4" role="alert">
+            <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @forelse($productos as $prod)
@@ -40,9 +46,34 @@
                             </div>
                             
                             @if($prod->stock > 0)
-                                <button class="btn btn-info text-white fw-bold px-4 py-2 rounded-3 shadow-sm">
-                                    <i class="fa-solid fa-cart-shopping me-1"></i> Comprar
-                                </button>
+                                <form action="{{ route('carrito.agregar') }}" method="POST" class="d-flex align-items-center gap-2">
+                                    @csrf
+                                    <input type="hidden" name="producto_id" value="{{ $prod->id }}">
+                                    
+                                    <div class="input-group" style="width: 120px;">
+                                        <button class="btn btn-outline-info" type="button" onclick="restarCantidad({{ $prod->id }})">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        
+                                        <input type="number" 
+                                               id="cantidad_{{ $prod->id }}" 
+                                               name="cantidad" 
+                                               value="1" 
+                                               min="1" 
+                                               max="{{ $prod->stock }}" 
+                                               class="form-control text-center px-1 fw-bold border-info text-dark" 
+                                               readonly 
+                                               required>
+                                        
+                                        <button class="btn btn-outline-info" type="button" onclick="sumarCantidad({{ $prod->id }}, {{ $prod->stock }})">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-info text-white fw-bold px-3 py-2 rounded-3 shadow-sm">
+                                        <i class="fa-solid fa-cart-shopping me-1"></i> Comprar
+                                    </button>
+                                </form>
                             @else
                                 <span class="badge bg-danger p-2 rounded-3">Sin Stock</span>
                             @endif
@@ -57,5 +88,23 @@
         @endforelse
     </div>
 </div>
+
+<script>
+    function restarCantidad(productoId) {
+        let input = document.getElementById('cantidad_' + productoId);
+        let valorActual = parseInt(input.value);
+        if (valorActual > 1) {
+            input.value = valorActual - 1;
+        }
+    }
+
+    function sumarCantidad(productoId, maxStock) {
+        let input = document.getElementById('cantidad_' + productoId);
+        let valorActual = parseInt(input.value);
+        if (valorActual < maxStock) {
+            input.value = valorActual + 1;
+        }
+    }
+</script>
 
 @endsection

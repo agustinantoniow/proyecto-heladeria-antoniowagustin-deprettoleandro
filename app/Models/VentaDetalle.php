@@ -12,4 +12,8 @@ class VentaDetalle extends Model
         return $this->belongsTo(VentaCabecera::class, 'venta_id'); 
         } 
         // Relación: un detalle apunta a un producto public function producto() { return $this->belongsTo(Producto::class, 'producto_id'); }
+        public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'producto_id');
+    }
 }
