@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\AdminUsuarioController;
 use App\Http\Controllers\Admin\ProductoController as AdminProductoController;
 use App\Http\Controllers\Admin\CategoriaController as AdminCategoriaController;
 use App\Http\Controllers\ProductoController as PublicoProductoController;
-
+use App\Http\Controllers\CatalogoController;
 /*
 |--------------------------------------------------------------------------
 | 1. VISTAS PÚBLICAS Y FRONTIER (Visitantes / Clientes sin loguear)
@@ -46,7 +46,7 @@ Route::view('/productos', 'productos')->name('ProductosCliente');
 | 2. AUTENTICACIÓN Y REGISTRO (Login, Logout y Registro)
 |--------------------------------------------------------------------------
 */
-Route::get('/Ingreso', function () { return view('frontend.login'); });
+Route::get('/Ingreso', function () { return view('frontend.heladeriaGlaceVisitante'); });
 Route::get('/login', [UsuarioController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [UsuarioController::class, 'login'])->name('login.autenticar');
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('logout');
@@ -83,7 +83,27 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ver mas...Cliente', function () { return view('frontend.paginaHeladosAguaCliente'); });
     Route::get('/ver mas....Cliente', function () { return view('frontend.pagina-postresCliente'); });
     Route::get('/ver mas..Cliente', function () { return view('frontend.pagina-lineaFamiliarCliente'); });
-     
+    // Rutas para clientes registrados
+    Route::middleware(['auth'])->group(function () {
+    // La ruta recibe un parámetro {id} que es el ID de la categoría
+    Route::get('/catalogo/categoria/{id}', [CatalogoController::class, 'porCategoria'])->name('catalogo.categoria');
+
+    
+
+
+// 1. RUTA DE LA PÁGINA PRINCIPAL (La que carga las tarjetas de categorías)
+Route::get('/', [CatalogoController::class, 'index'])->name('inicio');
+
+// 2. RUTAS PROTEGIDAS PARA CLIENTES REGISTRADOS
+Route::middleware(['auth'])->group(function () {
+    
+    // ... tus otras rutas (carrito, perfil, etc.) ...
+
+    // Esta es la ruta a la que apunta el botón "Ver catálogo completo"
+    Route::get('/catalogo/categoria/{id}', [CatalogoController::class, 'porCategoria'])->name('catalogo.categoria');
+});
+
+});
     // Gestión de Carrito de Compras
     Route::get('/MiCarrito', function () { return view('frontend.Carrito'); });
     Route::get('/carrito', [CarritoController::class, 'index'])->name('cliente.carrito');
@@ -127,6 +147,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::patch('/admin/productos/{id}/update-fast', [AdminProductoController::class, 'updateFast'])->name('admin.productos.updateFast');
     Route::delete('/admin/productos/{id}', [App\Http\Controllers\Admin\ProductoController::class, 'destroy'])->name('admin.productos.destroy');
    
+
+    // Fíjate de usar el mismo nombre de controlador que tengas en tu proyecto
+Route::patch('/admin/productos/{id}/update-fast', [ProductoController::class, 'updateFast'])->name('admin.productos.updateFast');
     // Gestión de Categorías Admin
     Route::get('/admin/categorias', [AdminCategoriaController::class, 'index'])->name('admin.categorias.index');
     Route::get('/admin/categorias/create', [AdminCategoriaController::class, 'create'])->name('admin.categorias.create');

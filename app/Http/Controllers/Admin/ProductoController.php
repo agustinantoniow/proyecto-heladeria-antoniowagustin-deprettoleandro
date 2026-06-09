@@ -72,32 +72,47 @@ class ProductoController extends Controller
 
         return redirect()->route('admin.productos.index')->with('success', 'Estado del producto actualizado con éxito!');
     }
-    public function updateFast(Request $request, $id)
-{
-    // Validamos que los datos enviados cumplan los requisitos básicos
-    $request->validate([
-        'nombre' => 'sometimes|required|string|max:255',
-        'precio' => 'sometimes|required|numeric|min:0',
-        'stock'  => 'sometimes|required|integer|min:0',
-    ]);
-
-    try {
+  public function updateFast(Request $request, $id)
+    {
         $producto = Producto::findOrFail($id);
         
-        // Actualizamos dinámicamente solo los campos que vengan en la petición
-        $producto->update($request->only(['nombre', 'precio', 'stock']));
+        // Actualizar datos básicos
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->stock = $request->stock;
+
+        $imagenUrl = null;
+
+        // Procesar la imagen si viene en el request
+        if ($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
+            
+            // 1. Crear un nombre único (Cache Busting)
+            $nombreImagen = time() . '_' . $file->getClientOriginalName();
+            
+            // 2. Mover el archivo a public/uploads/productos 
+            $file->move(public_path('uploads/productos'), $nombreImagen);
+            
+            // 3. Eliminar imagen vieja si existe físicamente
+            if ($producto->imagen && file_exists(public_path('uploads/productos/' . $producto->imagen))) {
+                unlink(public_path('uploads/productos/' . $producto->imagen));
+            }
+
+            // 4. Guardar el nuevo nombre en la BD
+            $producto->imagen = $nombreImagen;
+            
+            // 5. Preparar la URL para devolver al JavaScript
+            $imagenUrl = asset('uploads/productos/' . $nombreImagen);
+        }
+
+        $producto->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Producto actualizado correctamente.'
+            'message' => 'Producto actualizado correctamente.',
+            'imagen_url' => $imagenUrl 
         ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Error al actualizar el producto: ' . $e->getMessage()
-        ], 500);
     }
-}
 public function destroy($id)
 {
     $producto = \App\Models\Producto::findOrFail($id);
@@ -121,4 +136,6 @@ public function catalogoCliente()
     // Entra a la carpeta 'frontend' y busca el archivo 'productosClientes'
     return view('frontend.productosClientes', compact('productos')); 
 }
+
+
 }

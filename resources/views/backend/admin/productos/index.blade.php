@@ -1,4 +1,4 @@
-@extends('components.layoutAdmin') {{-- Cambia por tu layout de panel si es otro --}}
+@extends('components.layoutAdmin')
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,7 +15,6 @@
         </div>
     @endif
 
-    {{-- Contenedor de alertas dinámicas flotantes para AJAX --}}
     <div id="alertas-ajax" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;"></div>
 
     <div class="card shadow border-0 rounded-3 p-3">
@@ -35,11 +34,16 @@
                 @foreach($productos as $prod)
                 <tr data-id="{{ $prod->id }}" class="fila-producto">
                     <td>
-                        @if($prod->imagen)
-                            <img src="{{ asset('uploads/productos/' . $prod->imagen) }}" alt="{{ $prod->nombre }}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">
-                        @else
-                            <span class="text-muted small">Sin foto</span>
-                        @endif
+                        {{-- DIV contenedor para ocultar la imagen al editar --}}
+                        <div class="text-lectura div-imagen-lectura">
+                            @if($prod->imagen)
+                                <img src="{{ asset('uploads/productos/' . $prod->imagen) }}" alt="{{ $prod->nombre }}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">
+                            @else
+                                <span class="text-muted small">Sin foto</span>
+                            @endif
+                        </div>
+                        {{-- INPUT FILE oculto --}}
+                        <input type="file" class="form-control form-control-sm d-none input-imagen" accept="image/*" style="max-width: 180px;">
                     </td>
                     
                     <td>
@@ -97,11 +101,11 @@
                             </form>
                             <form action="{{ route('admin.productos.destroy', $prod->id) }}" method="POST" class="d-inline form-eliminar-producto" onsubmit="return confirmarEliminacion(event, '{{ $prod->nombre }}')">
                                  @csrf
-                                    @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger btn-tacho-eliminar" title="Eliminar definitivamente">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </button>
-                        </form>
+                                 @method('DELETE')
+                                 <button type="submit" class="btn btn-sm btn-outline-danger btn-tacho-eliminar" title="Eliminar definitivamente">
+                                     <i class="fa-solid fa-trash-can"></i>
+                                 </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -127,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const tabla = document.querySelector('.table');
 
     tabla.addEventListener('click', function(e) {
-        // Encontramos si se hizo click en el botón Editar/Guardar
         const btnEditar = e.target.closest('.btn-editar-fila');
         const btnCancelar = e.target.closest('.btn-cancelar-fila');
         
@@ -136,8 +139,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const fila = (btnEditar || btnCancelar).closest('tr');
         const productoId = fila.dataset.id;
 
-        // Elementos de la fila actual
         const textosLectura = fila.querySelectorAll('.text-lectura');
+        const divImagenLectura = fila.querySelector('.div-imagen-lectura');
+        const inputImagen = fila.querySelector('.input-imagen');
         const inputNombre = fila.querySelector('.input-nombre');
         const divPrecio = fila.querySelector('.div-precio');
         const inputPrecio = fila.querySelector('.input-precio');
@@ -147,9 +151,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const formToggleStatus = fila.querySelector('.form-toggle-status');
         const botonEditarCambiante = fila.querySelector('.btn-editar-fila');
 
-        // ACCIÓN: CANCELAR EDICIÓN
+        // ACCIÓN: CANCELAR
         if (btnCancelar) {
             textosLectura.forEach(el => el.classList.remove('d-none'));
+            inputImagen.classList.add('d-none');
+            inputImagen.value = ''; // Limpiamos la imagen seleccionada
             inputNombre.classList.add('d-none');
             divPrecio.classList.add('d-none');
             divStock.classList.add('d-none');
@@ -161,54 +167,61 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // ACCIÓN: CONVERTIR A MODO EDICIÓN
+        // ACCIÓN: EDITAR
         if (botonEditarCambiante.classList.contains('btn-outline-primary')) {
-            // Guardamos valores actuales por si cancela
-            inputNombre.dataset.original = inputNombre.value;
-            inputPrecio.dataset.original = inputPrecio.value;
-            inputStock.dataset.original = inputStock.value;
-
-            // Intercambiamos visibilidades
             textosLectura.forEach(el => el.className += " d-none");
+            inputImagen.classList.remove('d-none');
             inputNombre.classList.remove('d-none');
             divPrecio.classList.remove('d-none');
             divStock.classList.remove('d-none');
             btnCancelarFila.classList.remove('d-none');
-            formToggleStatus.classList.add('d-none'); // Ocultamos el pausar provisionalmente
+            formToggleStatus.classList.add('d-none'); 
 
-            // Transformamos el botón editar en botón de confirmación
             botonEditarCambiante.className = "btn btn-sm btn-success text-white btn-editar-fila shadow-sm";
             botonEditarCambiante.innerHTML = `<i class="fa-solid fa-floppy-disk me-1"></i> Guardar`;
             inputNombre.focus();
         } 
-        // ACCIÓN: GUARDAR CAMBIOS (PROCESAMIENTO AJAX)
+        // ACCIÓN: GUARDAR CAMBIOS
         else {
-            const datos = {
-                nombre: inputNombre.value,
-                precio: inputPrecio.value,
-                stock: inputStock.value
-            };
+            // Empaquetamos todo en un FormData para poder subir el archivo físico
+            const formData = new FormData();
+            formData.append('nombre', inputNombre.value);
+            formData.append('precio', inputPrecio.value);
+            formData.append('stock', inputStock.value);
+            
+            // AGREGADO: Engañamos a Laravel de forma segura para que acepte el PATCH con imagen
+            formData.append('_method', 'PATCH'); 
+            
+            // Si el usuario eligió una foto nueva, la sumamos al paquete
+            if (inputImagen.files.length > 0) {
+                formData.append('imagen', inputImagen.files[0]);
+            }
 
-            // Enviamos la actualización por Fetch a la ruta Fast que creamos en el paso anterior
             fetch(`/admin/productos/${productoId}/update-fast`, {
-                method: 'POST',
+                method: 'POST', // Mantenemos POST
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'X-HTTP-Method-Override': 'PATCH'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    // ELIMINADO: 'X-HTTP-Method-Override': 'PATCH'
                 },
-                body: JSON.stringify(datos)
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Actualizamos los textos estáticos con los nuevos valores ingresados
-                    fila.querySelectorAll('.text-lectura')[0].innerText = inputNombre.value;
-                    fila.querySelectorAll('.text-lectura')[1].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
-                    fila.querySelectorAll('.text-lectura')[2].innerText = `${inputStock.value} u.`;
+                    // Actualizamos los textos
+                    textosLectura[1].innerText = inputNombre.value;
+                    textosLectura[2].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
+                    textosLectura[3].innerText = `${inputStock.value} u.`;
 
-                    // Restauramos la interfaz a modo lectura
+                    // Si el servidor devolvió una nueva URL de imagen, actualizamos el HTML
+                    if (data.imagen_url) {
+                        divImagenLectura.innerHTML = `<img src="${data.imagen_url}" alt="${inputNombre.value}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">`;
+                    }
+
+                    // Volvemos a modo lectura
                     textosLectura.forEach(el => el.classList.remove('d-none'));
+                    inputImagen.classList.add('d-none');
+                    inputImagen.value = ''; 
                     inputNombre.classList.add('d-none');
                     divPrecio.classList.add('d-none');
                     divStock.classList.add('d-none');
@@ -218,7 +231,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     botonEditarCambiante.className = "btn btn-sm btn-outline-primary btn-editar-fila";
                     botonEditarCambiante.innerHTML = `<i class="fa-solid fa-pen-to-square me-1"></i> Editar`;
 
-                    // Destello de éxito
                     fila.classList.add('destello-guardado');
                     setTimeout(() => fila.classList.remove('destello-guardado'), 1000);
 
