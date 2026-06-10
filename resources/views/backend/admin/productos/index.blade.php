@@ -51,7 +51,16 @@
                         <input type="text" class="form-control form-control-sm d-none input-nombre fw-bold" value="{{ $prod->nombre }}">
                     </td>
                     
-                    <td>{{ $prod->categoria->nombre ?? 'Sin categoría' }}</td>
+                    <td>
+                        <span class="text-lectura">{{ $prod->categoria->nombre ?? 'Sin categoría' }}</span>
+                        <select class="form-select form-select-sm d-none input-categoria">
+                            @foreach($categorias as $cat)
+                                <option value="{{ $cat->id }}" {{ (isset($prod->categoria) && $prod->categoria->id == $cat->id) ? 'selected' : '' }}>
+                                    {{ $cat->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </td>
                     
                     <td>
                         <span class="text-lectura fw-bold text-success">${{ number_format($prod->precio, 2) }}</span>
@@ -143,6 +152,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const divImagenLectura = fila.querySelector('.div-imagen-lectura');
         const inputImagen = fila.querySelector('.input-imagen');
         const inputNombre = fila.querySelector('.input-nombre');
+        const inputCategoria = fila.querySelector('.input-categoria');
+        const inputImagen = fila.querySelector('.input-imagen');
+        const contenedorImagen = fila.querySelector('.contenedor-imagen');
         const divPrecio = fila.querySelector('.div-precio');
         const inputPrecio = fila.querySelector('.input-precio');
         const divStock = fila.querySelector('.div-stock');
@@ -157,6 +169,9 @@ document.addEventListener('DOMContentLoaded', function () {
             inputImagen.classList.add('d-none');
             inputImagen.value = ''; // Limpiamos la imagen seleccionada
             inputNombre.classList.add('d-none');
+            inputCategoria.classList.add('d-none');
+            inputImagen.classList.add('d-none');
+            inputImagen.value = ''; // Limpiamos selección de archivo
             divPrecio.classList.add('d-none');
             divStock.classList.add('d-none');
             btnCancelarFila.classList.add('d-none');
@@ -169,9 +184,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // ACCIÓN: EDITAR
         if (botonEditarCambiante.classList.contains('btn-outline-primary')) {
-            textosLectura.forEach(el => el.className += " d-none");
-            inputImagen.classList.remove('d-none');
+            // Guardamos valores actuales por si cancela
+            inputNombre.dataset.original = inputNombre.value;
+            inputCategoria.dataset.original = inputCategoria.value;
+            inputPrecio.dataset.original = inputPrecio.value;
+            inputStock.dataset.original = inputStock.value;
+
+            // Intercambiamos visibilidades
+            textosLectura.forEach(el => el.classList.add('d-none'));
             inputNombre.classList.remove('d-none');
+            inputCategoria.classList.remove('d-none');
+            inputImagen.classList.remove('d-none');
             divPrecio.classList.remove('d-none');
             divStock.classList.remove('d-none');
             btnCancelarFila.classList.remove('d-none');
@@ -200,18 +223,24 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/admin/productos/${productoId}/update-fast`, {
                 method: 'POST', // Mantenemos POST
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    // ELIMINADO: 'X-HTTP-Method-Override': 'PATCH'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-HTTP-Method-Override': 'PATCH' // Laravel interpreta POST con esto como PATCH
                 },
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Actualizamos los textos
-                    textosLectura[1].innerText = inputNombre.value;
-                    textosLectura[2].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
-                    textosLectura[3].innerText = `${inputStock.value} u.`;
+                    // Actualizamos los textos estáticos en la vista leída
+                    fila.querySelectorAll('.text-lectura')[0].innerText = inputNombre.value;
+                    fila.querySelectorAll('.text-lectura')[1].innerText = inputCategoria.options[inputCategoria.selectedIndex].text;
+                    fila.querySelectorAll('.text-lectura')[2].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
+                    fila.querySelectorAll('.text-lectura')[3].innerText = `${inputStock.value} u.`;
+
+                    // Si se actualizó la imagen, renderizamos la miniatura nueva que devuelve el backend
+                    if (data.imagen_url) {
+                        contenedorImagen.innerHTML = `<img src="${data.imagen_url}" class="rounded-2 img-preview" style="width: 50px; height: 50px; object-fit: cover;">`;
+                    }
 
                     // Si el servidor devolvió una nueva URL de imagen, actualizamos el HTML
                     if (data.imagen_url) {
@@ -223,6 +252,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     inputImagen.classList.add('d-none');
                     inputImagen.value = ''; 
                     inputNombre.classList.add('d-none');
+                    inputCategoria.classList.add('d-none');
+                    inputImagen.classList.add('d-none');
+                    inputImagen.value = '';
                     divPrecio.classList.add('d-none');
                     divStock.classList.add('d-none');
                     btnCancelarFila.classList.add('d-none');

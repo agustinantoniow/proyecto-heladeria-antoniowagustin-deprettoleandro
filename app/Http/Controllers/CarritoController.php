@@ -41,55 +41,78 @@ class CarritoController extends Controller
     }
 
     // 5.3 — agregar producto desde el catálogo
-    public function agregar(Request $request)
-    {
-        // 1. Validar que el usuario esté logueado antes de comprar
-        if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Debes iniciar sesión para agregar productos al carrito.');
+  public function agregar(Request $request)
+{
+    // 1. Validar que el usuario esté logueado antes de comprar
+    if (!auth()->check()) {
+        return redirect()->route('login')->with('error', 'Debes iniciar sesión para agregar productos al carrito.');
+    }
+
+    // 2. Validar los datos que vienen del formulario (eliminamos el min:1 para aceptar el -1 de la vista)
+    $request->validate([
+        'producto_id' => 'required|exists:productos,id',
+        'cantidad'    => 'required|integer',
+    ]);
+
+    $producto = Producto::findOrFail($request->producto_id);
+    
+    if (!$producto->activo) {
+        return redirect()->back()->with('error', 'Lo sentimos, este producto se encuentra pausado temporalmente.');
+    }
+
+    $carrito = $this->obtenerCarrito();
+    
+    // Buscamos si el helado ya estaba en este carrito pendiente
+    $item = $carrito->detalles()->where('producto_id', $producto->id)->first();
+
+    // Guardamos la cantidad que mandó la vista (puede ser 1, 2, o -1 desde el carrito)
+    $cantidadModificar = (int)$request->cantidad;
+
+    if ($item) {
+        if ($cantidadModificar < 0) {
+            // LÓGICA PARA RESTAR UNIDAD (Cuando la vista manda cantidad = -1)
+            if ($item->cantidad > 1) {
+                $item->cantidad -= 1; // Restamos 1 unidad fija de forma segura
+            } else {
+                return back()->with('error', 'La cantidad mínima es 1. Si no lo deseas, puedes eliminarlo.');
+            }
+        } else {
+            // LÓGICA PARA SUMAR UNIDAD (Catálogo o botón "+" del carrito)
+            if ($producto->stock < ($item->cantidad + $cantidadModificar)) {
+                return back()->with('error', 'No podés agregar esa cantidad. Supera el stock disponible.');
+            }
+            $item->cantidad += $cantidadModificar;
         }
 
-        // 2. Validar los datos que vienen del formulario
-        $request->validate([
-            'producto_id' => 'required|exists:productos,id',
-            'cantidad'    => 'required|integer|min:1',
-        ]);
+        // Recalculamos el subtotal de este helado multiplicando por su precio
+        $item->subtotal = $item->cantidad * $item->precio_unitario;
+        $item->save();
+    } else {
+        // SI ES NUEVO EN EL CARRITO
+        // Si por alguna razón intenta restar un producto que no existe en el carrito, lo frenamos
+        if ($cantidadModificar < 0) {
+            return back()->with('error', 'Operación no válida.');
+        }
 
-        $producto = Producto::findOrFail($request->producto_id);
-        
-        // 3. Validar Stock real de la base de datos
-        if ($producto->stock < $request->cantidad) {
+        // Validar Stock real de la base de datos para el nuevo ítem
+        if ($producto->stock < $cantidadModificar) {
             return back()->with('error', 'No hay suficiente stock disponible de ' . $producto->nombre);
         }
 
-        $carrito = $this->obtenerCarrito();
-        
-        // Buscamos si el helado ya estaba en este carrito pendiente
-        $item = $carrito->detalles()->where('producto_id', $producto->id)->first();
-
-        if ($item) {
-            // Si ya existe, controlamos que la suma total no supere el stock
-            if ($producto->stock < ($item->cantidad + $request->cantidad)) {
-                return back()->with('error', 'No podés agregar esa cantidad. Supera el stock disponible.');
-            }
-
-            $item->cantidad += $request->cantidad;
-            $item->subtotal = $item->cantidad * $item->precio_unitario;
-            $item->save();
-        } else {
-            // Si es nuevo en el carrito, creamos el detalle vinculando el precio actual del producto
-            $carrito->detalles()->create([
-                'producto_id'     => $producto->id,
-                'cantidad'        => $request->cantidad,
-                'precio_unitario' => $producto->precio,
-                'subtotal'        => $producto->precio * $request->cantidad,
-            ]);
-        }
-
-        // Actualizamos el total de la cabecera
-        $this->recalcularTotal($carrito);
-        
-        return back()->with('success', '¡' . $producto->nombre . ' agregado al carrito con éxito!');
+        // Creamos el detalle vinculando el precio actual del producto
+        $carrito->detalles()->create([
+            'producto_id'     => $producto->id,
+            'cantidad'        => $cantidadModificar,
+            'precio_unitario' => $producto->precio,
+            'subtotal'        => $producto->precio * $cantidadModificar,
+        ]);
     }
+
+    // Actualizamos el total general de la cabecera del carrito
+    $this->recalcularTotal($carrito);
+    
+    return back()->with('success', '¡Carrito actualizado con éxito!');
+}
 
     // 5.4 — eliminar / quitar un producto del carrito
     public function eliminar($id)

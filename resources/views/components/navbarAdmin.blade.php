@@ -20,7 +20,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.productos.create') }}">Agregar producto</a>
         </li>
-
+        
        <li class="nav-item">
     <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="fas fa-sign-out-alt"></i> Cerrar Sesión

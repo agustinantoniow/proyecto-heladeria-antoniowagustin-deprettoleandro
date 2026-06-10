@@ -441,6 +441,7 @@
                 <a href="{{ url('/productos') }}" class="continue-shopping" style="font-weight: 600; text-decoration: underline;">Volver a la tienda</a>
             </div>
         @endif
+        
     </main>
 
     <script>
@@ -449,5 +450,6 @@
             return confirm("¿De verdad querés quitar este producto del carrito?");
         }
     </script>
+    
 </body>
 </html>

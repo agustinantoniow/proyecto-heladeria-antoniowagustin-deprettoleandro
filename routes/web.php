@@ -58,6 +58,11 @@ Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name
 
 Route::get('/exito', function () { return view('frontend.exito'); });
 
+Route::middleware(['auth'])->group(function () {
+    // Rutas para el perfil del cliente
+    Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'ver'])->name('perfil.ver');
+    Route::put('/perfil/actualizar', [App\Http\Controllers\PerfilController::class, 'actualizar'])->name('perfil.actualizar');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -75,10 +80,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
       Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
    // Cambia 'ProductoController' por el nombre exacto de tu controlador si se llama distinto
-   Route::get('/productos', [\App\Http\Controllers\Admin\ProductoController::class, 'catalogoCliente'])->name('ProductosCliente');
+   Route::get('/productos', [ProductoController::class, 'catalogoCliente'])->name('ProductosCliente');
    
     Route::get('/exitoCliente', function () { return view('frontend.exitoCliente'); });
     
+// Ruta dinámica para ver el detalle de una categoría específica
+Route::get('/categoria/{slug}', [CatalogoController::class, 'mostrarCategoria'])->name('categoria.mostrar');
+
     // Ver más categorías versión Cliente
     Route::get('/ver mas...Cliente', function () { return view('frontend.paginaHeladosAguaCliente'); });
     Route::get('/ver mas....Cliente', function () { return view('frontend.pagina-postresCliente'); });

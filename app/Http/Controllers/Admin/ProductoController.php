@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Producto;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProductoController extends Controller
 {
@@ -16,7 +17,6 @@ class ProductoController extends Controller
         $categorias = Categoria::all();
         
         return view('backend.admin.productos.index', compact('productos', 'categorias'));
-          
     }
 
     // 2. Muestra la vista con el formulario para agregar un producto
@@ -38,11 +38,11 @@ class ProductoController extends Controller
         ]);
         
         $nombreImagen = null;
-    if ($request->hasFile('imagen')) {
-        $imagen = $request->file('imagen');
-        $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-        $imagen->move(public_path('uploads/productos'), $nombreImagen);
-    }
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('uploads/productos'), $nombreImagen);
+        }
 
         Producto::create([
             'nombre'       => $request->nombre,
@@ -56,16 +56,17 @@ class ProductoController extends Controller
 
         return redirect()->route('admin.productos.index')->with('success', '¡Producto agregado con éxito!');
     }
+
     public function catalogoPublico()
-{
-    // Traemos solo los helados que estén activos (1) con su categoría
-   $productos = Producto::where('activo', 1)->with('categoria')->get();
+    {
+        // Traemos solo los helados que estén activos (1) con su categoría
+        $productos = Producto::where('activo', 1)->with('categoria')->get();
 
-    // Retornamos la vista pública (asegurate de crearla en esta carpeta)
-    return view('frontend.productos.catalogo', compact('productos'));
-}
+        // Retornamos la vista pública
+        return view('frontend.productos.catalogo', compact('productos'));
+    }
 
-    // 4. Alterna el estado de activo/inactivo de un producto
+    // 4. Alterna el estado de activo/inactivo (Pausar / Activar) del producto
     public function toggleStatus(Producto $producto)
     {
         $producto->update(['activo' => !$producto->activo]);
@@ -107,6 +108,44 @@ class ProductoController extends Controller
 
         $producto->save();
 
+        // 3. Actualizamos los campos de texto
+        $producto->nombre = $request->nombre;
+        $producto->categoria_id = $request->categoria_id;
+        $producto->precio = $request->precio;
+        $producto->stock = $request->stock;
+
+        // Variables para controlar si devolvemos una nueva URL de imagen
+        $imagenUrl = null;
+
+        // 4. Si el usuario subió una imagen nueva, la procesamos
+        if ($request->hasFile('imagen')) {
+            
+            // Eliminamos la imagen anterior si es que tenía una física guardada
+            if ($producto->imagen) {
+                $rutaAnterior = public_path('uploads/productos/' . $producto->imagen);
+                if (File::exists($rutaAnterior)) {
+                    File::delete($rutaAnterior);
+                }
+            }
+
+            // Guardamos la nueva imagen con un nombre único basado en el tiempo
+            $imagen = $request->file('imagen');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            
+            // Mueve el archivo a public/uploads/productos/
+            $imagen->move(public_path('uploads/productos'), $nombreImagen);
+
+            // Guardamos el nombre en la base de datos
+            $producto->imagen = $nombreImagen;
+            
+            // Generamos la URL completa para que JavaScript la pinte al instante
+            $imagenUrl = asset('uploads/productos/' . $nombreImagen);
+        }
+
+        // 5. Guardamos todos los cambios en la base de datos
+        $producto->save();
+
+        // 6. Respondemos con éxito al JS en la vista
         return response()->json([
             'success' => true,
             'message' => 'Producto actualizado correctamente.',
@@ -122,8 +161,10 @@ public function destroy($id)
         unlink(public_path('uploads/productos/' . $producto->imagen));
     }
 
-    // Borramos el registro de la base de datos
-    $producto->delete();
+    public function catalogoCliente()
+    {
+        // Trae todos los productos de la base de datos (con su categoría relacionada)
+        $productos = Producto::with('categoria')->get();
 
     // Redireccionamos de vuelta con el mensaje de éxito
     return redirect()->route('admin.productos.index')->with('success', 'El producto ha sido eliminado permanentemente del catálogo.');
