@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // Agregamos este import para no poner \DB siempre
+use App\Models\Consulta; // Importamos el modelo Consulta para usarlo en el método destroy
 
 class ConsultaController extends Controller
 {
     // Muestra la lista de consultas al admin
     public function index()
     {
-        $consultas = DB::table('consultas')->orderBy('created_at', 'desc')->get();
+      $consultas = Consulta::all();
         return view('admin.consultas', compact('consultas'));
     }
 
@@ -42,10 +43,22 @@ class ConsultaController extends Controller
     }
     public function marcarLeido($id)
 {
-    $consulta = \App\Models\Consulta::findOrFail($id);
+    $consulta = Consulta::findOrFail($id);
     $consulta->leido = true;
     $consulta->save();
 
     return back()->with('success', 'Consulta marcada como leída.');
+}
+public function destroy($id)
+{
+    // Buscamos la consulta usando el modelo Consulta
+    $consulta = Consulta::findOrFail($id);
+    $consulta->delete();
+    
+    // Al tener el SoftDeletes en el modelo, esto ya NO va a borrar la fila,
+    // solo va a llenar el campo 'deleted_at' con la fecha actual.
+  
+
+   return redirect()->back();
 }
 }

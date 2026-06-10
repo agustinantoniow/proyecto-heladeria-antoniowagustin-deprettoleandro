@@ -45,38 +45,49 @@
                                 <h4 class="fw-bold text-success mb-0">${{ number_format($prod->precio, 2) }}</h4>
                             </div>
                             
-                            @if($prod->stock > 0)
-                                <form action="{{ route('carrito.agregar') }}" method="POST" class="d-flex align-items-center gap-2">
-                                    @csrf
-                                    <input type="hidden" name="producto_id" value="{{ $prod->id }}">
-                                    
-                                    <div class="input-group" style="width: 120px;">
-                                        <button class="btn btn-outline-info" type="button" onclick="restarCantidad({{ $prod->id }})">
-                                            <i class="fa-solid fa-minus"></i>
-                                        </button>
-                                        
-                                        <input type="number" 
-                                               id="cantidad_{{ $prod->id }}" 
-                                               name="cantidad" 
-                                               value="1" 
-                                               min="1" 
-                                               max="{{ $prod->stock }}" 
-                                               class="form-control text-center px-1 fw-bold border-info text-dark" 
-                                               readonly 
-                                               required>
-                                        
-                                        <button class="btn btn-outline-info" type="button" onclick="sumarCantidad({{ $prod->id }}, {{ $prod->stock }})">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                    </div>
+          <div class="mt-3">
+    @if($prod->activo)
+        {{-- Formulario vinculado al método agregar de tu CarritoController --}}
+        <form action="{{ route('carrito.agregar') }}" method="POST">
+            @csrf
+            {{-- CRÍTICO: Enviamos el ID del producto que espera el $request->validate() --}}
+            <input type="hidden" name="producto_id" value="{{ $prod->id }}">
 
-                                    <button type="submit" class="btn btn-info text-white fw-bold px-3 py-2 rounded-3 shadow-sm">
-                                        <i class="fa-solid fa-cart-shopping me-1"></i> Comprar
-                                    </button>
-                                </form>
-                            @else
-                                <span class="badge bg-danger p-2 rounded-3">Sin Stock</span>
-                            @endif
+            <div class="d-flex gap-2">
+                
+                <div class="input-group" style="width: 130px;">
+                    <button class="btn btn-outline-secondary px-2" type="button" onclick="decrementarCantidad({{ $prod->id }})">
+                        <i class="fa-solid fa-minus"></i>
+                    </button>
+                    <input type="number" 
+                           id="cantidad-{{ $prod->id }}" 
+                           name="cantidad" 
+                           class="form-control text-center p-1" 
+                           value="1" 
+                           min="1" 
+                           max="{{ $prod->stock }}" 
+                           readonly 
+                           style="font-weight: bold;">
+                    <button class="btn btn-outline-secondary px-2" type="button" onclick="incrementarCantidad({{ $prod->id }}, {{ $prod->stock }})">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="btn btn-primary flex-grow-1">
+                    <i class="fa-solid fa-cart-plus me-1"></i> Agregar
+                </button>
+                
+            </div>
+        </form>
+    @else
+        <div class="alert alert-warning text-center py-2 px-3 m-0 rounded-3 shadow-sm" role="alert" style="font-size: 0.9rem;">
+            <i class="fa-solid fa-circle-pause me-1"></i> Producto pausado
+        </div>
+        <button type="button" class="btn btn-secondary w-100 mt-2" disabled>
+            No disponible
+        </button>
+    @endif
+</div>
                         </div>
                     </div>
                 </div>
@@ -90,21 +101,26 @@
 </div>
 
 <script>
-    function restarCantidad(productoId) {
-        let input = document.getElementById('cantidad_' + productoId);
-        let valorActual = parseInt(input.value);
-        if (valorActual > 1) {
-            input.value = valorActual - 1;
-        }
+ function incrementarCantidad(id, stockMaximo) {
+    const input = document.getElementById(`cantidad-${id}`);
+    let valorActual = parseInt(input.value);
+    
+    // Suma solo si el valor actual es estrictamente menor al stock real
+    if (valorActual < stockMaximo) {
+        input.value = valorActual + 1;
     }
+    // Si llegó al máximo, no hace nada ni muestra alertas flotantes
+}
 
-    function sumarCantidad(productoId, maxStock) {
-        let input = document.getElementById('cantidad_' + productoId);
-        let valorActual = parseInt(input.value);
-        if (valorActual < maxStock) {
-            input.value = valorActual + 1;
-        }
+function decrementarCantidad(id) {
+    const input = document.getElementById(`cantidad-${id}`);
+    let valorActual = parseInt(input.value);
+    
+    // Resta solo si es mayor a 1
+    if (valorActual > 1) {
+        input.value = valorActual - 1;
     }
+}
 </script>
 
 @endsection

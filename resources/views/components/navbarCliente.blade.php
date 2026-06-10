@@ -34,6 +34,11 @@
       
                 <li><hr class="dropdown-divider"></li>
                 <li>
+            <a class="dropdown-item" href="{{ route('perfil.ver') }}">
+                <i class="fa-solid fa-user me-2"></i> Ver mi perfil
+            </a>
+        </li>
+                <li>
                     <form action="{{ url('/logout') }}" method="POST" class="d-inline">
                       @csrf <button type="submit" class="dropdown-item">Cerrar Sesión</button>
                     </form>

@@ -35,11 +35,14 @@
                 @foreach($productos as $prod)
                 <tr data-id="{{ $prod->id }}" class="fila-producto">
                     <td>
-                        @if($prod->imagen)
-                            <img src="{{ asset('uploads/productos/' . $prod->imagen) }}" alt="{{ $prod->nombre }}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">
-                        @else
-                            <span class="text-muted small">Sin foto</span>
-                        @endif
+                        <div class="contenedor-imagen">
+                            @if($prod->imagen)
+                                <img src="{{ asset('uploads/productos/' . $prod->imagen) }}" alt="{{ $prod->nombre }}" class="rounded-2 img-preview" style="width: 50px; height: 50px; object-fit: cover;">
+                            @else
+                                <span class="text-muted small img-preview">Sin foto</span>
+                            @endif
+                        </div>
+                        <input type="file" class="form-control form-control-sm d-none input-imagen mt-1" accept="image/*" style="max-width: 150px;">
                     </td>
                     
                     <td>
@@ -47,7 +50,16 @@
                         <input type="text" class="form-control form-control-sm d-none input-nombre fw-bold" value="{{ $prod->nombre }}">
                     </td>
                     
-                    <td>{{ $prod->categoria->nombre ?? 'Sin categoría' }}</td>
+                    <td>
+                        <span class="text-lectura">{{ $prod->categoria->nombre ?? 'Sin categoría' }}</span>
+                        <select class="form-select form-select-sm d-none input-categoria">
+                            @foreach($categorias as $cat)
+                                <option value="{{ $cat->id }}" {{ (isset($prod->categoria) && $prod->categoria->id == $cat->id) ? 'selected' : '' }}>
+                                    {{ $cat->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </td>
                     
                     <td>
                         <span class="text-lectura fw-bold text-success">${{ number_format($prod->precio, 2) }}</span>
@@ -95,13 +107,7 @@
                                     </button>
                                 @endif
                             </form>
-                            <form action="{{ route('admin.productos.destroy', $prod->id) }}" method="POST" class="d-inline form-eliminar-producto" onsubmit="return confirmarEliminacion(event, '{{ $prod->nombre }}')">
-                                 @csrf
-                                    @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger btn-tacho-eliminar" title="Eliminar definitivamente">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </button>
-                        </form>
+                           
                         </div>
                     </td>
                 </tr>
@@ -127,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const tabla = document.querySelector('.table');
 
     tabla.addEventListener('click', function(e) {
-        // Encontramos si se hizo click en el botón Editar/Guardar
         const btnEditar = e.target.closest('.btn-editar-fila');
         const btnCancelar = e.target.closest('.btn-cancelar-fila');
         
@@ -139,6 +144,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Elementos de la fila actual
         const textosLectura = fila.querySelectorAll('.text-lectura');
         const inputNombre = fila.querySelector('.input-nombre');
+        const inputCategoria = fila.querySelector('.input-categoria');
+        const inputImagen = fila.querySelector('.input-imagen');
+        const contenedorImagen = fila.querySelector('.contenedor-imagen');
         const divPrecio = fila.querySelector('.div-precio');
         const inputPrecio = fila.querySelector('.input-precio');
         const divStock = fila.querySelector('.div-stock');
@@ -151,6 +159,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (btnCancelar) {
             textosLectura.forEach(el => el.classList.remove('d-none'));
             inputNombre.classList.add('d-none');
+            inputCategoria.classList.add('d-none');
+            inputImagen.classList.add('d-none');
+            inputImagen.value = ''; // Limpiamos selección de archivo
             divPrecio.classList.add('d-none');
             divStock.classList.add('d-none');
             btnCancelarFila.classList.add('d-none');
@@ -165,51 +176,67 @@ document.addEventListener('DOMContentLoaded', function () {
         if (botonEditarCambiante.classList.contains('btn-outline-primary')) {
             // Guardamos valores actuales por si cancela
             inputNombre.dataset.original = inputNombre.value;
+            inputCategoria.dataset.original = inputCategoria.value;
             inputPrecio.dataset.original = inputPrecio.value;
             inputStock.dataset.original = inputStock.value;
 
             // Intercambiamos visibilidades
-            textosLectura.forEach(el => el.className += " d-none");
+            textosLectura.forEach(el => el.classList.add('d-none'));
             inputNombre.classList.remove('d-none');
+            inputCategoria.classList.remove('d-none');
+            inputImagen.classList.remove('d-none');
             divPrecio.classList.remove('d-none');
             divStock.classList.remove('d-none');
             btnCancelarFila.classList.remove('d-none');
-            formToggleStatus.classList.add('d-none'); // Ocultamos el pausar provisionalmente
+            formToggleStatus.classList.add('d-none');
 
             // Transformamos el botón editar en botón de confirmación
             botonEditarCambiante.className = "btn btn-sm btn-success text-white btn-editar-fila shadow-sm";
             botonEditarCambiante.innerHTML = `<i class="fa-solid fa-floppy-disk me-1"></i> Guardar`;
             inputNombre.focus();
         } 
-        // ACCIÓN: GUARDAR CAMBIOS (PROCESAMIENTO AJAX)
+        // ACCIÓN: GUARDAR CAMBIOS (PROCESAMIENTO AJAX CON FORMDATA)
         else {
-            const datos = {
-                nombre: inputNombre.value,
-                precio: inputPrecio.value,
-                stock: inputStock.value
-            };
+            // Usamos FormData para empaquetar variables e imágenes binarias
+            const formData = new FormData();
+            formData.append('nombre', inputNombre.value);
+            formData.append('categoria_id', inputCategoria.value);
+            formData.append('precio', inputPrecio.value);
+            formData.append('stock', inputStock.value);
+            
+            if (inputImagen.files[0]) {
+                formData.append('imagen', inputImagen.files[0]);
+            }
 
-            // Enviamos la actualización por Fetch a la ruta Fast que creamos en el paso anterior
+            // Enviamos la actualización por Fetch
             fetch(`/admin/productos/${productoId}/update-fast`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'X-HTTP-Method-Override': 'PATCH'
+                    'X-HTTP-Method-Override': 'PATCH' // Laravel interpreta POST con esto como PATCH
                 },
-                body: JSON.stringify(datos)
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Actualizamos los textos estáticos con los nuevos valores ingresados
+                    // Actualizamos los textos estáticos en la vista leída
                     fila.querySelectorAll('.text-lectura')[0].innerText = inputNombre.value;
-                    fila.querySelectorAll('.text-lectura')[1].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
-                    fila.querySelectorAll('.text-lectura')[2].innerText = `${inputStock.value} u.`;
+                    fila.querySelectorAll('.text-lectura')[1].innerText = inputCategoria.options[inputCategoria.selectedIndex].text;
+                    fila.querySelectorAll('.text-lectura')[2].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
+                    fila.querySelectorAll('.text-lectura')[3].innerText = `${inputStock.value} u.`;
+
+                    // Si se actualizó la imagen, renderizamos la miniatura nueva que devuelve el backend
+                    if (data.imagen_url) {
+                        contenedorImagen.innerHTML = `<img src="${data.imagen_url}" class="rounded-2 img-preview" style="width: 50px; height: 50px; object-fit: cover;">`;
+                    }
 
                     // Restauramos la interfaz a modo lectura
                     textosLectura.forEach(el => el.classList.remove('d-none'));
                     inputNombre.classList.add('d-none');
+                    inputCategoria.classList.add('d-none');
+                    inputImagen.classList.add('d-none');
+                    inputImagen.value = '';
                     divPrecio.classList.add('d-none');
                     divStock.classList.add('d-none');
                     btnCancelarFila.classList.add('d-none');
