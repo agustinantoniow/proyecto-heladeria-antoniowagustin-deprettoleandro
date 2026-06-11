@@ -21,8 +21,9 @@
             <a class="nav-link nav-link-glace {{ request()->is('ComercializacionCliente') ? 'active fw-bold text-info' : '' }}" href="{{ url('/ComercializacionCliente') }}">Comercialización</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('ProductosCliente') ? 'active fw-bold text-info' : '' }}" href="{{ route('ProductosCliente') }}">Productos</a>
+            <a class="nav-link nav-link-glace {{ request()->is('/productos') ? 'active fw-bold text-info' : '' }}" href="{{ route('catalogo.publico') }}">Productos</a>
         </li>
+
        
         <ul class="navbar-nav ms-auto">
     @auth
@@ -49,7 +50,7 @@
 
     @guest
         <li class="nav-item">
-            <a class="nav-link nav-link-glace {{ request()->is('Ingreso') ? 'active fw-bold text-info' : '' }}" href="{{ url('/Ingreso') }}">
+            <a class="nav-link nav-link-glace {{ request()->is('login') ? 'active fw-bold text-info' : '' }}" href="{{ url('/login') }}">
                 Ingresar <i class="fa-solid fa-right-to-bracket ms-1"></i>
             </a>
         </li> 

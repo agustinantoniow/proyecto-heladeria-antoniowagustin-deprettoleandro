@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heladería Glace - Carrito de Compras</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+@extends('components.LayoutCliente')
+    @section('content')
     <style>
         /* ==========================================================================
            VARIABLES Y CONFIGURACIÓN GENERAL (Mantenemos tus estilos limpios)
@@ -99,6 +93,14 @@
             justify-content: center;
             color: white;
             font-size: 2rem;
+            overflow: hidden; /* IMPORTANTE: Para que la imagen respete los bordes curvos */
+        }
+
+        /* Clase nueva para la imagen real del producto */
+        .img-real {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .item-details {
@@ -250,6 +252,8 @@
             padding: 30px;
             height: fit-content;
             box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+            position: sticky; /* Agregado para que acompañe el scroll */
+            top: 20px;
         }
 
         .cart-summary h2 {
@@ -340,6 +344,8 @@
 </head>
 <body>
 
+    {{-- Si tenés una barra de navegación en layoutPublico, deberías incluir este archivo con @extends y poner todo dentro de un @section('content') en lugar de usar <html> y <body>. Si lo estás manejando como página independiente, dejalo así. --}}
+
     <main class="cart-container">
         <h1 class="cart-title">Tu Carrito de Compras</h1>
 
@@ -358,13 +364,19 @@
                         <div class="cart-item" data-id="{{ $item->id }}">
                             <div class="item-img">
                                 <div class="product-avatar">
-                                    <i class="fa-solid fa-ice-cream"></i>
+                                    {{-- MEJORA: Mostrar foto real si existe --}}
+                                    @if($item->producto->imagen)
+                                        <img src="{{ asset('uploads/productos/' . $item->producto->imagen) }}" alt="{{ $item->producto->nombre }}" class="img-real">
+                                    @else
+                                        <i class="fa-solid fa-ice-cream"></i>
+                                    @endif
                                 </div>
                             </div>
                             
                             <div class="item-details">
                                 <h3 class="item-name">{{ $item->producto->nombre }}</h3>
-                                <p class="item-category">Glace Premium</p>
+                                {{-- MEJORA: Traer la categoría real de la BD en lugar del texto fijo --}}
+                                <p class="item-category">{{ $item->producto->categoria->nombre ?? 'Glace Premium' }}</p>
                                 <span class="item-price-mobile">${{ number_format($item->subtotal, 2, ',', '.') }}</span>
                             </div>
 
@@ -404,52 +416,25 @@
                 </section>
 
                 <aside class="cart-summary">
-                    <h2>Resumen del pedido</h2>
-                    <hr class="summary-divider">
-                    
-                    <div class="summary-row">
-                        <span>Subtotal ({{ $items->sum('cantidad') }} productos)</span>
-                        <span>${{ number_format($carrito->total, 2, ',', '.') }}</span>
+                            <h2>Resumen del pedido</h2>
+                            <div class="summary-row"><span>Subtotal ({{ $items->sum('cantidad') }} productos)</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
+                            <div class="summary-row total-row"><span>Total</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
+                            <form action="{{ route('carrito.confirmar') }}" method="POST">
+                                @csrf
+                                <button class="checkout-btn" type="submit">Proceder al pago <i class="fa-solid fa-arrow-right"></i></button>
+                            </form>
+                            <a href="{{ route('catalogo.publico') }}" class="continue-shopping">Seguir comprando</a>
+                        </aside>
                     </div>
-                    <div class="summary-row">
-                        <span>Costo de envío</span>
-                        <span class="free-shipping">Gratis</span>
+                @else
+                    <div class="empty-state">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <h2>Tu carrito está vacío</h2>
+                        <a href="{{ route('catalogo.publico') }}" class="continue-shopping">Volver a la tienda</a>
                     </div>
-
-                    <hr class="summary-divider">
-                    
-                    <div class="summary-row total-row">
-                        <span>Total</span>
-                        <span>${{ number_format($carrito->total, 2, ',', '.') }}</span>
-                    </div>
-
-                    <form action="{{ route('carrito.confirmar') }}" method="POST">
-                        @csrf
-                        <button class="checkout-btn" type="submit">
-                            Proceder al pago <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </form>
-                    
-                    <a href="{{ url('/productos') }}" class="continue-shopping">Seguir comprando</a>
-                </aside>
-            </div>
-        @else
-            <div class="empty-state">
-                <i class="fa-solid fa-basket-shopping"></i>
-                <h2>Tu carrito de helados está vacío</h2>
-                <p style="color: var(--text-secondary); margin-top: 5px;">¡Pasate por nuestro catálogo para elegir tus gustos!</p>
-                <a href="{{ url('/productos') }}" class="continue-shopping" style="font-weight: 600; text-decoration: underline;">Volver a la tienda</a>
-            </div>
-        @endif
-        
-    </main>
-
-    <script>
-        // JS nativo para alertar antes de purgar un registro
-        function confirmarEliminar() {
-            return confirm("¿De verdad querés quitar este producto del carrito?");
-        }
-    </script>
-    
+                @endif
+            </main>
+            <script>function confirmarEliminar() { return confirm("¿De verdad querés quitar este producto?"); }</script>
 </body>
 </html>
+@endsection

@@ -5,15 +5,14 @@ use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\ProductosClienteController;
-use App\Http\Controllers\Admin\ProductoController; // O ProductosController si es en plural
-// Usamos alias bien claros para no confundir el controlador público del administrador
+use App\Http\Controllers\CatalogoController;
+use App\Http\Controllers\PerfilController;
+// Controladores de Admin
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUsuarioController;
 use App\Http\Controllers\Admin\ProductoController as AdminProductoController;
 use App\Http\Controllers\Admin\CategoriaController as AdminCategoriaController;
-use App\Http\Controllers\ProductoController as PublicoProductoController;
-use App\Http\Controllers\CatalogoController;
+
 /*
 |--------------------------------------------------------------------------
 | 1. VISTAS PÚBLICAS Y FRONTIER (Visitantes / Clientes sin loguear)
@@ -31,14 +30,15 @@ Route::get('/Consultas', function () { return view('frontend.Consultas'); });
 Route::post('/Consultas', [ConsultaController::class, 'store'])->name('consultas.store');
 Route::get('/contacto', function () { return view('frontend.contacto'); });
 
+// --- EL CATÁLOGO PÚBLICO Y DINÁMICO DE PRODUCTOS ---
+// Esta es la ÚNICA ruta que necesitas para mostrar los helados a los visitantes
+Route::get('/productos', [AdminProductoController::class, 'catalogoCliente'])->name('catalogo.publico');
+
+
 // Secciones "Ver Más..." de Categorías Públicas
-Route::get('/Productos', function () { return view('frontend.Productos'); });
 Route::get('/ver mas...', function () { return view('frontend.paginaHeladosAgua'); });
 Route::get('/ver mas....', function () { return view('frontend.pagina-postres'); });
 Route::get('/ver mas..', function () { return view('frontend.pagina-lineafamiliar'); });
-Route::view('/productos', 'productos')->name('ProductosCliente');
-// --- EL CATÁLOGO PÚBLICO DE PRODUCTOS ---
-
 
 
 /*
@@ -55,14 +55,8 @@ Route::get('/registrarse', function () { return view('frontend.registrarse'); })
 Route::get('/registro', [UsuarioController::class, 'create'])->name('registro');
 Route::post('/registro', [UsuarioController::class, 'store'])->name('registro.store');
 Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name('formregister');
-
 Route::get('/exito', function () { return view('frontend.exito'); });
 
-Route::middleware(['auth'])->group(function () {
-    // Rutas para el perfil del cliente
-    Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'ver'])->name('perfil.ver');
-    Route::put('/perfil/actualizar', [App\Http\Controllers\PerfilController::class, 'actualizar'])->name('perfil.actualizar');
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +65,10 @@ Route::middleware(['auth'])->group(function () {
 */
 Route::middleware(['auth'])->group(function () {
     
+    // Perfil del cliente
+    Route::get('/perfil', [PerfilController::class, 'ver'])->name('perfil.ver');
+    Route::put('/perfil/actualizar', [PerfilController::class, 'actualizar'])->name('perfil.actualizar');
+
     // Vistas exclusivas del Cliente con sesión activa
     Route::get('/Cliente', [ClienteController::class, 'index'])->name('frontend.heladeriaGlaceCliente');
     Route::get('/terminosyusoCliente', function () { return view('frontend.terminosyusoCliente'); });
@@ -78,42 +76,26 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ConsultasCliente', function () { return view('frontend.ConsultasCliente'); });
     Route::get('/contactoCliente', function () { return view('frontend.contactoCliente'); });
     Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
-      Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
-   // Cambia 'ProductoController' por el nombre exacto de tu controlador si se llama distinto
-   Route::get('/productos', [ProductoController::class, 'catalogoCliente'])->name('ProductosCliente');
-   
     Route::get('/exitoCliente', function () { return view('frontend.exitoCliente'); });
     
-// Ruta dinámica para ver el detalle de una categoría específica
-Route::get('/categoria/{slug}', [CatalogoController::class, 'mostrarCategoria'])->name('categoria.mostrar');
+    // --- CATÁLOGO PARA CLIENTES LOGUEADOS ---
+    // Usamos la misma lógica del controlador para mostrar los productos, pero con otro nombre de ruta si lo necesitas
+    Route::get('/cliente/productos', [AdminProductoController::class, 'catalogoCliente'])->name('ProductosCliente');
+
+    // Rutas dinámicas por categorías
+    Route::get('/categoria/{slug}', [CatalogoController::class, 'mostrarCategoria'])->name('categoria.mostrar');
+    Route::get('/catalogo/categoria/{id}', [CatalogoController::class, 'porCategoria'])->name('catalogo.categoria');
 
     // Ver más categorías versión Cliente
     Route::get('/ver mas...Cliente', function () { return view('frontend.paginaHeladosAguaCliente'); });
     Route::get('/ver mas....Cliente', function () { return view('frontend.pagina-postresCliente'); });
     Route::get('/ver mas..Cliente', function () { return view('frontend.pagina-lineaFamiliarCliente'); });
-    // Rutas para clientes registrados
-    Route::middleware(['auth'])->group(function () {
-    // La ruta recibe un parámetro {id} que es el ID de la categoría
-    Route::get('/catalogo/categoria/{id}', [CatalogoController::class, 'porCategoria'])->name('catalogo.categoria');
-
-    
 
 
-// 1. RUTA DE LA PÁGINA PRINCIPAL (La que carga las tarjetas de categorías)
-Route::get('/', [CatalogoController::class, 'index'])->name('inicio');
 
-// 2. RUTAS PROTEGIDAS PARA CLIENTES REGISTRADOS
-Route::middleware(['auth'])->group(function () {
-    
-    // ... tus otras rutas (carrito, perfil, etc.) ...
-
-    // Esta es la ruta a la que apunta el botón "Ver catálogo completo"
-    Route::get('/catalogo/categoria/{id}', [CatalogoController::class, 'porCategoria'])->name('catalogo.categoria');
-});
-
-});
+   
     // Gestión de Carrito de Compras
-    Route::get('/MiCarrito', function () { return view('frontend.Carrito'); });
+    Route::get('/MiCarrito', [CarritoController::class, 'index'])->name('carrito.index');
     Route::get('/carrito', [CarritoController::class, 'index'])->name('cliente.carrito');
     Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
     Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
@@ -146,18 +128,14 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::put('/admin/usuarios/{id}', [AdminUsuarioController::class, 'update'])->name('admin.usuarios.update');
     Route::patch('/admin/usuarios/{id}/toggle', [AdminUsuarioController::class, 'toggleStatus'])->name('admin.usuarios.toggle');
    
-    // 🍦 INVENTARIO DE PRODUCTOS (ADMIN) - Con la "P" Mayúscula para respetar tu URL
+    // 🍦 INVENTARIO DE PRODUCTOS (ADMIN)
     Route::get('/admin/Productos', [AdminProductoController::class, 'index'])->name('admin.productos.index');
     Route::get('/admin/Productos/create', [AdminProductoController::class, 'create'])->name('admin.productos.create');
     Route::post('/admin/Productos', [AdminProductoController::class, 'store'])->name('admin.productos.store');
     Route::patch('/admin/productos/{producto}/toggle-status', [AdminProductoController::class, 'toggleStatus'])->name('admin.productos.toggleStatus');
-    
     Route::patch('/admin/productos/{id}/update-fast', [AdminProductoController::class, 'updateFast'])->name('admin.productos.updateFast');
-    Route::delete('/admin/productos/{id}', [App\Http\Controllers\Admin\ProductoController::class, 'destroy'])->name('admin.productos.destroy');
+    Route::delete('/admin/productos/{id}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
    
-
-    // Fíjate de usar el mismo nombre de controlador que tengas en tu proyecto
-Route::patch('/admin/productos/{id}/update-fast', [ProductoController::class, 'updateFast'])->name('admin.productos.updateFast');
     // Gestión de Categorías Admin
     Route::get('/admin/categorias', [AdminCategoriaController::class, 'index'])->name('admin.categorias.index');
     Route::get('/admin/categorias/create', [AdminCategoriaController::class, 'create'])->name('admin.categorias.create');
