@@ -108,13 +108,7 @@
                                     </button>
                                 @endif
                             </form>
-                            <form action="{{ route('admin.productos.destroy', $prod->id) }}" method="POST" class="d-inline form-eliminar-producto" onsubmit="return confirmarEliminacion(event, '{{ $prod->nombre }}')">
-                                 @csrf
-                                 @method('DELETE')
-                                 <button type="submit" class="btn btn-sm btn-outline-danger btn-tacho-eliminar" title="Eliminar definitivamente">
-                                     <i class="fa-solid fa-trash-can"></i>
-                                 </button>
-                            </form>
+                            
                         </div>
                     </td>
                 </tr>
