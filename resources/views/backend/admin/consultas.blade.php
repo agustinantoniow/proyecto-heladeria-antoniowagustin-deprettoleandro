@@ -33,11 +33,7 @@
                             
                             <td>
                                 <div class="d-flex gap-2">
-                                    <form action="{{ route('consultas.destroy', $c->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                                    </form>
+                                    
                                     @if(!$c->leido)
                                         <form action="{{ route('consultas.marcarLeido', $c->id) }}" method="POST">
                                             @csrf

@@ -56,6 +56,27 @@ class ProductoController extends Controller
 
         return redirect()->route('admin.productos.index')->with('success', '¡Producto agregado con éxito!');
     }
+    public function update(Request $request, $id)
+{
+    // 1. Validar que los datos que vienen del formulario sean correctos
+    $request->validate([
+        'nombre' => 'required|string|max:255',
+        'precio' => 'required|numeric',
+    ]);
+
+    // 2. Buscar el registro original
+    $producto = Producto::findOrFail($id);
+
+    // 3. Reemplazar los datos viejos con los nuevos
+    $producto->nombre = $request->nombre;
+    $producto->precio = $request->precio;
+    
+    // 4. Guardar en la base de datos
+    $producto->save(); 
+
+    // 5. Redirigir al usuario de vuelta a la tabla con un mensaje de éxito
+    return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
+}
 
     // 4. Alterna el estado de activo/inactivo (Pausar / Activar) del producto
     public function toggleStatus(Producto $producto)
