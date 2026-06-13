@@ -7,6 +7,7 @@ use App\Models\Producto;
 use App\Models\VentaCabecera; 
 use App\Models\VentaDetalle;   
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CarritoController extends Controller
 {
@@ -168,4 +169,43 @@ class CarritoController extends Controller
         $total = $carrito->detalles()->sum('subtotal');
         $carrito->update(['total' => $total]);
     }
+    public function checkout()
+{
+    $carrito = $this->obtenerCarrito();
+    $items = $carrito->detalles;
+
+    // Si el carrito está vacío, lo devolvemos al catálogo
+    if ($items->isEmpty()) {
+        return redirect()->route('catalogo.publico')->with('error', 'Tu carrito está vacío.');
+    }
+
+    return view('frontend.checkout', compact('carrito', 'items'));
+}
+
+public function procesarCompra(Request $request)
+{
+    // Validamos que el usuario haya elegido las opciones
+    $request->validate([
+        'tipo_entrega' => 'required|in:local,domicilio',
+        'metodo_pago' => 'required|in:efectivo,tarjeta,mercadopago'
+    ]);
+
+    $carrito = $this->obtenerCarrito();
+
+    // Generamos una palabra clave única de 6 caracteres (ej: A9F3K1)
+    $palabraClave = 'GLACE-' . strtoupper(Str::random(6));
+
+    // Cambiamos el estado de la venta
+    $carrito->estado = 'completado';
+    
+    // Opcional: Si agregás estas columnas a tu tabla venta_cabeceras, descomentá esto:
+    // $carrito->tipo_entrega = $request->tipo_entrega;
+    // $carrito->metodo_pago = $request->metodo_pago;
+    // $carrito->codigo_retiro = $palabraClave;
+    
+    $carrito->save();
+
+    // Redirigimos a una vista de éxito pasándole los datos
+    return view('frontend.compraExitosa', compact('carrito', 'palabraClave', 'request'));
+}
 }

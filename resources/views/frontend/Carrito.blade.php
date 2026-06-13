@@ -419,10 +419,9 @@
                             <h2>Resumen del pedido</h2>
                             <div class="summary-row"><span>Subtotal ({{ $items->sum('cantidad') }} productos)</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
                             <div class="summary-row total-row"><span>Total</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
-                            <form action="{{ route('carrito.confirmar') }}" method="POST">
-                                @csrf
-                                <button class="checkout-btn" type="submit">Proceder al pago <i class="fa-solid fa-arrow-right"></i></button>
-                            </form>
+                            <a href="{{ route('carrito.checkout') }}" class="checkout-btn text-decoration-none">
+                                Proceder al pago <i class="fa-solid fa-arrow-right"></i>
+                            </a>
                             <a href="{{ route('catalogo.publico') }}" class="continue-shopping">Seguir comprando</a>
                         </aside>
                     </div>

@@ -141,3 +141,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::get('/admin/categorias/create', [AdminCategoriaController::class, 'create'])->name('admin.categorias.create');
     Route::post('/admin/categorias', [AdminCategoriaController::class, 'store'])->name('admin.categorias.store');
 });
+
+// Pantalla para elegir envío y pago
+Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
+
+// Procesar la compra y generar la palabra clave
+Route::post('/checkout/procesar', [CarritoController::class, 'procesarCompra'])->name('carrito.procesar');
