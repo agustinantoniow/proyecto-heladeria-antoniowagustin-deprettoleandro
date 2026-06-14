@@ -105,12 +105,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/MiCarrito', [CarritoController::class, 'index'])->name('carrito.index');
     Route::get('/carrito', [CarritoController::class, 'index'])->name('cliente.carrito');
     Route::post('/carrito/agregar', [CarritoController::class, 'agregar'])->name('carrito.agregar');
+    Route::get('/carrito/proceder-pago', [CarritoController::class, 'mostrarFormularioPago'])->name('carrito.pago');
     Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
     Route::post('/carrito/confirmar', [CarritoController::class, 'confirmar'])->name('carrito.confirmar');
     Route::get('/compra-confirmada', function () {
         if (!session('total')) return redirect('/Cliente');
         return view('frontend.compra-confirmada');
     })->name('compra.confirmada');
+
+
 });
 
 
@@ -144,7 +147,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::delete('/admin/productos/{id}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
 
     // Ruta para listar las ventas en el panel
-    Route::get('/admin/ventas', [VentaController::class, 'index'])->name('admin.ventas.index');
+    Route::get('/admin/ventas', [CarritoController::class, 'listarVentasAdmin'])->name('admin.ventas.index');
    
     // Gestión de Categorías Admin
     Route::get('/admin/categorias', [AdminCategoriaController::class, 'index'])->name('admin.categorias.index');

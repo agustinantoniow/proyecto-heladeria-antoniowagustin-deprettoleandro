@@ -23,45 +23,48 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($compras as $compra)
-                            <tr>
-                                <td class="ps-4">
-                                    <span class="text-secondary d-block small fw-bold">#{{ $compra->id }}</span>
-                                    <small class="text-muted">{{ $compra->created_at ? $compra->created_at->format('d/m/Y') : 'N/A' }}</small>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        @if($compra->producto && $compra->producto->imagen)
-                                            <img src="{{ asset('uploads/productos/' . $compra->producto->imagen) }}" class="rounded-2 me-2" style="width: 50px; height: 50px; object-fit: cover;">
-                                        @else
-                                            <div class="bg-light rounded-2 me-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                <i class="fa-solid fa-ice-cream text-muted"></i>
-                                            </div>
-                                        @endif
-                                        <div>
-                                            <span class="fw-bold d-block text-dark">{{ $compra->producto->nombre ?? 'Producto no disponible' }}</span>
-                                            <small class="badge bg-light text-secondary border">{{ $compra->producto->categoria->nombre ?? 'General' }}</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center fw-bold text-dark">{{ $compra->cantidad }} u.</td>
-                                <td class="text-end text-secondary">${{ number_format($compra->precio_unitario, 2) }}</td>
-                                <td class="text-end fw-bold text-success pe-4">
-                                    ${{ number_format($compra->subtotal, 2) }}
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center py-5 text-muted">
-                                    <i class="fa-solid fa-cart-shopping fa-3x mb-3 text-light"></i>
-                                    <h4 class="fw-bold">¿Todavía no probaste nuestros helados?</h4>
-                                    <p class="mb-3 text-muted">Tu historial de compras está vacío.</p>
-                                    <a href="{{ route('catalogo.publico') }}" class="btn btn-danger rounded-pill px-4" style="background-color: #ff6b6b; border: none;">
-                                        Ir al Catálogo 🍦
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforelse
+                   @forelse($compras as $compra)
+    <tr>
+        <td class="ps-4">
+            <span class="text-secondary d-block small fw-bold">#{{ $compra->cabecera_id }}</span>
+            
+            <small class="text-muted">
+                {{ $compra->fecha_pago ? date('d/m/Y', strtotime($compra->fecha_pago)) : 'N/A' }}
+            </small>
+        </td>
+        <td>
+            <div class="d-flex align-items-center">
+                @if($compra->producto_imagen)
+                    <img src="{{ asset('uploads/productos/' . $compra->producto_imagen) }}" class="rounded-2 me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                @else
+                    <div class="bg-light rounded-2 me-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <i class="fa-solid fa-ice-cream text-muted"></i>
+                    </div>
+                @endif
+                <div>
+                    <span class="fw-bold d-block text-dark">{{ $compra->producto_nombre ?? 'Producto no disponible' }}</span>
+                    <small class="badge bg-light text-secondary border">{{ $compra->categoria_nombre ?? 'General' }}</small>
+                </div>
+            </div>
+        </td>
+        <td class="text-center fw-bold text-dark">{{ $compra->cantidad }} u.</td>
+        <td class="text-end text-secondary">${{ number_format($compra->precio_unitario, 2) }}</td>
+        <td class="text-end fw-bold text-success pe-4">
+            ${{ number_format($compra->subtotal, 2) }}
+        </td>
+    </tr>
+@empty
+    <tr>
+        <td colspan="5" class="text-center py-5 text-muted">
+            <i class="fa-solid fa-cart-shopping fa-3x mb-3 text-light"></i>
+            <h4 class="fw-bold">¿Todavía no probaste nuestros helados?</h4>
+            <p class="mb-3 text-muted">Tu historial de compras está vacío.</p>
+            <a href="{{ route('catalogo.publico') }}" class="btn btn-danger rounded-pill px-4" style="background-color: #ff6b6b; border: none;">
+                Ir al Catálogo 🍦
+            </a>
+        </td>
+    </tr>
+@endforelse
                     </tbody>
                 </table>
             </div>

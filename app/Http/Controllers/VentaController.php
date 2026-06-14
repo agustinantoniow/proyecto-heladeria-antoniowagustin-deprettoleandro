@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\VentaDetalle; 
 use App\Models\Producto;
-
+use Illuminate\Support\Facades\DB;
 class VentaController extends Controller
 {
     public function index()
@@ -24,19 +24,27 @@ class VentaController extends Controller
     }
     public function misCompras()
 {
-    // 1. Obtenemos el ID del usuario que está navegando
-    $usuarioId = auth()->id();
-
-    // 2. Traemos los detalles de venta filtrando por su cabecera
-    $compras =VentaDetalle::with(['producto.categoria', 'cabecera'])
-        ->whereHas('cabecera', function($query) use ($usuarioId) {
-            $query->where('user_id', $usuarioId) // 🌟 Solo las compras de este usuario
-                  ->where('estado', 'completada'); // 🌟 Solo las que ya pagó/concretó
-        })
-        ->latest() // Las ordena de la más reciente a la más vieja
+    // Buscamos directamente en la base de datos cruzando las tablas
+    $compras = DB::table('venta_detalles')
+        ->join('venta_cabeceras', 'venta_detalles.venta_cabecera_id', '=', 'venta_cabeceras.id')
+        ->join('productos', 'venta_detalles.producto_id', '=', 'productos.id')
+        ->leftJoin('categorias', 'productos.categoria_id', '=', 'categorias.id')
+        ->where('venta_cabeceras.user_id', '=', auth()->id()) // Filtra por el cliente logueado
+        ->where('venta_cabeceras.estado', '=', 'completado')  // Filtra que la compra esté completada
+        ->select(
+            'venta_cabeceras.id as cabecera_id',
+            'venta_cabeceras.updated_at as fecha_pago',
+            'venta_detalles.cantidad as cantidad',
+            'venta_detalles.precio_unitario as precio_unitario',
+            'venta_detalles.subtotal as subtotal',
+            'productos.nombre as producto_nombre',
+            'productos.imagen as producto_imagen',
+            'categorias.nombre as categoria_nombre'
+        )
+        ->orderBy('venta_detalles.id', 'desc')
         ->get();
 
-    // 3. Retornamos la vista dentro de las carpetas del cliente
+    // Retorna tu vista pasándole la variable corregida
     return view('frontend.compras', compact('compras'));
 }
 }

@@ -8,7 +8,7 @@ use App\Models\VentaCabecera;
 use App\Models\VentaDetalle;   
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\DB; // <-- 1. ASEGÚRATE DE QUE ESTA LÍNEA ESTÉ ARRIBA DE TODO
 class CarritoController extends Controller
 {
     /**
@@ -182,6 +182,14 @@ class CarritoController extends Controller
     return view('frontend.checkout', compact('carrito', 'items'));
 }
 
+public function mostrarFormularioPago() // Supongo que este es el nombre del método en la línea 186
+{
+    // 1. Recuperamos el carrito usando tu método existente
+    $carrito = $this->obtenerCarrito();
+
+    // 2. Retornamos la nueva vista del formulario pasándole el carrito
+    return view('frontend.formularioPago', compact('carrito'));
+}
 public function procesarCompra(Request $request)
 {
     // Validamos que el usuario haya elegido las opciones
@@ -207,5 +215,94 @@ public function procesarCompra(Request $request)
 
     // Redirigimos a una vista de éxito pasándole los datos
     return view('frontend.compraExitosa', compact('carrito', 'palabraClave', 'request'));
+}
+public function procesar(Request $request)
+{
+    // 1. Validar los datos que vienen del formulario dinámico
+    $request->validate([
+        'tipo_entrega' => 'required|in:local,domicilio',
+        'metodo_pago' => 'required|in:efectivo,tarjeta,mercadopago',
+        // Validar teléfono y dirección solo si es a domicilio
+        'telefono' => 'required_if:tipo_entrega,domicilio',
+        'direccion' => 'required_if:tipo_entrega,domicilio',
+    ]);
+
+    // 2. Obtener el carrito/venta pendiente del usuario actual
+    $carrito = $this->obtenerCarrito(); 
+
+    if (!$carrito) {
+        return redirect()->route('carrito.index')->with('error', 'No tienes un carrito activo.');
+    }
+
+    // 3. Guardar los datos del formulario en la cabecera de la venta
+    $carrito->tipo_entrega = $request->tipo_entrega;
+    $carrito->metodo_pago = $request->metodo_pago;
+    
+    if ($request->tipo_entrega === 'domicilio') {
+        $carrito->telefono = $request->telefono;
+        $carrito->direccion = $request->direccion;
+    }
+
+    // 4. CAMBIO CLAVE PARA EL HISTORIAL: Marcar como completada
+    // Al pasar a 'completado', ya sale del "carrito activo" y entra a los historiales
+    $carrito->estado = 'completado'; 
+    $carrito->fecha_compra = now(); // Si tienes un campo de fecha personalizado
+    $carrito->save();
+
+    // 5. Redirigir a la vista de éxito que creamos recién
+    return view('frontend.compraExitosa', compact('carrito'));
+}
+public function misCompras()
+    {
+        // Traemos directamente desde la base de datos los detalles de las compras de este usuario
+        $compras = DB::table('venta_detalles')
+            ->join('venta_cabeceras', 'venta_detalles.venta_cabecera_id', '=', 'venta_cabeceras.id')
+            ->join('productos', 'venta_detalles.producto_id', '=', 'productos.id')
+            ->leftJoin('categorias', 'productos.categoria_id', '=', 'categorias.id')
+            ->where('venta_cabeceras.user_id', '=', auth()->id()) // Filtra que pertenezca al usuario logueado
+            ->where('venta_cabeceras.estado', '=', 'completado') // Filtra que la compra esté confirmada/pagada
+            ->select(
+                'venta_cabeceras.id as cabecera_id',
+                'venta_cabeceras.updated_at as fecha_pago',
+                'venta_detalles.cantidad as cantidad',
+                'venta_detalles.precio_unitario as precio_unitario',
+                'venta_detalles.subtotal as subtotal',
+                'productos.nombre as producto_nombre',
+                'productos.imagen as producto_imagen',
+                'categorias.nombre as categoria_nombre'
+            )
+            ->orderBy('venta_detalles.id', 'desc') // Muestra lo más reciente primero
+            ->get();
+
+        // Le enviamos la variable $compras en plural a tu archivo Blade
+        return view('frontend.mis_compras', compact('compras')); // Ajusta la ruta de la vista si es necesario
+    }
+    public function listarVentasAdmin()
+{
+    // Consulta limpia directa a la base de datos
+    $ventas = \Illuminate\Support\Facades\DB::table('venta_detalles')
+        ->join('venta_cabeceras', 'venta_detalles.venta_cabecera_id', '=', 'venta_cabeceras.id')
+        ->join('productos', 'venta_detalles.producto_id', '=', 'productos.id')
+        ->leftJoin('categorias', 'productos.categoria_id', '=', 'categorias.id')
+        ->where('venta_cabeceras.estado', '=', 'completado')
+        ->select(
+            'venta_detalles.id as detalle_id',
+            'venta_cabeceras.id as cabecera_id',
+            'venta_cabeceras.updated_at as fecha_pago',
+            'venta_detalles.cantidad as cantidad',
+            'venta_detalles.precio_unitario as precio_unitario',
+            'venta_detalles.subtotal as subtotal',
+            'productos.nombre as producto_nombre',
+            'productos.imagen as producto_imagen',
+            'categorias.nombre as categoria_nombre'
+        )
+        ->orderBy('venta_detalles.id', 'desc')
+        ->get();
+
+    // AQUÍ SE DEFINE LA VARIABLE QUE LA VISTA RECLAMA EN LA LÍNEA 11
+    $totalVentas = $ventas->count();
+
+    // Retornamos la vista enviándole obligatoriamente las dos variables que necesita
+    return view('backend.admin.ventas', compact('ventas', 'totalVentas'));
 }
 }

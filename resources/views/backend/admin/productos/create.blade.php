@@ -19,7 +19,7 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Nombre del Gusto</label>
                     <input type="text" name="nombre" class="form-control rounded-3" placeholder="Ej: Americana" required>
-                    @error('nombre_gusto')
+                    @error('nombre')
         <div class="invalid-feedback fw-semibold">
             {{ $message }}
         </div>

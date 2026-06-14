@@ -16,7 +16,9 @@ class VentaCabecera extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
+public function ventaCabecera() {
+    return $this->belongsTo(VentaCabecera::class, 'venta_cabecera_id'); // ajusta el nombre de la clave foránea si es distinto
+}
     public function detalles()
     {
         // Cambiamos 'venta_id' por 'venta_cabecera_id' para que coincida con la migración
