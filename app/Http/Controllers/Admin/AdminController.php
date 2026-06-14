@@ -66,11 +66,11 @@ public function listarVentasAdmin()
         ->join('venta_cabeceras', 'venta_detalles.venta_cabecera_id', '=', 'venta_cabeceras.id')
         ->join('productos', 'venta_detalles.producto_id', '=', 'productos.id')
         ->leftJoin('categorias', 'productos.categoria_id', '=', 'categorias.id')
-        ->where('venta_cabeceras.estado', '=', 'completado') // Filtramos solo las pagadas/completadas
+        ->where('venta_cabeceras.estado', '=', 'completado')
         ->select(
-            'venta_detalles.id as detalle_id',           // ID único del renglón de la tabla
-            'venta_cabeceras.id as cabecera_id',         // ID de la orden general
-            'venta_cabeceras.updated_at as fecha_pago',  // Cuándo se completó la venta
+            'venta_detalles.id as detalle_id',
+            'venta_cabeceras.id as cabecera_id',
+            'venta_cabeceras.updated_at as fecha_pago',
             'venta_detalles.cantidad as cantidad',
             'venta_detalles.precio_unitario as precio_unitario',
             'venta_detalles.subtotal as subtotal',
@@ -78,13 +78,19 @@ public function listarVentasAdmin()
             'productos.imagen as producto_imagen',
             'categorias.nombre as categoria_nombre'
         )
-        ->orderBy('venta_detalles.id', 'desc') // Lo último vendido aparece arriba de todo
+        ->orderBy('venta_detalles.id', 'desc')
         ->get();
 
-    // Contamos el total de filas para el contador rojo de la esquina
+    // Calculamos el conteo que pide tu archivo Blade en la línea 11
     $totalVentas = $ventas->count();
 
-    // Retornamos tu vista pasándole ambas variables
-    return view('admin.ventas.index', compact('ventas', 'totalVentas'));
+    // Retornamos tu vista pasándole las dos variables obligatorias
+    // NOTA: Ajusta 'backend.admin.ventas' por la ruta real de tu archivo Blade si difiere
+    return view('backend.admin.ventas', compact('ventas', 'totalVentas'));}
+    public function terminosyuso()
+{
+    // Esto va a buscar el archivo terminosyuso.blade.php dentro de recursos/vistas/backend/admin/
+    // Asegúrate de que el nombre coincida con tu archivo de términos de administración.
+    return view('backend.admin.terminosyusoAdmin'); 
 }
 }

@@ -126,7 +126,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     
     // Dashboard Inicial
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    
+    Route::get('/admin/terminosyusoAdmin', [AdminController::class, 'terminosyuso'])->name('admin.terminosyusoAdmin');
     // Gestión de Consultas del Admin
     Route::get('/admin/consultas', [AdminController::class, 'index'])->name('admin.consultas');
     Route::patch('/admin/consultas/{id}/leido', [AdminController::class, 'marcarLeido'])->name('consultas.marcarLeido');

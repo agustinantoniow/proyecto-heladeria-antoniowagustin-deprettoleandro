@@ -13,9 +13,9 @@
             <div class="col-md-4 mb-4 text-center">
                 <h5>Links Útiles</h5>
                 <ul class="list-unstyled">
-                    <li><a href="/Cliente" class="link-fresco">Nuestros Sabores</a></li>
-                    <li><a href="/terminosyusoCliente" class="link-fresco">Términos y Usos</a></li>
-                    <li><a href="/contactoCliente" class="link-fresco">Ubicación</a></li>
+    
+                    <li><a href="/admin/terminosyusoAdmin" class="link-fresco">Términos y Usos</a></li>
+                    
                 </ul>
             </div>
 
