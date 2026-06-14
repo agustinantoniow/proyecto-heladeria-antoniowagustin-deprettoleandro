@@ -30,12 +30,14 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre'       => 'required|string|max:255',
-            'categoria_id' => 'required|integer',
-            'precio'       => 'required|numeric|min:0',
-            'stock'        => 'required|integer|min:0',
-            'descripcion'  => 'nullable|string'
-        ]);
+            'nombre'       => 'required|string|min:3|max:100|unique:productos,nombre',
+            'categoria_id' => 'required|exists:categorias,id',
+            'precio'       => 'required|numeric|min:100',
+            'stock'        => 'required|integer|min:1',
+            'descripcion'  => 'nullable|string|max:500|min:10',
+            'imagen'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            // 2MB máx
+            ]);
         
         $nombreImagen = null;
         if ($request->hasFile('imagen')) {
@@ -58,23 +60,70 @@ class ProductoController extends Controller
     }
     public function update(Request $request, $id)
 {
-    // 1. Validar que los datos que vienen del formulario sean correctos
-    $request->validate([
+    // 1. Validar datos
+    $rules = [
         'nombre' => 'required|string|max:255',
         'precio' => 'required|numeric',
-    ]);
-
-    // 2. Buscar el registro original
+        'categoria_id' => 'required|exists:categorias,id', // Validamos que la categoría exista
+        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB máx
+        'descripcion'  => 'nullable|string|max:500|min:10',
+        'stock_inicial'=> 'required|integer|min:1'
+    ];
+    $messages = [
+        'nombre_gusto.required' => 'Tenés que ingresar el nombre del gusto (ej: Americana).',
+        'nombre_gusto.min'      => 'El nombre del gusto debe tener al menos 3 letras.',
+        'nombre_gusto.unique'   => 'Este gusto de helado ya se encuentra registrado.',
+        
+        'categoria_id.required' => 'Seleccioná una categoría para el producto.',
+        'categoria_id.exists'   => 'La categoría seleccionada no es válida.',
+        
+        'precio.required'       => 'El precio es obligatorio.',
+        'precio.numeric'        => 'El precio debe ser un número válido.',
+        'precio.min'            => 'El precio no puede ser menor a 0.',
+        
+        'stock_inicial.required' => 'El stock inicial es obligatorio.',
+        'stock_inicial.integer'  => 'El stock debe ser un número entero.',
+        'stock_inicial.min'      => 'El stock inicial no puede ser menor a 1 unidad.',
+        
+         'descripcion.string'    => 'La descripción debe ser un texto válido.',    
+        'descripcion.max'       => 'La descripción es demasiado larga (máximo 500 caracteres).',
+        'descripcion.min'       => 'La descripción es demasiado corta (mínimo 10 caracteres).',
+        
+        'imagen_gusto.image'    => 'El archivo seleccionado debe ser una imagen real.',
+        'imagen_gusto.mimes'    => 'La foto debe estar en formato: jpeg, png, jpg o webp.',
+        'imagen_gusto.max'      => 'La imagen es muy pesada. El tamaño máximo permitido es 5MB.',
+    ];
+    $request->validate($rules, $messages);
+    
+    // 2. Buscar registro
     $producto = Producto::findOrFail($id);
 
-    // 3. Reemplazar los datos viejos con los nuevos
+    // 3. Reemplazar textos Y la categoría
     $producto->nombre = $request->nombre;
     $producto->precio = $request->precio;
-    
-    // 4. Guardar en la base de datos
+    $producto->categoria_id = $request->input('categoria_id'); // 🌟 Guardamos la categoría corregida
+    $producto->imagen = $request->input('imagen'); // 
+    $producto->descripcion = $request->input('descripcion'); // 
+
+
+    // 4. Procesar imagen si el enctype del HTML está funcionando bien
+    if ($request->hasFile('imagen')) {
+        
+        // Borrar imagen anterior si existe para no acumular archivos
+        if ($producto->imagen && file_exists(public_path('uploads/productos/' . $producto->imagen))) {
+            unlink(public_path('uploads/productos/' . $producto->imagen));
+        }
+
+        $file = $request->file('imagen');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads/productos'), $filename);
+        
+        $producto->imagen = $filename; // Asignamos el nuevo nombre de archivo
+    }
+
+    // 5. Guardar todo junto en la BD
     $producto->save(); 
 
-    // 5. Redirigir al usuario de vuelta a la tabla con un mensaje de éxito
     return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
 }
 
@@ -95,9 +144,11 @@ class ProductoController extends Controller
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
         $producto->stock = $request->stock;
+         $producto->categoria_id = $request->categoria_id; // 🌟 Aseguramos que la categoría también se actualice en esta función rápida
+       
 
         $imagenUrl = null;
-
+        
         // Si el usuario subió una imagen nueva, la procesamos
         if ($request->hasFile('imagen')) {
             
@@ -123,7 +174,7 @@ class ProductoController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Producto actualizado correctamente.',
-            'imagen_url' => $imagenUrl 
+            'imagen_url' => asset('uploads/productos/' . $producto->imagen) 
         ]);
     }
 

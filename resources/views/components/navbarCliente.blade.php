@@ -38,6 +38,12 @@
             <a class="dropdown-item" href="{{ route('perfil.ver') }}">
                 <i class="fa-solid fa-user me-2"></i> Ver mi perfil
             </a>
+            </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('frontend.compras.index') }}">
+                            <i class="fa-solid fa-box-open me-2"></i> Mis Compras
+                        </a>
+                    </li>
         </li>
                 <li>
                     <form action="{{ url('/logout') }}" method="POST" class="d-inline">

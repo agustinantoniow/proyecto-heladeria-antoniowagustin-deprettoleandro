@@ -19,16 +19,40 @@ class ConsultaController extends Controller
     // Procesa el envío del formulario
     public function store(Request $request)
     {
-       $request->validate([
-            // Bajamos a 3 letras para aceptar nombres como "Ana" o "Luz"
+      $rules = [
+            
+       // Bajamos a 3 letras para aceptar nombres como "Ana" o "Luz"
             'nombreConsulta'  => 'required|string|max:255|min:3', 
             'emailConsulta'   => 'required|email',
             // Cambiamos digits por min/max para que permita espacios o guiones si es necesario
             'numero_telefono' => 'required|string|min:8|max:15', 
             'opcion_consulta' => 'required',
             'mensaje'         => 'required|string|min:5',
-        ]);
+        ];
+ 
+
+        $messages = [
+        'nombre_consulta.required' => 'Por favor, ingresá tu nombre.',
+        'nombre_consulta.max'      => 'El nombre no puuede tener mas de 150 caracteres.',
+        'nombre_consulta.min'      => 'El nombre no puuede tener mas de 5 caracteres.',
+
+        'correo_electronico.required' => 'El correo electrónico es obligatorio.',
+        'correo_electronico.email'    => 'Ingresá un correo válido (ejemplo@gmail.com).',
         
+        'numero_telefono.required' => 'El número de teléfono es obligatorio.',
+        'numero_telefono.numeric'  => 'El teléfono solo debe contener números, sin espacios ni guiones.',
+        'numero_telefono.max'  => 'El número de teléfono no puede tener más de 15 dígitos.',
+        'numero_telefono.min'  => 'El número de teléfono debe tener al menos 8 dígitos.',
+        
+        'motivo_consulta.required' => 'Debes seleccionar un motivo para tu consulta.',
+
+        
+        'mensaje.required' => 'El mensaje no puede quedar vacío.',
+        'mensaje.min'      => 'Por favor, detalla un poco más tu consulta (mínimo 10 caracteres).',
+        'mensaje.max'      => 'Por favor, detalla un poco más tu consulta (máximo 255 caracteres).',
+    ];
+    $request->validate($rules, $messages); // Validamos con reglas personalizadas y mensajes específicos
+           
         DB::table('consultas')->insert([
             'nombre'          => $request->nombreConsulta,
             'email'           => $request->emailConsulta,
@@ -38,8 +62,8 @@ class ConsultaController extends Controller
             'created_at'      => now(),
             'updated_at'      => now(),
         ]);
-
         return redirect('/exito');
+            
     }
     public function marcarLeido($id)
 {

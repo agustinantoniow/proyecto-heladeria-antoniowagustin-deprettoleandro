@@ -22,4 +22,12 @@ class VentaDetalle extends Model
     {
         return $this->belongsTo(Producto::class, 'producto_id');
     }
+public function cabecera()
+    {
+        // Reemplaza 'VentaCabecera' por el nombre exacto de tu modelo de cabecera (ej: Pedido o Venta)
+        return $this->belongsTo(VentaCabecera::class, 'venta_cabecera_id'); 
+    }
+
+    
 }
+    

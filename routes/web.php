@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUsuarioController;
 use App\Http\Controllers\Admin\ProductoController as AdminProductoController;
 use App\Http\Controllers\Admin\CategoriaController as AdminCategoriaController;
+use App\Http\Controllers\VentaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,8 @@ Route::middleware(['auth'])->group(function () {
     // Perfil del cliente
     Route::get('/perfil', [PerfilController::class, 'ver'])->name('perfil.ver');
     Route::put('/perfil/actualizar', [PerfilController::class, 'actualizar'])->name('perfil.actualizar');
+    // Ruta para el historial de compras del cliente
+    Route::get('/mis-compras', [VentaController::class, 'misCompras'])->name('frontend.compras.index');
 
     // Vistas exclusivas del Cliente con sesión activa
     Route::get('/Cliente', [ClienteController::class, 'index'])->name('frontend.heladeriaGlaceCliente');
@@ -87,7 +90,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/catalogo/categoria/{id}', [CatalogoController::class, 'porCategoria'])->name('catalogo.categoria');
 
     // Ver más categorías versión Cliente
-    Route::get('/ver mas...Cliente', function () { return view('frontend.paginaHeladosAguaCliente'); });
+  // Ruta para ver los productos de una categoría específica
+
+
+// Asegúrate de que apunte a 'mostrarCategoria' y que el name sea 'cliente.categoria'
+    Route::get('/ver mas...Cliente', function () { return view('frontend.pagina-postresCliente'); });
     Route::get('/ver mas....Cliente', function () { return view('frontend.pagina-postresCliente'); });
     Route::get('/ver mas..Cliente', function () { return view('frontend.pagina-lineaFamiliarCliente'); });
 
@@ -135,6 +142,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::patch('/admin/productos/{producto}/toggle-status', [AdminProductoController::class, 'toggleStatus'])->name('admin.productos.toggleStatus');
     Route::patch('/admin/productos/{id}/update-fast', [AdminProductoController::class, 'updateFast'])->name('admin.productos.updateFast');
     Route::delete('/admin/productos/{id}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
+
+    // Ruta para listar las ventas en el panel
+    Route::get('/admin/ventas', [VentaController::class, 'index'])->name('admin.ventas.index');
    
     // Gestión de Categorías Admin
     Route::get('/admin/categorias', [AdminCategoriaController::class, 'index'])->name('admin.categorias.index');

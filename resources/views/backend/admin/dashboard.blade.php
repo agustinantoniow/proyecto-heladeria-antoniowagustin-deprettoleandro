@@ -72,6 +72,27 @@
             </div>
         </div>
     </div>
+    <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card shadow h-100 py-2 border-start border-4 border-info">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Listar Ventas
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                               Historial Ventas
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                    <a href="{{ route('admin.ventas.index') }}" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row mt-2">
         <div class="col-lg-12">

@@ -28,4 +28,7 @@ class CatalogoController extends Controller
         $productos = $categoria->productos()->where('activo', true)->get();
         return view('cliente.categoria_productos', compact('categoria', 'productos'));
     }
+    // Adentro de CatalogoController.php
+
+
 }

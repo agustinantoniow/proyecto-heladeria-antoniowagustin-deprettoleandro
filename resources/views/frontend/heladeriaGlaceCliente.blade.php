@@ -45,8 +45,8 @@
                         <span class="item-sabor-home">Durazno</span>
                     </div>
                     <div class="text-center">
-                        <a href="/ver mas...Cliente" class="btn-ver-mas">Ver catálogo completo →</a>
-                    </div>
+                        <a href="/ver mas..." class="btn-ver-mas">Ver catálogo completo →</a>
+                      </div>
                 </div>
             </div>
         </div>

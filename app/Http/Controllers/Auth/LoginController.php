@@ -23,8 +23,12 @@ class LoginController extends Controller
     {
         // 1. Validamos los campos tal cual vienen de tu formulario Blade (name="usuario")
         $request->validate([
-            'usuario'  => ['required', 'string'],
-            'password' => ['required', 'string'],
+            'nombre'=> ['required', 'string', 'min:6', 'max:255'],
+            'apellido' => ['required', 'string', 'min:6', 'max:255'],
+            'usuario'  => ['required', 'string', 'min:6', 'max:255'],
+            'password' => ['required', 'string', 'min:6', 'max:255'],
+            'email' => ['required', 'email', 'min:6', 'max:255','unique:users,email',],
+
         ]);
 
         // 2. Hacemos el "puente": tomamos 'usuario' del request y lo buscamos en la columna 'nombre'
@@ -32,6 +36,25 @@ class LoginController extends Controller
             'usuario'   => $request->usuario,
             'password' => $request->password
         ];
+     $messages = [
+        // Mensajes para el campo 'nombre'
+        'nombre.required' => 'El nombre es obligatorio para poder registrarte.',
+        'nombre.max'      => 'El nombre no puede tener más de 255 caracteres.',
+
+        // Mensajes para el campo 'apellido'
+        'apellido.required' => 'Por favor, ingresá tu apellido.',
+
+        // Mensajes para el campo 'email'
+        'email.required' => 'Necesitamos tu correo electrónico para identificar tu cuenta.',
+        'email.email'    => 'El formato del correo no es válido. Ej: usuario@heladeria.com.',
+
+        // Mensajes para el campo 'password'
+        'password.required' => 'La contraseña es obligatoria por cuestiones de seguridad.',
+        'password.max' => 'La contraseña no puede tener más de 255 caracteres.',
+        'password.min' => 'La contraseña debe tener al menos 6 caracteres para ser segura.',
+        
+        
+    ];
 
         // 3. Intentamos la autenticación segura con Laravel
         if (Auth::attempt($credenciales)) {
@@ -52,8 +75,11 @@ class LoginController extends Controller
         // Esto activa automáticamente tu @error('usuario') en el Blade
         return back()->withErrors([
             'usuario' => 'Las credenciales no coinciden con nuestros registros.',
-        ])->onlyInput('usuario'); // Mantiene lo que el usuario escribió para que no tenga que rellenar todo de nuevo
-    }
+        ])->onlyInput('usuario'); 
+       
+       
+       
+        }
 
     /**
      * Destruye la sesión del usuario (Cierre de sesión).

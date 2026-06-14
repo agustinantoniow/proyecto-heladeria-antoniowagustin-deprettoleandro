@@ -13,17 +13,32 @@ class RegistroRequest extends FormRequest
     }
 
     public function rules()
-    {
-        return [
-            'Nombre_registro'  => 'required|min:4|max:20',
-            'Apellido_registro' => 'required|min:4|max:20',
-            'email_registro' => 'required|email|min:6',
-            'password_registro' => 'required|min:6|confirmed', // busca campo password_confirmation
-            'ciudad' => 'required|min:2|max:50',
-            'codigo_postal' => 'required|digits:4',
-        ];
-    }
+{
+    // Capturamos lo que el usuario escribió para evaluar el duplicado de nombre y apellido
+    $nombre = $this->input('Nombre_registro');
+    $apellido = $this->input('Apellido_registro');
 
+    return [
+        'Nombre_registro'  => [
+            'required', 'min:4', 'max:20',
+            function ($attribute, $value, $fail) use ($nombre, $apellido) {
+                $existe = \DB::table('users')->where('nombre', $nombre)->where('apellido', $apellido)->exists();
+                if ($existe) {
+                    $fail('Ya existe un usuario registrado con ese mismo nombre y apellido.');
+                }
+            }
+        ],
+         'nombre_registro' => 'required|min:4|max:20',
+        'Apellido_registro' => 'required|min:4|max:20',
+        'email_registro'    => 'required|email|min:6|unique:users,email', // 🌟 Evita emails repetidos
+        'password_registro' => 'required|min:6|confirmed',
+        'nombre_usuario' => 'required|min:6|max:20',
+       
+       
+        'email_registro.unique' => 'Este correo electrónico ya se encuentra registrado.',
+        ];
+    
+}
     public function messages()
     {
         return [

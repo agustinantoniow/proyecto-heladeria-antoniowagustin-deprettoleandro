@@ -19,6 +19,11 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Nombre del Gusto</label>
                     <input type="text" name="nombre" class="form-control rounded-3" placeholder="Ej: Americana" required>
+                    @error('nombre_gusto')
+        <div class="invalid-feedback fw-semibold">
+            {{ $message }}
+        </div>
+    @enderror
                 </div>
 
                 <div class="mb-3">
@@ -37,12 +42,18 @@
                 <div class="row g-3 mb-3">
                     <div class="col-6">
                         <label class="form-label fw-semibold">Precio ($)</label>
-                        <input type="number" name="precio" step="0.01" min="0" class="form-control rounded-3" placeholder="0.00" required>
+                        <input type="number" name="precio" step="0.01" min="100" class="form-control rounded-3" placeholder="0.00" required>
                     </div>
                     <div class="col-6">
                         <label class="form-label fw-semibold">Stock Inicial</label>
-                        <input type="number" name="stock" min="0" class="form-control rounded-3" placeholder="Ej: 10" required>
+                        <input type="number" name="stock" min="1" class="form-control rounded-3" placeholder="Ej: 10" required>
+                        @error('stock_inicial')
+        <div class="invalid-feedback fw-semibold">
+            {{ $message }}
+        </div>
+    @enderror
                     </div>
+
                 </div>
 
                 <div class="mb-3">

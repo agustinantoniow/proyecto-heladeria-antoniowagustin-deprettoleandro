@@ -147,8 +147,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const inputImagen = fila.querySelector('.input-imagen');
         const inputNombre = fila.querySelector('.input-nombre');
         const inputCategoria = fila.querySelector('.input-categoria');
-        const inputImagen = fila.querySelector('.input-imagen');
-        const contenedorImagen = fila.querySelector('.contenedor-imagen');
         const divPrecio = fila.querySelector('.div-precio');
         const inputPrecio = fila.querySelector('.input-precio');
         const divStock = fila.querySelector('.div-stock');
@@ -161,11 +159,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (btnCancelar) {
             textosLectura.forEach(el => el.classList.remove('d-none'));
             inputImagen.classList.add('d-none');
-            inputImagen.value = ''; // Limpiamos la imagen seleccionada
+            inputImagen.value = ''; 
             inputNombre.classList.add('d-none');
             inputCategoria.classList.add('d-none');
-            inputImagen.classList.add('d-none');
-            inputImagen.value = ''; // Limpiamos selección de archivo
             divPrecio.classList.add('d-none');
             divStock.classList.add('d-none');
             btnCancelarFila.classList.add('d-none');
@@ -178,13 +174,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // ACCIÓN: EDITAR
         if (botonEditarCambiante.classList.contains('btn-outline-primary')) {
-            // Guardamos valores actuales por si cancela
             inputNombre.dataset.original = inputNombre.value;
             inputCategoria.dataset.original = inputCategoria.value;
             inputPrecio.dataset.original = inputPrecio.value;
             inputStock.dataset.original = inputStock.value;
 
-            // Intercambiamos visibilidades
             textosLectura.forEach(el => el.classList.add('d-none'));
             inputNombre.classList.remove('d-none');
             inputCategoria.classList.remove('d-none');
@@ -200,55 +194,46 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
         // ACCIÓN: GUARDAR CAMBIOS
         else {
-            // Empaquetamos todo en un FormData para poder subir el archivo físico
             const formData = new FormData();
             formData.append('nombre', inputNombre.value);
+            formData.append('categoria_id', inputCategoria.value); // 🌟 CORREGIDO: Enviamos la categoría real elegida
             formData.append('precio', inputPrecio.value);
             formData.append('stock', inputStock.value);
-            
-            // AGREGADO: Engañamos a Laravel de forma segura para que acepte el PATCH con imagen
             formData.append('_method', 'PATCH'); 
             
-            // Si el usuario eligió una foto nueva, la sumamos al paquete
             if (inputImagen.files.length > 0) {
                 formData.append('imagen', inputImagen.files[0]);
             }
 
             fetch(`/admin/productos/${productoId}/update-fast`, {
-                method: 'POST', // Mantenemos POST
+                method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'X-HTTP-Method-Override': 'PATCH' // Laravel interpreta POST con esto como PATCH
+                    'X-HTTP-Method-Override': 'PATCH'
                 },
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Actualizamos los textos estáticos en la vista leída
-                    fila.querySelectorAll('.text-lectura')[0].innerText = inputNombre.value;
-                    fila.querySelectorAll('.text-lectura')[1].innerText = inputCategoria.options[inputCategoria.selectedIndex].text;
-                    fila.querySelectorAll('.text-lectura')[2].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
-                    fila.querySelectorAll('.text-lectura')[3].innerText = `${inputStock.value} u.`;
+                    // 🌟 CORREGIDO: Índices alineados exactamente con tus celdas del HTML
+                    // textosLectura[0] es la Imagen (se salta/maneja abajo), empezamos en 1 para Nombre
+                    fila.querySelectorAll('.text-lectura')[1].innerText = inputNombre.value;
+                    fila.querySelectorAll('.text-lectura')[2].innerText = inputCategoria.options[inputCategoria.selectedIndex].text;
+                    fila.querySelectorAll('.text-lectura')[3].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
+                    fila.querySelectorAll('.text-lectura')[4].innerText = `${inputStock.value} u.`;
 
-                    // Si se actualizó la imagen, renderizamos la miniatura nueva que devuelve el backend
-                    if (data.imagen_url) {
-                        contenedorImagen.innerHTML = `<img src="${data.imagen_url}" class="rounded-2 img-preview" style="width: 50px; height: 50px; object-fit: cover;">`;
-                    }
-
-                    // Si el servidor devolvió una nueva URL de imagen, actualizamos el HTML
+                    // Si el servidor devolvió una nueva URL de imagen, la incrustamos de inmediato
                     if (data.imagen_url) {
                         divImagenLectura.innerHTML = `<img src="${data.imagen_url}" alt="${inputNombre.value}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">`;
                     }
 
-                    // Volvemos a modo lectura
+                    // Volvemos a modo lectura seguro
                     textosLectura.forEach(el => el.classList.remove('d-none'));
                     inputImagen.classList.add('d-none');
                     inputImagen.value = ''; 
                     inputNombre.classList.add('d-none');
                     inputCategoria.classList.add('d-none');
-                    inputImagen.classList.add('d-none');
-                    inputImagen.value = '';
                     divPrecio.classList.add('d-none');
                     divStock.classList.add('d-none');
                     btnCancelarFila.classList.add('d-none');
