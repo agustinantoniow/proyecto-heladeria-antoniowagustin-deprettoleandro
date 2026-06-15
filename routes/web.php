@@ -7,6 +7,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CatalogoController;
 use App\Http\Controllers\PerfilController;
+
 // Controladores de Admin
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUsuarioController;
@@ -21,7 +22,7 @@ use App\Http\Controllers\VentaController;
 */
 
 // Home e Institucionales
-Route::get('/', function () { return view('frontend.heladeriaglaceVisitante'); })->name('home');
+Route::get('/', [CatalogoController::class, 'index'])->name('home');
 Route::get('/QuienesSomos', function () { return view('frontend.QuienesSomos'); })->name('quienes_somos');
 Route::get('/Comercializacion', function () { return view('frontend.Comercializacion'); });
 Route::get('/terminosYusos', function () { return view('frontend.terminosYusos'); });
@@ -73,13 +74,27 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mis-compras', [VentaController::class, 'misCompras'])->name('frontend.compras.index');
 
     // Vistas exclusivas del Cliente con sesión activa
-    Route::get('/Cliente', [ClienteController::class, 'index'])->name('frontend.heladeriaGlaceCliente');
+
+    Route::get('/Cliente', [ClienteController::class, 'inicio'])->name('cliente.home');
+
     Route::get('/terminosyusoCliente', function () { return view('frontend.terminosyusoCliente'); });
     Route::get('/QuienesSomosCliente', function () { return view('frontend.QuienesSomosCliente'); });
     Route::get('/ConsultasCliente', function () { return view('frontend.ConsultasCliente'); });
     Route::get('/contactoCliente', function () { return view('frontend.contactoCliente'); });
     Route::get('/ComercializacionCliente', function () { return view('frontend.ComercializacionCliente'); });
     Route::get('/exitoCliente', function () { return view('frontend.exitoCliente'); });
+   
+    // 1. Mostrar el formulario de pago
+    Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
+
+    // 2. Procesar los datos del formulario
+    Route::post('/checkout/procesar', [CarritoController::class, 'procesarCompra'])->name('carrito.procesar');
+
+    // 3. Pantalla de Éxito
+    Route::get('/checkout/exito/{id_venta}', [CarritoController::class, 'exito'])->name('carrito.exito');
+
+    // 4. Ver el comprobante
+    Route::get('/checkout/comprobante/{id_venta}', [CarritoController::class, 'comprobante'])->name('carrito.comprobante');
     
     // --- CATÁLOGO PARA CLIENTES LOGUEADOS ---
     // Usamos la misma lógica del controlador para mostrar los productos, pero con otro nombre de ruta si lo necesitas
@@ -160,3 +175,9 @@ Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.c
 
 // Procesar la compra y generar la palabra clave
 Route::post('/checkout/procesar', [CarritoController::class, 'procesarCompra'])->name('carrito.procesar');
+
+// Rutas del flujo de compra (Deben coincidir con el CarritoController)
+Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
+Route::post('/checkout/procesar', [CarritoController::class, 'procesarCompra'])->name('carrito.procesar');
+Route::get('/checkout/exito/{id_venta}', [CarritoController::class, 'exito'])->name('carrito.exito');
+Route::get('/checkout/comprobante/{id_venta}', [CarritoController::class, 'comprobante'])->name('carrito.comprobante');

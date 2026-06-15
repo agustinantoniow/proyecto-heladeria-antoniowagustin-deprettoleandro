@@ -1,31 +1,43 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Categoria;
+
 use Illuminate\Http\Request;
-use App\http\Controllers\Producto;
+use App\Models\Categoria; 
+use App\Models\Producto;  
 
 class ClienteController extends Controller
 {
-    /**
-     * Muestra la pantalla principal para el cliente autenticado.
-     */
-    public function index()
+    // Carga la vista principal dinámica del cliente logueado
+    public function inicio() 
     {
-        $categorias = Categoria::all();
-        // Cambia 'frontend.cliente' por la ruta real de tu vista 
-        // (por ejemplo: 'cliente.index', 'home', etc.)
-        return view('frontend.heladeriaglaceCliente', compact('categorias')); 
+        // 1. Categorías
+        $categorias = Categoria::with(['productos' => function($query) {
+            $query->where('activo', true);
+        }])->get();
+
+        // 2. Recomendados
+        $recomendados = Producto::where('activo', true)
+            ->withCount('detalles') 
+            ->orderBy('detalles_count', 'desc')
+            ->take(3)
+            ->get();
+
+        // 3. Novedades
+        $novedades = Producto::where('activo', true)
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+
+        // 4. Ofertas
+        $productosOferta = Producto::where('activo', true)
+            ->whereHas('categoria', function($query) {
+                $query->where('nombre', 'like', '%Familiar%')
+                      ->orWhere('nombre', 'like', '%Agua%');
+            })
+            ->take(3)
+            ->get();
+
+        return view('frontend.heladeriaGlaceCliente', compact('categorias', 'recomendados', 'novedades', 'productosOferta')); 
     }
-    public function verCategoria($id)
-{
-    // Buscamos la categoría o tiramos error 404 si alguien inventa un ID en la URL
-    $categoria = Categoria::findOrFail($id);
-
-    // Traemos solo los productos que pertenecen a esta categoría
-    // Nota: Si quieres que en el catálogo del cliente NO aparezcan los eliminados, usa softDeletes o las condiciones que ya tengas
-  
-
-    return view('cliente.categoria', compact('categoria', 'productos'));
-}
 }
