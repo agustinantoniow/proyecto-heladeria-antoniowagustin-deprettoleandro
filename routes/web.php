@@ -7,7 +7,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CatalogoController;
 use App\Http\Controllers\PerfilController;
-
+use App\Http\Controllers\Auth\RegistroController;
 // Controladores de Admin
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUsuarioController;
@@ -58,7 +58,7 @@ Route::get('/registro', [UsuarioController::class, 'create'])->name('registro');
 Route::post('/registro', [UsuarioController::class, 'store'])->name('registro.store');
 Route::post('/formregister', [UsuarioController::class, 'store_usuarios'])->name('formregister');
 Route::get('/exito', function () { return view('frontend.exito'); });
-
+Route::post('/registro', [RegistroController::class, 'registrar'])->name('registro.store');
 
 /*
 |--------------------------------------------------------------------------

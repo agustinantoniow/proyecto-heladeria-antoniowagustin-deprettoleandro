@@ -17,54 +17,53 @@ class ConsultaController extends Controller
 
 
     // Procesa el envío del formulario
-    public function store(Request $request)
-    {
-      $rules = [
-            
-       // Bajamos a 3 letras para aceptar nombres como "Ana" o "Luz"
-            'nombreConsulta'  => 'required|string|max:255|min:3', 
-            'emailConsulta'   => 'required|email',
-            // Cambiamos digits por min/max para que permita espacios o guiones si es necesario
-            'numero_telefono' => 'required|string|min:8|max:15', 
-            'opcion_consulta' => 'required',
-            'mensaje'         => 'required|string|min:5',
-        ];
- 
+ public function store(Request $request)
+{
+    $rules = [
+        // Añadida la regla regex para evitar números en el nombre
+        'nombreConsulta'  => 'required|string|min:3|max:150|regex:/^[\pL\s\-]+$/u', 
+        'emailConsulta'   => 'required|email|email:rfc,dns',
+        'numero_telefono' => 'required|numeric|digits_between:8,15', 
+        'opcion_consulta' => 'required',
+        'mensaje'         => 'required|string|min:5|max:255',
+    ];
 
-        $messages = [
-        'nombre_consulta.required' => 'Por favor, ingresá tu nombre.',
-        'nombre_consulta.max'      => 'El nombre no puuede tener mas de 150 caracteres.',
-        'nombre_consulta.min'      => 'El nombre no puuede tener mas de 5 caracteres.',
+    $messages = [
+        // Las llaves ahora coinciden exactamente con los nombres de los inputs del formulario
+        'nombreConsulta.required' => 'Por favor, ingresá tu nombre.',
+        'nombreConsulta.min'      => 'El nombre debe tener al menos 3 caracteres.',
+        'nombreConsulta.max'      => 'El nombre no puede tener más de 150 caracteres.',
+        'nombreConsulta.regex'    => 'El nombre no puede contener números ni caracteres especiales.',
 
-        'correo_electronico.required' => 'El correo electrónico es obligatorio.',
-        'correo_electronico.email'    => 'Ingresá un correo válido (ejemplo@gmail.com).',
+        'emailConsulta.required'  => 'El correo electrónico es obligatorio.',
+        'emailConsulta.email'     => 'Ingresá un correo válido (ejemplo@gmail.com).',
         
         'numero_telefono.required' => 'El número de teléfono es obligatorio.',
-        'numero_telefono.numeric'  => 'El teléfono solo debe contener números, sin espacios ni guiones.',
-        'numero_telefono.max'  => 'El número de teléfono no puede tener más de 15 dígitos.',
-        'numero_telefono.min'  => 'El número de teléfono debe tener al menos 8 dígitos.',
+        'numero_telefono.min'      => 'El número de teléfono debe tener al menos 8 dígitos.',
+        'numero_telefono.max'      => 'El número de teléfono no puede tener más de 15 dígitos.',
+        'numero_telefono.numeric'        => 'El teléfono solo debe contener números, sin letras, espacios ni guiones.',
         
-        'motivo_consulta.required' => 'Debes seleccionar un motivo para tu consulta.',
-
+        'opcion_consulta.required' => 'Debes seleccionar un motivo para tu consulta.',
         
         'mensaje.required' => 'El mensaje no puede quedar vacío.',
-        'mensaje.min'      => 'Por favor, detalla un poco más tu consulta (mínimo 10 caracteres).',
-        'mensaje.max'      => 'Por favor, detalla un poco más tu consulta (máximo 255 caracteres).',
+        'mensaje.min'      => 'Por favor, detalla un poco más tu consulta (mínimo 5 caracteres).',
+        'mensaje.max'      => 'El mensaje es demasiado largo (máximo 255 caracteres).',
     ];
-    $request->validate($rules, $messages); // Validamos con reglas personalizadas y mensajes específicos
+
+    $request->validate($rules, $messages);
            
-        DB::table('consultas')->insert([
-            'nombre'          => $request->nombreConsulta,
-            'email'           => $request->emailConsulta,
-            'numero_telefono' => $request->numero_telefono,
-            'tipo'            => $request->opcion_consulta, // Guardamos la categoría seleccionada
-            'mensaje'         => $request->mensaje,
-            'created_at'      => now(),
-            'updated_at'      => now(),
-        ]);
-        return redirect('/exito');
-            
-    }
+    DB::table('consultas')->insert([
+        'nombre'          => $request->nombreConsulta,
+        'email'           => $request->emailConsulta,
+        'numero_telefono' => $request->numero_telefono,
+        'tipo'            => $request->opcion_consulta, 
+        'mensaje'         => $request->mensaje,
+        'created_at'      => now(),
+        'updated_at'      => now(),
+    ]);
+
+    return redirect('/exito');
+}
     public function marcarLeido($id)
 {
     $consulta = Consulta::findOrFail($id);

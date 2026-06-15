@@ -1,4 +1,4 @@
-@extends('components.layoutCliente') {{-- Reemplazá por tu layout principal si se llama distinto --}}
+@extends('components.layoutCliente')
 
 @section('content')
 <div class="container py-5">
@@ -10,20 +10,11 @@
                 </div>
                 <div class="card-body p-4">
 
-                    {{-- Alertas de éxito o error --}}
+                    {{-- Alerta de éxito --}}
                     @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i>{{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
 
@@ -31,27 +22,58 @@
                         @csrf
                         @method('PUT')
 
+                        {{-- Campo: Nombre --}}
                         <div class="mb-3">
-                            <label for="nombre" class="form-label font-weight-bold">Nombre Completo</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ old('nombre', $usuario->nombre) }}" required>
+                            <label for="nombre" class="form-label fw-bold">Nombre Completo</label>
+                            <input type="text" 
+                                   class="form-control @error('nombre') is-invalid @enderror" 
+                                   id="nombre" 
+                                   name="nombre" 
+                                   value="{{ old('nombre', $usuario->nombre) }}" 
+                                   required>
+                            @error('nombre')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
+                        {{-- Campo: Email --}}
                         <div class="mb-3">
-                            <label for="email" class="form-label font-weight-bold">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $usuario->email) }}" required>
+                            <label for="email" class="form-label fw-bold">Correo Electrónico</label>
+                            <input type="email" 
+                                   class="form-control @error('email') is-invalid @enderror" 
+                                   id="email" 
+                                   name="email" 
+                                   value="{{ old('email', $usuario->email) }}" 
+                                   required>
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <hr class="my-4">
                         <p class="text-muted small"><i class="fa-solid fa-info-circle"></i> Si no deseas cambiar tu contraseña, deja los siguientes campos en blanco.</p>
 
+                        {{-- Campo: Contraseña --}}
                         <div class="mb-3">
                             <label for="password" class="form-label">Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Mínimo 6 caracteres">
+                            <input type="password" 
+                                   class="form-control @error('password') is-invalid @enderror" 
+                                   id="password" 
+                                   name="password" 
+                                   placeholder="Mínimo 6 caracteres">
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
+                        {{-- Campo: Confirmar Contraseña --}}
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Confirmar Nueva Contraseña</label>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Repite la contraseña">
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password_confirmation" 
+                                   name="password_confirmation" 
+                                   placeholder="Repite la contraseña">
                         </div>
 
                         <div class="d-grid gap-2 mt-4">

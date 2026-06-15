@@ -24,19 +24,36 @@ class PerfilController extends Controller
 
         // Validamos los datos que ingresó el cliente
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'email'  => ['required', 'string', 'email', 'max:255', Rule::unique('usuarios')->ignore($usuario->id)],
-            'password' => 'nullable|string|min:6|confirmed', // 'confirmed' pide un campo password_confirmation
+            'nombre' => 'required|string|max:255|min:5|regex:/^[a-zA-Z\s]+$/', // Solo letras y espacios
+            'email'  => ['required', 'string', 'email', 'max:255', Rule::unique('usuarios')->ignore($usuario->id), 'email:rfc,dns'],
+            'password' => 'nullable|string|min:6|confirmed|max:200|required_with:password_confirmation', // 'confirmed' pide un campo password_confirmation
+        ],[
+            'nombre.required'    => 'El nombre es obligatorio.',
+            'nombre.min'    => 'el nombre debe tener minimo 5 caracteres.',
+            'nombre.regex'       => 'El nombre no puede contener números ni caracteres especiales.', // <-- Tu mensaje personalizado
+            'email.required'     => 'El correo electrónico es obligatorio.',
+            'email.email'        => 'Por favor, ingresa un correo válido.',
+            'email.unique'       => 'Este correo ya está registrado por otro usuario.',
+            'email.email:rfc,dns' => 'El formato del correo electrónico no es válido.',
+            'password.required' => 'La nueva contraseña es obligatoria.',
+            'password.min'       => 'La nueva contraseña debe tener al menos 6 caracteres.',
+             'password.max'       => 'La nueva contraseña debe tener como máximo 200 caracteres.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
         ]);
 
         // Actualizamos los datos básicos
         $usuario->nombre = $request->nombre;
         $usuario->email = $request->email;
-
+        $usuario->password = $request->password;
         // Si el usuario escribió una contraseña nueva, la encriptamos y la cambiamos
         if ($request->filled('password')) {
             $usuario->password = Hash::make($request->password);
-        }
+        }else {
+    // REGLA DE ORO: Si está vacío, nos aseguramos de que Eloquent ignore los cambios en esta columna
+    unset($usuario->password); 
+    // Opcional, por si se guardó un string vacío previo en el modelo:
+    // $usuario->syncOriginalAttribute('password'); 
+}
 
         $usuario->save();
 

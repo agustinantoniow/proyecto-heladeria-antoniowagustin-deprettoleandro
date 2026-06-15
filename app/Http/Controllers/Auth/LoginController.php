@@ -40,6 +40,7 @@ class LoginController extends Controller
         // Mensajes para el campo 'nombre'
         'nombre.required' => 'El nombre es obligatorio para poder registrarte.',
         'nombre.max'      => 'El nombre no puede tener más de 255 caracteres.',
+        'nombre.min'      => 'El nombre debe tener al menos 6 caracteres.',
 
         // Mensajes para el campo 'apellido'
         'apellido.required' => 'Por favor, ingresá tu apellido.',
@@ -47,7 +48,8 @@ class LoginController extends Controller
         // Mensajes para el campo 'email'
         'email.required' => 'Necesitamos tu correo electrónico para identificar tu cuenta.',
         'email.email'    => 'El formato del correo no es válido. Ej: usuario@heladeria.com.',
-
+        'email.email:rfc,dns' => 'El formato del correo electrónico no es válido.',
+        
         // Mensajes para el campo 'password'
         'password.required' => 'La contraseña es obligatoria por cuestiones de seguridad.',
         'password.max' => 'La contraseña no puede tener más de 255 caracteres.',
