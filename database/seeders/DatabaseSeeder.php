@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
+// Asegurate de que estos nombres coincidan exactamente con los archivos de tu compañero
 use Database\Seeders\RolesSeeder;
-use Database\models\Usuario;
-use App\Models\Categoria;
+use Database\Seeders\UsuarioSeeder;
+
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -17,22 +18,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Llamamos a los Seeders que armó el equipo
         $this->call([
-            RolesSeeder::class 
+            RolesSeeder::class,
+            UsuarioSeeder::class
         ]);
-        $this->call(UsuarioSeeder::class);
-     User::factory()->create([
-    'nombre' => 'Test',
-    'apellido' => 'User',
-    'usuario' => 'testuser',
-    'email' => 'test@example.com',
-    'password' => bcrypt('password'),
-    'perfil_id' => 1, 
-    'estado' => true
-]);
 
-\App\Models\Categoria::firstOrCreate(['nombre' => 'Helados de agua']);
+        // 2. Creamos las categorías de los helados
+        \App\Models\Categoria::firstOrCreate(['nombre' => 'Helados de agua']);
         \App\Models\Categoria::firstOrCreate(['nombre' => 'Postres']);
         \App\Models\Categoria::firstOrCreate(['nombre' => 'Línea familiar (pote)']);
     }

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->string('direccion')->nullable()->after('tipo_entrega');
             $table->string('metodo_pago')->nullable()->after('direccion');
             $table->string('codigo_seguimiento')->nullable()->after('metodo_pago');
-            $table->timestamp('fecha_venta')->nullable()->after('codigo_seguimiento');
+            
+            // LÍNEA COMENTADA PARA EVITAR EL ERROR 1060 (Duplicado)
+            // $table->timestamp('fecha_venta')->nullable()->after('codigo_seguimiento');
         });
     }
 
@@ -29,8 +31,8 @@ return new class extends Migration
                 'tipo_entrega', 
                 'direccion', 
                 'metodo_pago', 
-                'codigo_seguimiento', 
-                'fecha_venta'
+                'codigo_seguimiento'
+                // 'fecha_venta' // También la anulamos acá
             ]);
         });
     }
