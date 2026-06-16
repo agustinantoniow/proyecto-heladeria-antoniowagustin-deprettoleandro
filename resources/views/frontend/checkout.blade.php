@@ -60,8 +60,9 @@
                         </div>
 
                         <h5 class="mb-3 mt-4">Medio de Pago</h5>
-                        <select name="medio_pago" class="form-select mb-4" required>
-                            <option value="">Seleccioná un medio de pago...</option>
+                        <label class="form-label text-muted">Seleccioná un medio de pago (Obligatorio solo para envío a domicilio)</label>
+                        <select name="medio_pago" id="medio_pago" class="form-select mb-4">
+                            <option value="">Elegí un medio de pago (Solo para envío a domicilio)</option>
                             <option value="tarjeta">Tarjeta de Crédito / Débito</option>
                             <option value="mercadopago">MercadoPago</option>
                             <option value="efectivo">Efectivo (al recibir)</option>

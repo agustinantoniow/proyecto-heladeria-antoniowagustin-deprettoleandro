@@ -136,14 +136,20 @@ class CarritoController extends Controller
     // 6. Procesar el formulario, descontar stock y cerrar la venta
     public function procesarCompra(Request $request)
     {
+        // 1. Validamos los datos dinámicamente
         $request->validate([
             'dni' => 'required|numeric',
             'telefono' => 'required|string',
             'tipo_entrega' => 'required|in:local,domicilio',
-            'direccion' => 'nullable|string',
-            'medio_pago' => 'required|in:efectivo,tarjeta,mercadopago'
+            
+            // La dirección solo es obligatoria si pide envío a domicilio
+            'direccion' => 'required_if:tipo_entrega,domicilio|nullable|string',
+            
+            // El medio de pago solo es obligatorio si pide envío a domicilio
+            'medio_pago' => 'required_if:tipo_entrega,domicilio|nullable|in:efectivo,tarjeta,mercadopago'
         ]);
 
+        // ... acá sigue el resto de tu código (obtenerCarrito, descontar stock, etc.)
         $carrito = $this->obtenerCarrito();
         $items = $carrito->detalles()->with('producto')->get();
 

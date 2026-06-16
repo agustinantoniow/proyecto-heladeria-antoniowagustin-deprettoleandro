@@ -26,7 +26,7 @@
                 <div class="card h-100 shadow-sm border-0 hover-efecto">
                     
                     @if($prod->imagen)
-                        <img src="{{ asset('uploads/productos/' . $prod->imagen) }}" class="card-img-top rounded-top-3" alt="{{ $prod->nombre }}" style="height: 220px; object-fit: cover;">
+                        <img src="{{ asset('imagenes/productos/' . $prod->imagen) }}" class="card-img-top rounded-top-3" alt="{{ $prod->nombre }}" style="height: 220px; object-fit: cover;">
                     @else
                         <div class="card-img-top bg-light d-flex align-items-center justify-content-center rounded-top-3" style="height: 220px;">
                             <span class="text-muted"><i class="fa-solid fa-ice-cream fa-3x"></i></span>

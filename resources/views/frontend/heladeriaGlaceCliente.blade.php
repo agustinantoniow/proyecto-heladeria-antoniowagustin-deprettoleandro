@@ -41,7 +41,7 @@
             <div class="col" id="cat-{{ $cat->id }}">
                 <div class="card h-100 shadow-sm border-0">
                     @if($cat->productos->first() && $cat->productos->first()->imagen)
-                        <img src="{{ asset('uploads/productos/' . $cat->productos->first()->imagen) }}" class="card-img-top" alt="{{ $cat->nombre }}" style="height: 250px; object-fit: cover;">
+                        <img src="{{ asset('imagenes/productos/' . $cat->productos->first()->imagen) }}" class="card-img-top" alt="{{ $cat->nombre }}" style="height: 250px; object-fit: cover;">
                     @else
                         <img src="{{ asset('imagenes/imagenes-tarjetas/img4.png') }}" class="card-img-top" style="height: 250px; object-fit: cover;">
                     @endif
@@ -72,7 +72,7 @@
         <div class="carousel-inner">
             @forelse($recomendados as $prod)
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}" data-bs-interval="2500">
-                    <img src="{{ $prod->imagen ? asset('uploads/productos/' . $prod->imagen) : asset('imagenes/imagenes-pagina-principal/img4.png') }}" class="d-block w-100" width="400" height="550" style="object-fit: cover;" alt="{{ $prod->nombre }}">
+                    <img src="{{ $prod->imagen ? asset('imagenes/productos/' . $prod->imagen) : asset('imagenes/imagenes-pagina-principal/img4.png') }}" class="d-block w-100" width="400" height="550" style="object-fit: cover;" alt="{{ $prod->nombre }}">
                     <div class="carousel-caption d-none d-md-block" style="background: rgba(0,0,0,0.5); border-radius: 10px;">
                         <h5>{{ $prod->nombre }}</h5>
                         <p>¡El preferido de nuestros clientes! Buscalo en nuestro menú.</p>
@@ -109,7 +109,7 @@
                 <div class="card h-100 shadow-sm" style="max-width: 600px; overflow: hidden;">
                     <div class="row g-0 h-100">
                         <div class="col-md-6">
-                            <img src="{{ $prod->imagen ? asset('uploads/productos/' . $prod->imagen) : asset('imagenes/imagenes-tarjetas/img8.png') }}" class="img-fluid rounded-start h-100" style="object-fit: cover; min-height: 180px;">
+                            <img src="{{ $prod->imagen ? asset('imagenes/productos/' . $prod->imagen) : asset('imagenes/imagenes-tarjetas/img8.png') }}" class="img-fluid rounded-start h-100" style="object-fit: cover; min-height: 180px;">
                         </div>
                         <div class="col-md-6">
                             <div class="card-body d-flex flex-column justify-content-center">
@@ -137,7 +137,7 @@
                 <div class="card h-100 shadow border-danger" style="max-width: 800px; overflow: hidden; border-width: 2px;">
                     <div class="row g-0 h-100">
                         <div class="col-md-6">
-                            <img src="{{ $prod->imagen ? asset('uploads/productos/' . $prod->imagen) : asset('imagenes/imagenes-tarjetas/img12.png') }}" class="img-fluid rounded-start h-100" style="object-fit: cover; min-height: 200px;">
+                            <img src="{{ $prod->imagen ? asset('imagenes/productos/' . $prod->imagen) : asset('imagenes/imagenes-tarjetas/img12.png') }}" class="img-fluid rounded-start h-100" style="object-fit: cover; min-height: 200px;">
                         </div>
                         <div class="col-md-6">
                             <div class="card-body d-flex flex-column justify-content-center">
