@@ -24,4 +24,10 @@ public function ventaCabecera() {
         // Cambiamos 'venta_id' por 'venta_cabecera_id' para que coincida con la migración
         return $this->hasMany(VentaDetalle::class, 'venta_cabecera_id');
     }
+    // Relación con el usuario que hizo la compra
+    public function user()
+    {
+        // Si tu modelo de usuarios se llama diferente (ej: Usuario), cambialo acá adentro
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
 }

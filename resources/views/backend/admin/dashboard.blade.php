@@ -88,7 +88,7 @@
                             <i class="fas fa-users fa-2x text-gray-300"></i>
                         </div>
                     </div>
-                    <a href="{{ route('admin.ventas.index') }}" class="stretched-link"></a>
+                    <a href="{{ route('admin.ventas') }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>

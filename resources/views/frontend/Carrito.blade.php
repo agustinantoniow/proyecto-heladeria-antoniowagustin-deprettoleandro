@@ -2,14 +2,14 @@
     @section('content')
     <style>
         /* ==========================================================================
-           VARIABLES Y CONFIGURACIÓN GENERAL (Mantenemos tus estilos limpios)
+           VARIABLES Y CONFIGURACIÓN GENERAL
            ========================================================================== */
         :root {
-            --bg-color: #f9f6f0;        /* Un tono crema sutil para la heladería */
+            --bg-color: #f9f6f0;
             --card-bg: #ffffff;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
-            --accent-color: #7bc4c4;    /* Turquesa pastel distintivo de Glace */
+            --accent-color: #7bc4c4;
             --accent-hover: #69b3b3;
             --border-color: #e2e8f0;
             --danger-color: #ef4444;
@@ -35,10 +35,42 @@
             margin: 0 auto;
         }
 
+        /* 🌟 NUEVO: Contenedor flex para alinear el título y el botón de vaciar */
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
         .cart-title {
             font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 0; /* Se quita el margen porque ahora lo maneja el header */
+        }
+
+        /* 🌟 NUEVO: Estilos para el botón de Vaciar Carrito */
+        .empty-cart-btn {
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .empty-cart-btn:hover {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border-color: #991b1b;
         }
 
         /* Layout de Rejilla */
@@ -87,16 +119,15 @@
             width: 90px;
             height: 90px;
             border-radius: 8px;
-            background-color: #fbc6a4; /* Tono durazno pastel */
+            background-color: #fbc6a4;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 2rem;
-            overflow: hidden; /* IMPORTANTE: Para que la imagen respete los bordes curvos */
+            overflow: hidden;
         }
 
-        /* Clase nueva para la imagen real del producto */
         .img-real {
             width: 100%;
             height: 100%;
@@ -230,7 +261,7 @@
             background-color: #fef2f2;
         }
 
-        /* Alerts informativos de Laravel */
+        /* Alerts informativos */
         .alert-session {
             padding: 14px;
             border-radius: var(--radius);
@@ -252,7 +283,7 @@
             padding: 30px;
             height: fit-content;
             box-shadow: 0 4px 6px rgba(0,0,0,0.01);
-            position: sticky; /* Agregado para que acompañe el scroll */
+            position: sticky;
             top: 20px;
         }
 
@@ -275,11 +306,6 @@
             margin-bottom: 14px;
             font-size: 0.95rem;
             color: var(--text-secondary);
-        }
-
-        .free-shipping {
-            color: var(--success-color);
-            font-weight: 600;
         }
 
         .total-row {
@@ -311,12 +337,6 @@
             background-color: var(--accent-hover);
         }
 
-        .checkout-btn:disabled {
-            background-color: #cbd5e1;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
         .continue-shopping {
             display: block;
             text-align: center;
@@ -341,14 +361,9 @@
         }
         .empty-state i { font-size: 3.5rem; color: #cbd5e1; margin-bottom: 15px; display: block; }
     </style>
-</head>
-<body>
-
-    {{-- Si tenés una barra de navegación en layoutPublico, deberías incluir este archivo con @extends y poner todo dentro de un @section('content') en lugar de usar <html> y <body>. Si lo estás manejando como página independiente, dejalo así. --}}
 
     <main class="cart-container">
-        <h1 class="cart-title">Tu Carrito de Compras</h1>
-
+        
         @if(session('success'))
             <div class="alert-session alert-success">✓ {{ session('success') }}</div>
         @endif
@@ -357,6 +372,19 @@
         @endif
         
         @if(isset($items) && count($items) > 0)
+            {{-- 🌟 NUEVO: El header ahora contiene el título y el botón de vaciar, solo si hay items --}}
+            <div class="cart-header">
+                <h1 class="cart-title">Tu Carrito de Compras</h1>
+                
+                <form action="{{ route('carrito.vaciar') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que querés vaciar todo el carrito?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="empty-cart-btn" title="Quitar todos los productos">
+                        <i class="fa-solid fa-trash-can"></i> Vaciar Carrito
+                    </button>
+                </form>
+            </div>
+
             <div class="cart-layout">
                 
                 <section class="cart-items">
@@ -364,7 +392,6 @@
                         <div class="cart-item" data-id="{{ $item->id }}">
                             <div class="item-img">
                                 <div class="product-avatar">
-                                    {{-- MEJORA: Mostrar foto real si existe --}}
                                     @if($item->producto->imagen)
                                         <img src="{{ asset('uploads/productos/' . $item->producto->imagen) }}" alt="{{ $item->producto->nombre }}" class="img-real">
                                     @else
@@ -375,7 +402,6 @@
                             
                             <div class="item-details">
                                 <h3 class="item-name">{{ $item->producto->nombre }}</h3>
-                                {{-- MEJORA: Traer la categoría real de la BD en lugar del texto fijo --}}
                                 <p class="item-category">{{ $item->producto->categoria->nombre ?? 'Glace Premium' }}</p>
                                 <span class="item-price-mobile">${{ number_format($item->subtotal, 2, ',', '.') }}</span>
                             </div>
@@ -416,24 +442,24 @@
                 </section>
 
                 <aside class="cart-summary">
-                            <h2>Resumen del pedido</h2>
-                            <div class="summary-row"><span>Subtotal ({{ $items->sum('cantidad') }} productos)</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
-                            <div class="summary-row total-row"><span>Total</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
-                            <a href="{{ route('carrito.checkout') }}" class="checkout-btn text-decoration-none">
-                                Proceder al pago <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                            <a href="{{ route('catalogo.publico') }}" class="continue-shopping">Seguir comprando</a>
-                        </aside>
-                    </div>
-                @else
-                    <div class="empty-state">
-                        <i class="fa-solid fa-basket-shopping"></i>
-                        <h2>Tu carrito está vacío</h2>
-                        <a href="{{ route('catalogo.publico') }}" class="continue-shopping">Volver a la tienda</a>
-                    </div>
-                @endif
-            </main>
-            <script>function confirmarEliminar() { return confirm("¿De verdad querés quitar este producto?"); }</script>
-</body>
-</html>
+                    <h2>Resumen del pedido</h2>
+                    <div class="summary-row"><span>Subtotal ({{ $items->sum('cantidad') }} productos)</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
+                    <div class="summary-row total-row"><span>Total</span><span>${{ number_format($carrito->total, 2, ',', '.') }}</span></div>
+                    <a href="{{ route('carrito.checkout') }}" class="checkout-btn text-decoration-none">
+                        Proceder al pago <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="{{ route('catalogo.publico') }}" class="continue-shopping">Seguir comprando</a>
+                </aside>
+            </div>
+        @else
+            {{-- Si no hay items, el título aparece acá suelto --}}
+            <h1 class="cart-title" style="margin-bottom: 30px;">Tu Carrito de Compras</h1>
+            <div class="empty-state">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <h2>Tu carrito está vacío</h2>
+                <a href="{{ route('catalogo.publico') }}" class="continue-shopping">Volver a la tienda</a>
+            </div>
+        @endif
+    </main>
+    <script>function confirmarEliminar() { return confirm("¿De verdad querés quitar este producto?"); }</script>
 @endsection

@@ -1,7 +1,13 @@
 @extends('components.layoutCliente')
 @section('title', 'Nuestros Productos - Heladería Glace')
 @section('content')
-
+{{-- Atrapa y muestra el mensaje de Producto Agregado --}}
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show text-center shadow-sm" role="alert" id="alerta-carrito" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+        <strong><i class="fa-solid fa-cart-arrow-down me-2"></i> ¡Genial!</strong> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 <div class="container mt-5 mb-5">
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold text-info" style="font-family: 'Fredoka', sans-serif;">Nuestros Sabores</h1>
@@ -122,5 +128,18 @@ function decrementarCantidad(id) {
     }
 }
 </script>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Buscamos la alerta por su ID
+        const alerta = document.getElementById('alerta-carrito');
+        
+        if (alerta) {
+            // Esperamos 3 segundos (3000 milisegundos) y la ocultamos suavemente
+            setTimeout(function() {
+                let alertInstance = new bootstrap.Alert(alerta);
+                alertInstance.close();
+            }, 3000);
+        }
+    });
+</script>
 @endsection

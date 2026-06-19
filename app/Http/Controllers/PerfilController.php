@@ -17,72 +17,68 @@ class PerfilController extends Controller
         return view('frontend.perfil', compact('usuario'));
     }
 
+    
     // Procesa la actualización de los datos
     public function actualizar(Request $request)
     {
         $usuario = auth()->user();
 
-        // Validamos los datos que ingresó el cliente
+        // 1. Validaciones robustas con el nuevo campo 'usuario'
         $request->validate([
-            'nombre' => 'required|string|max:255|min:5|regex:/^[a-zA-Z\s]+$/', // Solo letras y espacios
-            'email'  => ['required', 'string', 'email', 'max:255', Rule::unique('usuarios')->ignore($usuario->id), 'email:rfc,dns'],
-            'password' => 'nullable|string|min:6|confirmed|max:200|required_with:password_confirmation', // 'confirmed' pide un campo password_confirmation
+            'nombre'   => ['required', 'string', 'min:5', 'max:255', 'regex:/^[\pL\s]+$/u'],
+            
+            // Validamos que el usuario no tenga espacios, tenga min 5 caracteres y sea único (ignorando el propio)
+            'usuario'  => ['required', 'string', 'min:5', 'max:50', 'regex:/^\S+$/', Rule::unique('usuarios', 'usuario')->ignore($usuario->id)],
+            
+            'email'    => ['required', 'string', 'email:rfc,dns', 'max:255', Rule::unique('usuarios')->ignore($usuario->id)],
+            'password' => ['nullable', 'string', 'min:6', 'max:200', 'confirmed'], 
         ],[
-            'nombre.required'    => 'El nombre es obligatorio.',
-            'nombre.min'    => 'el nombre debe tener minimo 5 caracteres.',
-            'nombre.regex'       => 'El nombre no puede contener números ni caracteres especiales.', // <-- Tu mensaje personalizado
+            // Mensajes de error en Español
+            'nombre.required'    => 'El nombre completo es obligatorio.',
+            'nombre.min'         => 'El nombre debe tener al menos 5 caracteres.',
+            'nombre.max'         => 'El nombre no puede superar los 255 caracteres.',
+            'nombre.regex'       => 'El nombre solo puede contener letras y espacios.',
+            
+            'usuario.required'   => 'El nombre de usuario es obligatorio.',
+            'usuario.min'        => 'El nombre de usuario debe tener al menos 5 caracteres.',
+            'usuario.max'        => 'El nombre de usuario no puede superar los 50 caracteres.',
+            'usuario.regex'      => 'El nombre de usuario no puede contener espacios en blanco.',
+            'usuario.unique'     => 'Este nombre de usuario ya está siendo usado por otra persona. ¡Elegí otro!',
+
             'email.required'     => 'El correo electrónico es obligatorio.',
-            'email.email'        => 'Por favor, ingresa un correo válido.',
-            'email.unique'       => 'Este correo ya está registrado por otro usuario.',
-            'email.email:rfc,dns' => 'El formato del correo electrónico no es válido.',
-            'password.required' => 'La nueva contraseña es obligatoria.',
+            'email.email'        => 'Por favor, ingresá un correo válido.',
+            'email.email:rfc,dns'=> 'El formato del correo electrónico no es válido.',
+            'email.unique'       => 'Este correo ya está siendo usado por otra cuenta.',
+            
             'password.min'       => 'La nueva contraseña debe tener al menos 6 caracteres.',
-             'password.max'       => 'La nueva contraseña debe tener como máximo 200 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.max'       => 'La nueva contraseña es demasiado larga.',
+            'password.confirmed' => 'Las contraseñas no coinciden. Verificalas usando el botón del ojito.',
         ]);
 
-        // Actualizamos los datos básicos
+        // 2. Actualizamos los datos básicos
         $usuario->nombre = $request->nombre;
+        $usuario->usuario = $request->usuario; // <-- Agregamos el guardado del nuevo usuario
         $usuario->email = $request->email;
-        $usuario->password = $request->password;
-        // Si el usuario escribió una contraseña nueva, la encriptamos y la cambiamos
+
+        // 3. Solo tocamos la contraseña si el usuario escribió algo
         if ($request->filled('password')) {
             $usuario->password = Hash::make($request->password);
-        }else {
-    // REGLA DE ORO: Si está vacío, nos aseguramos de que Eloquent ignore los cambios en esta columna
-    unset($usuario->password); 
-    // Opcional, por si se guardó un string vacío previo en el modelo:
-    // $usuario->syncOriginalAttribute('password'); 
-}
+        }
 
+        // 4. Guardamos los cambios
         $usuario->save();
 
         return redirect()->back()->with('success', '¡Tu perfil ha sido actualizado con éxito!');
     }
    public function misCompras()
-{
-    // 1. Ver qué ID de usuario está detectando Laravel al estar logueado
-    $usuarioLogueado = auth()->id();
+    {
+        // Traemos solo los pedidos 'completados' del usuario logueado, ordenados del más nuevo al más viejo
+        $compras = \App\Models\VentaCabecera::where('user_id', auth()->id())
+                                            ->where('estado', 'completado')
+                                            ->orderBy('fecha_venta', 'desc')
+                                            ->get();
 
-    // 2. Traer las cabeceras de este usuario sin importar el estado
-    $cabecerasUsuario = \Illuminate\Support\Facades\DB::table('venta_cabeceras')
-        ->where('user_id', $usuarioLogueado)
-        ->get();
-
-    // 3. Traer TODAS las cabeceras completadas que existan en el sistema
-    $cabecerasCompletadas = \Illuminate\Support\Facades\DB::table('venta_cabeceras')
-        ->where('estado', 'completado')
-        ->get();
-
-    // 4. Ver si hay algo en la tabla de detalles
-    $todosLosDetalles = \Illuminate\Support\Facades\DB::table('venta_detalles')->get();
-
-    // Congelamos la pantalla para revisar los datos reales
-    dd([
-        'ID Usuario Logueado' => $usuarioLogueado,
-        'Cabeceras de este usuario en la BD' => $cabecerasUsuario->toArray(),
-        'Total cabeceras del sistema en estado completado' => $cabecerasCompletadas->toArray(),
-        'Total filas en venta_detalles' => $todosLosDetalles->toArray(),
-    ]);
-}
+        // Fijate que acá le puse 'frontend.compras' porque el error dice que tu archivo se llama compras.blade.php
+        return view('frontend.compras', compact('compras')); 
+    }
 }

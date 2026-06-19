@@ -21,7 +21,7 @@ class ConsultaController extends Controller
 {
     $rules = [
         // Añadida la regla regex para evitar números en el nombre
-        'nombreConsulta'  => 'required|string|min:3|max:150|regex:/^[\pL\s\-]+$/u', 
+        'nombreConsulta' => 'required|string|min:3|max:150|regex:/^[\pL-]+$/u', 
         'emailConsulta'   => 'required|email|email:rfc,dns',
         'numero_telefono' => 'required|numeric|digits_between:8,15', 
         'opcion_consulta' => 'required',

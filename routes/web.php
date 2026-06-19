@@ -71,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [PerfilController::class, 'ver'])->name('perfil.ver');
     Route::put('/perfil/actualizar', [PerfilController::class, 'actualizar'])->name('perfil.actualizar');
     // Ruta para el historial de compras del cliente
-    Route::get('/mis-compras', [VentaController::class, 'misCompras'])->name('frontend.compras.index');
+  Route::get('/mis-compras', [PerfilController::class, 'misCompras'])->name('frontend.compras.index');
 
     // Vistas exclusivas del Cliente con sesión activa
 
@@ -87,14 +87,14 @@ Route::middleware(['auth'])->group(function () {
     // 1. Mostrar el formulario de pago
     Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
 
-    // 2. Procesar los datos del formulario
+    // 2. Procesar los datos del formulario (AHORA APUNTA A VentaController)
     Route::post('/checkout/procesar', [CarritoController::class, 'procesarCompra'])->name('carrito.procesar');
 
     // 3. Pantalla de Éxito
     Route::get('/checkout/exito/{id_venta}', [CarritoController::class, 'exito'])->name('carrito.exito');
 
-    // 4. Ver el comprobante
-    Route::get('/checkout/comprobante/{id_venta}', [CarritoController::class, 'comprobante'])->name('carrito.comprobante');
+    // 4. Ver el comprobante (AHORA APUNTA A VentaController)
+    Route::get('/checkout/comprobante/{id_venta}', [VentaController::class, 'comprobante'])->name('carrito.comprobante');
     
     // --- CATÁLOGO PARA CLIENTES LOGUEADOS ---
     // Usamos la misma lógica del controlador para mostrar los productos, pero con otro nombre de ruta si lo necesitas
@@ -103,9 +103,6 @@ Route::middleware(['auth'])->group(function () {
     // Rutas dinámicas por categorías
     Route::get('/categoria/{slug}', [CatalogoController::class, 'mostrarCategoria'])->name('categoria.mostrar');
     Route::get('/catalogo/categoria/{id}', [CatalogoController::class, 'porCategoria'])->name('catalogo.categoria');
-
-    // Ver más categorías versión Cliente
-  // Ruta para ver los productos de una categoría específica
 
 
 // Asegúrate de que apunte a 'mostrarCategoria' y que el name sea 'cliente.categoria'
@@ -123,6 +120,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/carrito/proceder-pago', [CarritoController::class, 'mostrarFormularioPago'])->name('carrito.pago');
     Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminar'])->name('carrito.eliminar');
     Route::post('/carrito/confirmar', [CarritoController::class, 'confirmar'])->name('carrito.confirmar');
+    Route::delete('/carrito/vaciar', [CarritoController::class, 'vaciar'])->name('carrito.vaciar');
     Route::get('/compra-confirmada', function () {
         if (!session('total')) return redirect('/Cliente');
         return view('frontend.compra-confirmada');
@@ -162,7 +160,11 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
     Route::delete('/admin/productos/{id}', [AdminProductoController::class, 'destroy'])->name('admin.productos.destroy');
 
     // Ruta para listar las ventas en el panel
-    Route::get('/admin/ventas', [CarritoController::class, 'listarVentasAdmin'])->name('admin.ventas.index');
+    // Usamos SÓLO esta para listar las ventas
+    Route::get('/admin/ventas', [VentaController::class, 'index'])->name('admin.ventas');
+    
+    // Y esta para ver el detalle de cada una
+    Route::get('/admin/ventas/detalle/{id}', [VentaController::class, 'verDetalleAdmin'])->name('admin.ventas.detalle');
    
     // Gestión de Categorías Admin
     Route::get('/admin/categorias', [AdminCategoriaController::class, 'index'])->name('admin.categorias.index');
@@ -173,11 +175,10 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
 // Pantalla para elegir envío y pago
 Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
 
-// Procesar la compra y generar la palabra clave
-Route::post('/checkout/procesar', [CarritoController::class, 'procesarCompra'])->name('carrito.procesar');
-
 // Rutas del flujo de compra (Deben coincidir con el CarritoController)
 Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
 Route::post('/checkout/procesar', [CarritoController::class, 'procesarCompra'])->name('carrito.procesar');
 Route::get('/checkout/exito/{id_venta}', [CarritoController::class, 'exito'])->name('carrito.exito');
 Route::get('/checkout/comprobante/{id_venta}', [CarritoController::class, 'comprobante'])->name('carrito.comprobante');
+
+Route::post('/carrito/procesar', [VentaController::class, 'store'])->name('carrito.procesar');

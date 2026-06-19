@@ -34,7 +34,6 @@
                 @foreach($productos as $prod)
                 <tr data-id="{{ $prod->id }}" class="fila-producto">
                     <td>
-                        {{-- DIV contenedor para ocultar la imagen al editar --}}
                         <div class="text-lectura div-imagen-lectura">
                             @if($prod->imagen)
                                 <img src="{{ asset('uploads/productos/' . $prod->imagen) }}" alt="{{ $prod->nombre }}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">
@@ -42,7 +41,6 @@
                                 <span class="text-muted small">Sin foto</span>
                             @endif
                         </div>
-                        {{-- INPUT FILE oculto --}}
                         <input type="file" class="form-control form-control-sm d-none input-imagen" accept="image/*" style="max-width: 180px;">
                     </td>
                     
@@ -108,7 +106,6 @@
                                     </button>
                                 @endif
                             </form>
-                            
                         </div>
                     </td>
                 </tr>
@@ -194,9 +191,38 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
         // ACCIÓN: GUARDAR CAMBIOS
         else {
+            // -------------------------------------------------------------
+            // VALIDACIONES DE SEGURIDAD EN FRONTEND (Evita recargas y limpia espacios vacíos)
+            // -------------------------------------------------------------
+            const nombreVal = inputNombre.value.trim();
+            const precioVal = parseFloat(inputPrecio.value);
+            const stockVal = parseInt(inputStock.value);
+
+            // Regex: solo letras, guiones y espacios intermedios (ej: "Dulce de Leche")
+          const nombreRegex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\-]+(\s[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ\-]+)*$/;
+
+            if (nombreVal.length < 5 || !nombreRegex.test(nombreVal)) {
+                mostrarNotificacion('El nombre debe tener al menos 5 caracteres, usar solo letras y espacios internos.', 'danger');
+                inputNombre.focus();
+                return; // Frena el fetch de inmediato
+            }
+
+            if (isNaN(precioVal) || precioVal < 100) {
+                mostrarNotificacion('El precio mínimo permitido es de $100.', 'danger');
+                inputPrecio.focus();
+                return;
+            }
+
+            if (isNaN(stockVal) || stockVal < 1) {
+                mostrarNotificacion('El stock mínimo permitido es de 1 unidad.', 'danger');
+                inputStock.focus();
+                return;
+            }
+
+            // Si pasa el filtro, armamos el FormData
             const formData = new FormData();
-            formData.append('nombre', inputNombre.value);
-            formData.append('categoria_id', inputCategoria.value); // 🌟 CORREGIDO: Enviamos la categoría real elegida
+            formData.append('nombre', nombreVal);
+            formData.append('categoria_id', inputCategoria.value); 
             formData.append('precio', inputPrecio.value);
             formData.append('stock', inputStock.value);
             formData.append('_method', 'PATCH'); 
@@ -213,22 +239,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: formData
             })
-            .then(response => response.json())
+            .then(async response => {
+                const data = await response.json();
+                
+                // Si Laravel responde con un código de error (como el 422 de validación)
+                if (!response.ok) {
+                    if (response.status === 422 && data.errors) {
+                        // Unimos todos los mensajes personalizados del controlador en un texto único
+                        let mensajesError = Object.values(data.errors).flat().join('<br>');
+                        throw new Error(mensajesError);
+                    }
+                    throw new Error(data.message || 'Hubo un problema al procesar los cambios.');
+                }
+                return data;
+            })
             .then(data => {
                 if (data.success) {
-                    // 🌟 CORREGIDO: Índices alineados exactamente con tus celdas del HTML
-                    // textosLectura[0] es la Imagen (se salta/maneja abajo), empezamos en 1 para Nombre
-                    fila.querySelectorAll('.text-lectura')[1].innerText = inputNombre.value;
+                    fila.querySelectorAll('.text-lectura')[1].innerText = nombreVal;
                     fila.querySelectorAll('.text-lectura')[2].innerText = inputCategoria.options[inputCategoria.selectedIndex].text;
-                    fila.querySelectorAll('.text-lectura')[3].innerText = `$${parseFloat(inputPrecio.value).toFixed(2)}`;
-                    fila.querySelectorAll('.text-lectura')[4].innerText = `${inputStock.value} u.`;
+                    fila.querySelectorAll('.text-lectura')[3].innerText = `$${precioVal.toFixed(2)}`;
+                    fila.querySelectorAll('.text-lectura')[4].innerText = `${stockVal} u.`;
 
-                    // Si el servidor devolvió una nueva URL de imagen, la incrustamos de inmediato
                     if (data.imagen_url) {
-                        divImagenLectura.innerHTML = `<img src="${data.imagen_url}" alt="${inputNombre.value}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">`;
+                        divImagenLectura.innerHTML = `<img src="${data.imagen_url}" alt="${nombreVal}" class="rounded-2" style="width: 50px; height: 50px; object-fit: cover;">`;
                     }
 
-                    // Volvemos a modo lectura seguro
                     textosLectura.forEach(el => el.classList.remove('d-none'));
                     inputImagen.classList.add('d-none');
                     inputImagen.value = ''; 
@@ -252,7 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error:', error);
-                mostrarNotificacion('Hubo un problema al aplicar los cambios.', 'danger');
+                // 🌟 CORREGIDO: Muestra el mensaje del backend o el error de JS de forma dinámica
+                mostrarNotificacion(error.message, 'danger');
             });
         }
     });
@@ -266,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `;
         contenedor.insertAdjacentHTML('beforeend', html);
-        setTimeout(() => { document.getElementById(`toast-${id}`)?.remove(); }, 2500);
+        setTimeout(() => { document.getElementById(`toast-${id}`)?.remove(); }, 3500);
     }
 });
 </script>

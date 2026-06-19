@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str; // <-- Ya puesto en el lugar correcto
 use Illuminate\Support\Facades\DB; 
 
+
 class CarritoController extends Controller
 {
     /**
@@ -95,8 +96,13 @@ class CarritoController extends Controller
 
         $this->recalcularTotal($carrito);
         
-        return back()->with('success', '¡Carrito actualizado con éxito!');
+        // 1. Guardamos el mensaje en la sesión de forma segura
+        session()->flash('success', '¡Helado agregado al carrito con éxito!');
+        
+        // 2. Volvemos exactamente a la misma página donde el usuario hizo clic
+        return redirect()->back();
     }
+    
 
     // 3. Eliminar / quitar un producto del carrito
     public function eliminar($id)
@@ -115,6 +121,24 @@ class CarritoController extends Controller
         $carrito->update(['total' => $total]);
     }
 
+    public function vaciar()
+    {
+        // 1. Buscamos la cabecera activa usando el estado real de tu base de datos: 'pendiente'
+        $carrito = VentaCabecera::where('user_id', auth()->id())
+                                ->where('estado', 'pendiente') 
+                                ->first();
+
+        if ($carrito) {
+            // 2. Borramos todos los helados (detalles) vinculados a esta cabecera
+            $carrito->detalles()->delete();
+            
+            // 3. Reiniciamos el total de la cabecera a 0
+            $carrito->update(['total' => 0]);
+        }
+
+        // 4. Devolvemos al cliente a la vista con el cartel verde
+        return redirect()->back()->with('success', '¡El carrito se vació por completo!');
+    }
     // -------------------------------------------------------------
     // FLUJO DE CHECKOUT Y PAGO (Solicitado por el profesor)
     // -------------------------------------------------------------
@@ -136,51 +160,83 @@ class CarritoController extends Controller
     // 6. Procesar el formulario, descontar stock y cerrar la venta
     public function procesarCompra(Request $request)
     {
-        // 1. Validamos los datos dinámicamente
+        // 1. Validaciones estrictas y 100% en español (las que arreglamos recién)
         $request->validate([
-            'dni' => 'required|numeric',
-            'telefono' => 'required|string',
+            'dni'          => 'required|regex:/^[0-9]+$/|digits_between:7,9',
+            'telefono'     => 'required|regex:/^[0-9]+$/|digits_between:6,15',
             'tipo_entrega' => 'required|in:local,domicilio',
-            
-            // La dirección solo es obligatoria si pide envío a domicilio
-            'direccion' => 'required_if:tipo_entrega,domicilio|nullable|string',
-            
-            // El medio de pago solo es obligatorio si pide envío a domicilio
-            'medio_pago' => 'required_if:tipo_entrega,domicilio|nullable|in:efectivo,tarjeta,mercadopago'
+            'direccion'    => [
+                'required_if:tipo_entrega,domicilio', 'nullable', 'string', 'max:255',
+                'regex:/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\.,\-#º°]+$/'
+            ],
+            'medio_pago'   => 'required_if:tipo_entrega,domicilio|nullable|not_in:0',
+        ], [
+            'dni.required'          => 'El DNI es obligatorio.',
+            'dni.regex'             => 'El DNI solo puede contener números, sin espacios ni puntos.',
+            'dni.digits_between'    => 'El DNI debe tener entre 7 y 9 números.',
+            'telefono.required'     => 'El teléfono es obligatorio.',
+            'telefono.regex'        => 'El teléfono solo puede contener números.',
+            'telefono.digits_between' => 'El teléfono debe tener entre 6 y 15 números.',
+            'tipo_entrega.required' => 'Debés seleccionar una forma de entrega.',
+            'direccion.required_if' => 'La dirección es obligatoria cuando elegís envío a domicilio.',
+            'direccion.regex'       => 'La dirección contiene símbolos no permitidos.',
+            'medio_pago.required_if'=> 'Debés seleccionar un medio de pago para el envío.',
+            'medio_pago.not_in'     => 'Seleccioná un medio de pago válido.',
         ]);
 
-        // ... acá sigue el resto de tu código (obtenerCarrito, descontar stock, etc.)
-        $carrito = $this->obtenerCarrito();
-        $items = $carrito->detalles()->with('producto')->get();
+        // 2. Buscamos el carrito activo del usuario
+        $venta = \App\Models\VentaCabecera::where('user_id', auth()->id())
+                              ->where('estado', 'pendiente')
+                              ->first();
 
-        if ($items->isEmpty()) {
-            return redirect()->route('catalogo.publico')->with('error', 'Tu carrito está vacío.');
+        if (!$venta || $venta->detalles->isEmpty()) {
+            return redirect()->route('catalogo.publico')->with('error', 'No tenés productos en el carrito.');
         }
 
-        // Descontamos el stock físico
-        foreach ($items as $item) {
-            $producto = $item->producto;
-            if ($producto->stock < $item->cantidad) {
-                return back()->with('error', 'Lo sentimos, el producto ' . $producto->nombre . ' se quedó sin stock suficiente.');
+        // 🌟 3. EL TRUCO MÁGICO: DESCONTAR EL STOCK
+        foreach ($venta->detalles as $detalle) {
+            $producto = $detalle->producto;
+            
+            // Validación extra de seguridad: ¿Qué pasa si otro cliente compró el último mientras este dudaba?
+            if ($producto->stock < $detalle->cantidad) {
+                return redirect()->back()->with('error', 'Ups, nos quedamos sin stock suficiente de: ' . $producto->nombre);
             }
-            $producto->decrement('stock', $item->cantidad);
+
+            // Descontamos la cantidad y guardamos en la base de datos
+            $producto->stock -= $detalle->cantidad;
+            $producto->save();
         }
 
-        // Generamos la palabra clave y guardamos los datos
-        $palabraClave = 'GLACE-' . strtoupper(Str::random(6));
+        // 4. Modificamos los datos de la cabecera y cerramos la venta
+        $venta->dni = $request->dni;
+        $venta->telefono = $request->telefono;
+        $venta->tipo_entrega = $request->tipo_entrega;
+        
+        $venta->direccion = $request->tipo_entrega == 'domicilio' ? $request->direccion : 'Retiro en Local';
+        $venta->medio_pago = $request->tipo_entrega == 'domicilio' ? $request->medio_pago : 'Pago en caja (Local)';
+        
+        $venta->estado = 'completado'; 
+        $venta->fecha_venta = now();   
+        $venta->save();
 
-        $carrito->estado = 'completado';
-        $carrito->dni = $request->dni;
-        $carrito->telefono = $request->telefono;
-        $carrito->tipo_entrega = $request->tipo_entrega;
-        $carrito->direccion = $request->tipo_entrega === 'domicilio' ? $request->direccion : 'Retiro en sucursal';
-        $carrito->metodo_pago = $request->medio_pago;
-        $carrito->codigo_seguimiento = $palabraClave;
-        $carrito->fecha_venta = now();
-        $carrito->save();
-
-        return redirect()->route('carrito.exito', $carrito->id);
+        // 5. Redireccionamos limpio a la pantalla del comprobante
+        return redirect()->route('carrito.comprobante', $venta->id)->with('success', '¡Compra finalizada con éxito!');
     }
+
+    // Muestra la pantalla final del Comprobante de Venta
+    public function mostrarComprobante($id)
+    {
+        // Traemos la cabecera con sus relaciones para no hacer consultas de más
+        $venta = VentaCabecera::with('detalles.producto', 'user')->findOrFail($id);
+        
+        // Control de seguridad básico: Un cliente no puede espiar el comprobante de otro
+        if ($venta->user_id !== auth()->id()) {
+            abort(403, 'No tenés autorización para ver este comprobante.');
+        }
+
+        return view('frontend.comprobante', compact('venta'));
+    }
+
 
     // 7. Mostrar pantalla de "Compra Exitosa"
     public function exito($id_venta)
